@@ -2,7 +2,7 @@
   "profiles": {
     "YoloSharpImageClassificationApplication": {
       "commandName": "Project",
-      "commandLineArgs": "BriniAfterGroomers"
+      "commandLineArgs": "pizza.jpg"
     }
   }
 }

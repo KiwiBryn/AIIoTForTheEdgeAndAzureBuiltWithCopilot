@@ -22,7 +22,9 @@ namespace YoloSharpImageClassificationApplication
 
          // Load the YOLO model
          //var model = new YoloModel("path_to_your_model.onnx");
-         var model = new YoloPredictor("path_to_your_model.onnx");
+         //var model = new YoloPredictor("..\\..\\..\\..\\models\\yolov8s-cls.onnx");
+         //var model = new YoloPredictor("..\\..\\..\\..\\models\\yolov10s-cls.onnx"); // Wasn't able to find yolov10s-cls.onnx
+         var model = new YoloPredictor("..\\..\\..\\..\\models\\yolov11s-cls.onnx");
 
          // Load the image from disk
          //using (var image = Image.FromFile(imagePath))
