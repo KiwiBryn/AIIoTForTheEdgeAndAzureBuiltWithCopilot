@@ -8,7 +8,10 @@ class Program
    static void Main(string[] args)
    {
       // Load the YOLO model
-      var modelPath = "path_to_your_yolo_model.onnx";
+      //var modelPath = "path_to_your_yolo_model.onnx";
+      //var modelPath = "..\\..\\..\\..\\models\\yolov8s-pose.onnx";
+      //var modelPath = "..\\..\\..\\..\\models\\yolov10s-pose.onnx";
+      var modelPath = "..\\..\\..\\..\\models\\yolov11s-pose.onnx";
       var yolo = new YoloPredictor(modelPath);
 
       // Load the image from disk
