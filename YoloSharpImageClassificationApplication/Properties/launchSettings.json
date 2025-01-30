@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "YoloSharpImageClassificationApplication": {
+      "commandName": "Project",
+      "commandLineArgs": "BriniAfterGroomers"
+    }
+  }
+}
