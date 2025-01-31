@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpObjectDetectionHtt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpImageClassificationHttpTriggerFunction", "YoloSharpImageClassificationHttpTriggerFunction\YoloSharpImageClassificationHttpTriggerFunction.csproj", "{E85A2277-53F3-4041-96E4-D083E5896131}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpPoseEstimationHttpTriggerFunction", "YoloSharpPoseEstimationHttpTriggerFunction\YoloSharpPoseEstimationHttpTriggerFunction.csproj", "{FEE4FC8B-5E57-4670-8BD7-9CBFB4054D12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{E85A2277-53F3-4041-96E4-D083E5896131}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E85A2277-53F3-4041-96E4-D083E5896131}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E85A2277-53F3-4041-96E4-D083E5896131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE4FC8B-5E57-4670-8BD7-9CBFB4054D12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE4FC8B-5E57-4670-8BD7-9CBFB4054D12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE4FC8B-5E57-4670-8BD7-9CBFB4054D12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEE4FC8B-5E57-4670-8BD7-9CBFB4054D12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
