@@ -1,25 +1,26 @@
-// please write an  httpTrigger azure function that uses YoloSharp and a Yolo image classification onnx model
+// please write an httpTrigger azure function that uses YoloSharp and a Yolo image classification onnx model
 // Image classification not object detection
 // The image is in the form data
+// The multipart/form-data check can be removed
+// The YoloPredictor should be released after use
+// Many image files could be uploaded in one request
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 using Compunet.YoloSharp;
+using Compunet.YoloSharp.Data;
 
 namespace YoloSharpImageClassificationHttpTriggerFunction
 {
    public class Function1
    {
       private readonly ILogger<Function1> _logger;
-      //private readonly YoloModel _yoloModel;
-      private readonly YoloPredictor _yoloModel;
 
       public Function1(ILogger<Function1> logger)
       {
          _logger = logger;
-         _yoloModel = new YoloPredictor("yolov8s-cls.onnx");
       }
 
       [Function("ImageClassificationFunction")]
@@ -27,28 +28,36 @@ namespace YoloSharpImageClassificationHttpTriggerFunction
       {
          _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-         if (!req.ContentType.StartsWith("multipart/form-data"))
-         {
-            return new BadRequestObjectResult("Invalid content type. Please upload an image in form data.");
-         }
-
          var form = await req.ReadFormAsync();
-         var file = form.Files["image"];
+         var files = form.Files;
 
-         if (file == null || file.Length == 0)
+         if (files.Count == 0)
          {
-            return new BadRequestObjectResult("No image uploaded.");
+            return new BadRequestObjectResult("No images uploaded.");
          }
 
-         using (var memoryStream = new MemoryStream())
+         var results = new List<object>();
+
+         foreach (var file in files)
          {
-            await file.CopyToAsync(memoryStream);
-            var imageBytes = memoryStream.ToArray();
+            if (file.Length > 0)
+            {
+               using (var memoryStream = new MemoryStream())
+               {
+                  await file.CopyToAsync(memoryStream);
+                  var imageBytes = memoryStream.ToArray();
 
-            var results = _yoloModel.Classify(imageBytes);
+                  using (var yoloModel = new YoloPredictor("yolov8s-cls.onnx"))
+                  {
+                     var classifications = yoloModel.Classify(imageBytes);
 
-            return new OkObjectResult(results);
+                     results.Add(new { file.FileName, classifications });
+                  }
+               }
+            }
          }
+
+         return new OkObjectResult(results);
       }
    }
 }
