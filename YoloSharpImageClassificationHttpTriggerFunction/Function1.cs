@@ -1,4 +1,4 @@
-// // please write an azure function with an http trigger that uses yolosharp and an onnx file to Classify an image
+// please write an azure function with an http trigger that uses onnx and yolosharp to Classify Image
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
