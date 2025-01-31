@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using YoloSharp;
+using Compunet.YoloSharp;
 using Microsoft.Azure.Functions.Worker;
 
 public static class Function1
@@ -25,7 +25,8 @@ public static class Function1
       }
 
       // Load the YOLOv8 model
-      var yolo = new Yolo("yolov8.onnx");
+      //var yolo = new Yolo("yolov8.onnx");
+      var yolo = new YoloPredictor("yolov8.onnx");
 
       // Perform object detection
       var items = yolo.Detect(imageBytes);
