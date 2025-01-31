@@ -6,15 +6,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Compunet.YoloSharp;
 using Microsoft.Azure.Functions.Worker;
+using SixLabors.ImageSharp;
 
-public static class Function1
+
+public class Function1
 {
-   [Function("ObjectDetectionFunction")]
-   public static async Task<IActionResult> Run(
-       [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-       ILogger log)
+   private readonly ILogger<Function1> _logger;
+
+   public Function1(ILogger<Function1> logger)
    {
-      log.LogInformation("C# HTTP trigger function processed a request.");
+      _logger = logger;
+   }
+
+   [Function("ObjectDetectionFunction")]
+   public async Task<IActionResult> Run(
+       [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
+   {
+      _logger.LogInformation("C# HTTP trigger function processed a request.");
 
       // Read the image from the request payload
       byte[] imageBytes;
@@ -26,12 +34,11 @@ public static class Function1
 
       // Load the YOLOv8 model
       //var yolo = new Yolo("yolov8.onnx");
-      var yolo = new YoloPredictor("yolov8.onnx");
+      var yolo = new YoloPredictor("yolov8s.onnx");
 
       // Perform object detection
       var items = yolo.Detect(imageBytes);
 
-      // Return the detection results as JSON
       return new OkObjectResult(items);
    }
 }
