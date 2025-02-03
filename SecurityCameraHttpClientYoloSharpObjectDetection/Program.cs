@@ -1,9 +1,9 @@
 ﻿// Start with SecurityCameraHttpClient code
 // Use a stream rather than loading from a file
+// Use YoloSharp to run an onnx Object Detection model on the image
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
-
 
 namespace SecurityCameraHttpClientYoloSharpObjectDetection
 {
@@ -12,12 +12,13 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       private static HttpClient _client;
       private static bool _isRetrievingImage = false;
       private static ApplicationSettings _applicationSettings;
+      private static YoloModel _yoloModel; // Add YoloModel field
 
       static void Main(string[] args)
       {
          Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
 #if RELEASE
-            Console.WriteLine("RELEASE");
+               Console.WriteLine("RELEASE");
 #else
          Console.WriteLine("DEBUG");
 #endif
@@ -28,6 +29,9 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
               .Build();
 
          _applicationSettings = configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
+
+         // Initialize YoloModel
+         _yoloModel = new YoloModel("path_to_your_onnx_model.onnx");
 
          using (HttpClientHandler handler = new HttpClientHandler { Credentials = new NetworkCredential(_applicationSettings.Username, _applicationSettings.Password) })
          using (_client = new HttpClient(handler))
@@ -52,6 +56,15 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
 
             using (var imageStream = await response.Content.ReadAsStreamAsync())
             {
+               // Run object detection on the image stream
+               var detections = _yoloModel.Predict(imageStream);
+
+               // Process detections (e.g., log them, save them, etc.)
+               foreach (var detection in detections)
+               {
+                  Console.WriteLine($"Detected {detection.Label} with confidence {detection.Confidence}");
+               }
+
                string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
                using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
                {
