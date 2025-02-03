@@ -50,6 +50,8 @@ namespace SecurityCameraHttpClient
          _isRetrievingImage = true;
          try
          {
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} SecurityCameraClient download starting");
+
             HttpResponseMessage response = await _client.GetAsync(_applicationSettings.CameraUrl);
             response.EnsureSuccessStatusCode();
 
@@ -57,7 +59,7 @@ namespace SecurityCameraHttpClient
             string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
             await File.WriteAllBytesAsync(savePath, imageBytes);
 
-            Console.WriteLine("Image downloaded successfully.");
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} SecurityCameraClient download done");
          }
          catch (Exception ex)
          {
