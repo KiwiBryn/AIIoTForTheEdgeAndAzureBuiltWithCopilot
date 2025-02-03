@@ -1,6 +1,7 @@
 ﻿// Start with SecurityCameraHttpClient code
 // Use a stream rather than loading from a file
 // Use YoloSharp to run an onnx Object Detection model on the image
+// get onnx model path from application settings
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       {
          Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
 #if RELEASE
-               Console.WriteLine("RELEASE");
+                  Console.WriteLine("RELEASE");
 #else
          Console.WriteLine("DEBUG");
 #endif
@@ -32,8 +33,8 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
 
          _applicationSettings = configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
 
-         // Initialize YoloModel
-         _yoloModel = new YoloPredictor("path_to_your_onnx_model.onnx");
+         // Initialize YoloModel with path from application settings
+         _yoloModel = new YoloPredictor(_applicationSettings.OnnxModelPath);
 
          using (HttpClientHandler handler = new HttpClientHandler { Credentials = new NetworkCredential(_applicationSettings.Username, _applicationSettings.Password) })
          using (_client = new HttpClient(handler))
@@ -95,5 +96,6 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       public string Password { get; set; } = "";
       public TimeSpan TimerDue { get; set; } = TimeSpan.Zero;
       public TimeSpan TimerPeriod { get; set; } = TimeSpan.Zero;
+      public string OnnxModelPath { get; set; } = ""; // Add OnnxModelPath property
    }
 }
