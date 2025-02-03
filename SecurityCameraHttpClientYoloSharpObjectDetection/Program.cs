@@ -5,6 +5,8 @@ using System.Net;
 
 using Microsoft.Extensions.Configuration;
 
+using Compunet.YoloSharp;
+
 namespace SecurityCameraHttpClientYoloSharpObjectDetection
 {
    internal class Program
@@ -12,7 +14,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       private static HttpClient _client;
       private static bool _isRetrievingImage = false;
       private static ApplicationSettings _applicationSettings;
-      private static YoloModel _yoloModel; // Add YoloModel field
+      private static YoloPredictor _yoloModel; // Add YoloModel field
 
       static void Main(string[] args)
       {
@@ -31,7 +33,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
          _applicationSettings = configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
 
          // Initialize YoloModel
-         _yoloModel = new YoloModel("path_to_your_onnx_model.onnx");
+         _yoloModel = new YoloPredictor("path_to_your_onnx_model.onnx");
 
          using (HttpClientHandler handler = new HttpClientHandler { Credentials = new NetworkCredential(_applicationSettings.Username, _applicationSettings.Password) })
          using (_client = new HttpClient(handler))
@@ -57,12 +59,12 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
             using (var imageStream = await response.Content.ReadAsStreamAsync())
             {
                // Run object detection on the image stream
-               var detections = _yoloModel.Predict(imageStream);
+               var detections = _yoloModel.Detect(imageStream);
 
                // Process detections (e.g., log them, save them, etc.)
                foreach (var detection in detections)
                {
-                  Console.WriteLine($"Detected {detection.Label} with confidence {detection.Confidence}");
+                  Console.WriteLine($"Detected {detection.Name.Name} with confidence {detection.Confidence}");
                }
 
                string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
