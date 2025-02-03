@@ -1,4 +1,5 @@
-﻿// Start withj SecurityCameraHttpClient code
+﻿// Start with SecurityCameraHttpClient code
+// Use a stream rather than loading from a file
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -16,15 +17,15 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       {
          Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
 #if RELEASE
-         Console.WriteLine("RELEASE");
+            Console.WriteLine("RELEASE");
 #else
          Console.WriteLine("DEBUG");
 #endif
 
          var configuration = new ConfigurationBuilder()
               .AddJsonFile("appsettings.json", false, true)
-         .AddUserSecrets<Program>()
-         .Build();
+              .AddUserSecrets<Program>()
+              .Build();
 
          _applicationSettings = configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
 
@@ -49,9 +50,14 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
             HttpResponseMessage response = await _client.GetAsync(_applicationSettings.CameraUrl);
             response.EnsureSuccessStatusCode();
 
-            byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
-            string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
-            await File.WriteAllBytesAsync(savePath, imageBytes);
+            using (var imageStream = await response.Content.ReadAsStreamAsync())
+            {
+               string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
+               using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
+               {
+                  await imageStream.CopyToAsync(fileStream);
+               }
+            }
 
             Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} SecurityCameraClient download done");
          }
@@ -69,15 +75,10 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
    public class ApplicationSettings
    {
       public string CameraUrl { get; set; } = "";
-
       public string SavePath { get; set; } = "";
-
       public string Username { get; set; } = "";
-
       public string Password { get; set; } = "";
-
       public TimeSpan TimerDue { get; set; } = TimeSpan.Zero;
-
       public TimeSpan TimerPeriod { get; set; } = TimeSpan.Zero;
    }
 }
