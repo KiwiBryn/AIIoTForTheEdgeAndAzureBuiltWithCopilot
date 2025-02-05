@@ -4,6 +4,7 @@
 // Please check YoloOptions properties badly wrong
 // Make cuda in YoloOptions configurable
 // This one was a dumpster file seemed be getting confused with EMGU and https://github.com/BobLd
+// Make object detection confidence configurable
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,7 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
       {
          Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraHttpClientYoloDotNetObjectDetection starting");
 #if RELEASE
-         Console.WriteLine("RELEASE");
+            Console.WriteLine("RELEASE");
 #else
          Console.WriteLine("DEBUG");
 #endif
@@ -44,7 +45,7 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
             OnnxModel = _applicationSettings.OnnxModelPath,
             ModelType = ModelType.ObjectDetection,
             Cuda = _applicationSettings.UseCuda // Blew up as default CUDA enabled
-         })) 
+         }))
          using (var timer = new Timer(async _ => await RetrieveImageAsync(), null, _applicationSettings.TimerDue, _applicationSettings.TimerPeriod))
          {
             Console.WriteLine("Press any key to exit...");
@@ -87,8 +88,10 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
 
                foreach (var item in items)
                {
-                  //Console.WriteLine($"Detected {obj.Type} with confidence {obj.Confidence} at location {obj.Rectangle}");
-                  Console.WriteLine($"Detected {item.Label.Name} with confidence {item.Confidence} at location {item.BoundingBox}");
+                  if (item.Confidence >= _applicationSettings.ConfidenceThreshold)
+                  {
+                     Console.WriteLine($"Detected {item.Label.Name} with confidence {item.Confidence} at location {item.BoundingBox}");
+                  }
                }
             }
 
@@ -123,5 +126,6 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
 
       public bool UseCuda { get; set; } = false;
 
+      public float ConfidenceThreshold { get; set; } = 0.5f; // Default confidence threshold
    }
 }
