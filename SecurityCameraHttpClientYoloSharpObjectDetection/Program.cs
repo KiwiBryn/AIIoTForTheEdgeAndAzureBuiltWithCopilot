@@ -2,7 +2,8 @@
 // Use a stream rather than loading from a file
 // Use YoloSharp to run an onnx Object Detection model on the image
 // get onnx model path from application settings
-// 
+// Save image if object with specified name detected
+// Modify to images names.
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -63,16 +64,23 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
                // Run object detection on the image stream
                var detections = _yoloModel.Detect(imageStream);
 
-               // Process detections (e.g., log them, save them, etc.)
-               foreach (var detection in detections)
-               {
-                  Console.WriteLine($"Detected {detection.Name.Name} with confidence {detection.Confidence}");
-               }
+               // Check if any detection matches the specified object name
+               bool objectDetected = detections.Any(d => d.Name.Name == _applicationSettings.SpecifiedObjectName);
 
-               string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
-               using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
+               if (objectDetected)
                {
-                  await imageStream.CopyToAsync(fileStream);
+                  // Save the image if the specified object is detected
+                  string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
+                  using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                  {
+                     await imageStream.CopyToAsync(fileStream);
+                  }
+
+                  // Log detections
+                  foreach (var detection in detections)
+                  {
+                     Console.WriteLine($"Detected {detection.Name.Name} with confidence {detection.Confidence}");
+                  }
                }
             }
 
@@ -98,5 +106,6 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       public TimeSpan TimerDue { get; set; } = TimeSpan.Zero;
       public TimeSpan TimerPeriod { get; set; } = TimeSpan.Zero;
       public string OnnxModelPath { get; set; } = ""; // Add OnnxModelPath property
+      public string SpecifiedObjectName { get; set; } = ""; // Add SpecifiedObjectName property
    }
 }
