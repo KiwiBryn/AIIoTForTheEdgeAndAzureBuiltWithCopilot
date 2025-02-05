@@ -1,8 +1,16 @@
 ﻿// Use a stream rather than loading from a file
+// Use YoloDotNet to run an onnx Object Detection model on the image
+// Configure YOLO With YoloOptions became Configure YOLO creation with YoloOptions 
+// Please check YoloOptions properties badly wrong
+// Make cuda in YoloOptions configurable
+// This one was a dumpster file seemed be getting confused with EMGU and https://github.com/BobLd
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
-
+using SkiaSharp;
+using YoloDotNet;
+using YoloDotNet.Enums;
+using YoloDotNet.Models;
 
 namespace SecurityCameraHttpClientYoloDotNetObjectDetection
 {
@@ -11,10 +19,11 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
       private static HttpClient _client;
       private static bool _isRetrievingImage = false;
       private static ApplicationSettings _applicationSettings;
+      private static Yolo _yolo;
 
       static void Main(string[] args)
       {
-         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraHttpClientYoloDotNetObjectDetection starting");
 #if RELEASE
          Console.WriteLine("RELEASE");
 #else
@@ -30,6 +39,12 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
 
          using (HttpClientHandler handler = new HttpClientHandler { Credentials = new NetworkCredential(_applicationSettings.Username, _applicationSettings.Password) })
          using (_client = new HttpClient(handler))
+         using (_yolo = new Yolo(new YoloOptions()
+         {
+            OnnxModel = _applicationSettings.OnnxModelPath,
+            ModelType = ModelType.ObjectDetection,
+            Cuda = _applicationSettings.UseCuda // Blew up as default CUDA enabled
+         })) 
          using (var timer = new Timer(async _ => await RetrieveImageAsync(), null, _applicationSettings.TimerDue, _applicationSettings.TimerPeriod))
          {
             Console.WriteLine("Press any key to exit...");
@@ -44,7 +59,7 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
          _isRetrievingImage = true;
          try
          {
-            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} SecurityCameraClient download starting");
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} download starting");
 
             HttpResponseMessage response = await _client.GetAsync(_applicationSettings.CameraUrl);
             response.EnsureSuccessStatusCode();
@@ -56,9 +71,28 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
                {
                   await imageStream.CopyToAsync(fileStream);
                }
+
+               // Run object detection
+               //var items = yolo.Detect(imageStream);
+               var items = new List<ObjectDetection>();
+
+               var image = SKImage.FromEncodedData(savePath);
+               {
+                  Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.ffff} detect starting");
+
+                  items = _yolo.RunObjectDetection(image);
+
+                  Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.ffff} detect done");
+               }
+
+               foreach (var item in items)
+               {
+                  //Console.WriteLine($"Detected {obj.Type} with confidence {obj.Confidence} at location {obj.Rectangle}");
+                  Console.WriteLine($"Detected {item.Label.Name} with confidence {item.Confidence} at location {item.BoundingBox}");
+               }
             }
 
-            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} SecurityCameraClient download done");
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} download done");
          }
          catch (Exception ex)
          {
@@ -84,5 +118,10 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
       public TimeSpan TimerDue { get; set; } = TimeSpan.Zero;
 
       public TimeSpan TimerPeriod { get; set; } = TimeSpan.Zero;
+
+      public string OnnxModelPath { get; set; } = "";
+
+      public bool UseCuda { get; set; } = false;
+
    }
 }
