@@ -4,6 +4,7 @@
 // get onnx model path from application settings
 // Save image if object with specified name detected
 // Modify to images names.
+// Log detections even if no objectDetected 
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -64,6 +65,12 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
                // Run object detection on the image stream
                var detections = _yoloModel.Detect(imageStream);
 
+               // Log all detections
+               foreach (var detection in detections)
+               {
+                  Console.WriteLine($"Detected {detection.Name.Name} with confidence {detection.Confidence}");
+               }
+
                // Check if any detection matches the specified object name
                bool objectDetected = detections.Any(d => d.Name.Name == _applicationSettings.SpecifiedObjectName);
 
@@ -74,12 +81,6 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
                   using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
                   {
                      await imageStream.CopyToAsync(fileStream);
-                  }
-
-                  // Log detections
-                  foreach (var detection in detections)
-                  {
-                     Console.WriteLine($"Detected {detection.Name.Name} with confidence {detection.Confidence}");
                   }
                }
             }
