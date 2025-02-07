@@ -3,8 +3,12 @@
 // Use YoloSharp to run an onnx Object Detection model on the image
 // get onnx model path from application settings
 // Save image if object with specified name detected
-// Modify to images names.
-// Log detections even if no objectDetected 
+// Modify so objectDetected supports multiple images names.
+// Make logging of detections configurable in app settings
+// Make saving of image configurable in app settings
+// Modify HttpClientHandler initialisation to pre authenticate with network credentials - tried multiple different ways could get it to work
+// Modify code to make use of GPU configurable - to hard
+
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -24,7 +28,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       {
          Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
 #if RELEASE
-                  Console.WriteLine("RELEASE");
+               Console.WriteLine("RELEASE");
 #else
          Console.WriteLine("DEBUG");
 #endif
@@ -37,9 +41,12 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
          _applicationSettings = configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
 
          // Initialize YoloModel with path from application settings
-         _yoloModel = new YoloPredictor(_applicationSettings.OnnxModelPath);
+         _yoloModel = new YoloPredictor(_applicationSettings.OnnxModelPath, new YoloPredictorOptions 
+         { 
+            UseCuda = _applicationSettings.UseCuda,
+         });
 
-         using (HttpClientHandler handler = new HttpClientHandler { Credentials = new NetworkCredential(_applicationSettings.Username, _applicationSettings.Password) })
+         using (HttpClientHandler handler = new HttpClientHandler { Credentials = new NetworkCredential(_applicationSettings.Username, _applicationSettings.Password), PreAuthenticate = true })
          using (_client = new HttpClient(handler))
          using (var timer = new Timer(async _ => await RetrieveImageAsync(), null, _applicationSettings.TimerDue, _applicationSettings.TimerPeriod))
          {
@@ -60,32 +67,40 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
             HttpResponseMessage response = await _client.GetAsync(_applicationSettings.CameraUrl);
             response.EnsureSuccessStatusCode();
 
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} SecurityCameraClient download done");
+
             using (var imageStream = await response.Content.ReadAsStreamAsync())
             {
                // Run object detection on the image stream
+               Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Yolo detect starting");
                var detections = _yoloModel.Detect(imageStream);
+               Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} YoloDetect done");
 
-               // Log all detections
-               foreach (var detection in detections)
+               // Log all detections if logging is enabled
+               if (_applicationSettings.LogDetections)
                {
-                  Console.WriteLine($"Detected {detection.Name.Name} with confidence {detection.Confidence}");
+                  foreach (var detection in detections)
+                  {
+                     Console.WriteLine($"Detected {detection.Name.Name} with confidence {detection.Confidence}");
+                  }
                }
 
-               // Check if any detection matches the specified object name
-               bool objectDetected = detections.Any(d => d.Name.Name == _applicationSettings.SpecifiedObjectName);
+               // Check if any detection matches the specified object names
+               bool objectDetected = detections.Any(d => _applicationSettings.ObjectNames.Contains(d.Name.Name));
 
-               if (objectDetected)
+               if (objectDetected && _applicationSettings.SaveImage)
                {
-                  // Save the image if the specified object is detected
+                  // Save the image if the specified object is detected and saving is enabled
                   string savePath = string.Format(_applicationSettings.SavePath, DateTime.UtcNow);
+
                   using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
                   {
+                     imageStream.Position = 0;
+
                      await imageStream.CopyToAsync(fileStream);
                   }
                }
             }
-
-            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} SecurityCameraClient download done");
          }
          catch (Exception ex)
          {
@@ -106,7 +121,10 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       public string Password { get; set; } = "";
       public TimeSpan TimerDue { get; set; } = TimeSpan.Zero;
       public TimeSpan TimerPeriod { get; set; } = TimeSpan.Zero;
-      public string OnnxModelPath { get; set; } = ""; // Add OnnxModelPath property
-      public string SpecifiedObjectName { get; set; } = ""; // Add SpecifiedObjectName property
+      public string OnnxModelPath { get; set; } = "";
+      public required List<string> ObjectNames { get; set; }
+      public bool LogDetections { get; set; } = false; // Add LogDetections property
+      public bool SaveImage { get; set; } = false; // Add SaveImage property
+      public bool UseCuda { get; set; } = false;
    }
 }
