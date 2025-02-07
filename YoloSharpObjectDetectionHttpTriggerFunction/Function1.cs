@@ -1,4 +1,3 @@
-
 // please write an azure function with an http trigger that uses yolosharp and an onnx file to detect objects in an image
 // The image is not in the body it is in the form
 // Image.Load is not used
@@ -6,6 +5,11 @@
 // The YoloPredictor should be released after use
 // Many image files could be uploaded in one request
 // Only one image per request
+// Add multipart/form-data content type check 
+// Add check that there are headers -- Didn't get this right
+// Add check that req.Headers is not null
+
+// Add check that request has ContentType and it is multipart/form-data
 //using System.IO;
 //using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +32,17 @@ public class Function1
        [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
    {
       _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+      //  if (req.Headers == null || !req.Headers.ContainsKey("Content-Type") || !req.Headers["Content-Type"].ToString().Contains("multipart/form-data"))
+      //  {
+      //     return new BadRequestObjectResult("The request must have a Content-Type header with multipart/form-data.");
+      //  }
+
+      // Intellisense fix
+      if (req.Headers == null || !req.Headers.TryGetValue("Content-Type", out Microsoft.Extensions.Primitives.StringValues value) || !value.ToString().Contains("multipart/form-data"))
+      {
+         return new BadRequestObjectResult("The request must have a Content-Type header with multipart/form-data.");
+      }
 
       // Read the images from the form data
       var form = await req.ReadFormAsync();
