@@ -5,6 +5,13 @@
 // Make cuda in YoloOptions configurable
 // This one was a dumpster file seemed be getting confused with EMGU and https://github.com/BobLd
 // Make object detection confidence configurable
+// Start with SecurityCameraHttpClient code
+// Use a stream rather than loading from a file
+// Use YoloSharp to run an onnx Object Detection model on the image
+// get onnx model path from application settings
+// Save image if object with specified name detected
+// Modify to images names.
+// Log detections even if no objectDetected 
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
