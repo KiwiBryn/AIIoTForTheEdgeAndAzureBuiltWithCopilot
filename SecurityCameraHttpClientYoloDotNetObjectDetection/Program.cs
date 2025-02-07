@@ -1,17 +1,11 @@
-﻿// Use a stream rather than loading from a file
+﻿// Start with SecurityCameraHttpClient code
+// Use a stream rather than loading from a file
 // Use YoloDotNet to run an onnx Object Detection model on the image
 // Configure YOLO With YoloOptions became Configure YOLO creation with YoloOptions 
 // Please check YoloOptions properties badly wrong
 // Make cuda in YoloOptions configurable
 // This one was a dumpster file seemed be getting confused with EMGU and https://github.com/BobLd
 // Make object detection confidence configurable
-// Start with SecurityCameraHttpClient code
-// Use a stream rather than loading from a file
-// Use YoloSharp to run an onnx Object Detection model on the image
-// get onnx model path from application settings
-// Save image if object with specified name detected
-// Modify to images names.
-// Log detections even if no objectDetected 
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -50,8 +44,8 @@ namespace SecurityCameraHttpClientYoloDotNetObjectDetection
          using (_yolo = new Yolo(new YoloOptions()
          {
             OnnxModel = _applicationSettings.OnnxModelPath,
-            ModelType = ModelType.ObjectDetection,
-            Cuda = _applicationSettings.UseCuda // Blew up as default CUDA enabled
+            ModelType = ModelType.ObjectDetection,         
+            Cuda = _applicationSettings.UseCuda // Blew up as default CUDA enabled   
          }))
          using (var timer = new Timer(async _ => await RetrieveImageAsync(), null, _applicationSettings.TimerDue, _applicationSettings.TimerPeriod))
          {
