@@ -7,6 +7,8 @@
 // Make logging of detections configurable in app settings
 // Make saving of image configurable in app settings
 // Modify HttpClientHandler initialisation to pre authenticate with network credentials - tried multiple different ways could get it to work
+// Modify code to make use of GPU configurable - to hard
+
 using System.Net;
 
 using Microsoft.Extensions.Configuration;
@@ -26,7 +28,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       {
          Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
 #if RELEASE
-            Console.WriteLine("RELEASE");
+               Console.WriteLine("RELEASE");
 #else
          Console.WriteLine("DEBUG");
 #endif
@@ -39,7 +41,10 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
          _applicationSettings = configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
 
          // Initialize YoloModel with path from application settings
-         _yoloModel = new YoloPredictor(_applicationSettings.OnnxModelPath);
+         _yoloModel = new YoloPredictor(_applicationSettings.OnnxModelPath, new YoloPredictorOptions 
+         { 
+            UseCuda = _applicationSettings.UseCuda,
+         });
 
          using (HttpClientHandler handler = new HttpClientHandler { Credentials = new NetworkCredential(_applicationSettings.Username, _applicationSettings.Password), PreAuthenticate = true })
          using (_client = new HttpClient(handler))
@@ -117,8 +122,9 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       public TimeSpan TimerDue { get; set; } = TimeSpan.Zero;
       public TimeSpan TimerPeriod { get; set; } = TimeSpan.Zero;
       public string OnnxModelPath { get; set; } = "";
-      public required List<string> ObjectNames { get; set; } 
+      public required List<string> ObjectNames { get; set; }
       public bool LogDetections { get; set; } = false; // Add LogDetections property
       public bool SaveImage { get; set; } = false; // Add SaveImage property
+      public bool UseCuda { get; set; } = false;
    }
 }
