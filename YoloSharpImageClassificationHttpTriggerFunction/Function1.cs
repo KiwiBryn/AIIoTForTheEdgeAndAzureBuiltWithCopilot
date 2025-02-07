@@ -4,13 +4,14 @@
 // The multipart/form-data check can be removed
 // The YoloPredictor should be released after use
 // Many image files could be uploaded in one request
+// Only one image file can be uploaded in one request
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 using Compunet.YoloSharp;
-using Compunet.YoloSharp.Data;
+
 
 namespace YoloSharpImageClassificationHttpTriggerFunction
 {
@@ -36,28 +37,29 @@ namespace YoloSharpImageClassificationHttpTriggerFunction
             return new BadRequestObjectResult("No images uploaded.");
          }
 
-         var results = new List<object>();
-
-         foreach (var file in files)
+         if (files.Count > 1)
          {
-            if (file.Length > 0)
+            return new BadRequestObjectResult("Only one image file can be uploaded in one request.");
+         }
+
+         var file = files[0];
+         if (file.Length > 0)
+         {
+            using (var memoryStream = new MemoryStream())
             {
-               using (var memoryStream = new MemoryStream())
+               await file.CopyToAsync(memoryStream);
+               var imageBytes = memoryStream.ToArray();
+
+               using (var yoloModel = new YoloPredictor("yolov8s-cls.onnx"))
                {
-                  await file.CopyToAsync(memoryStream);
-                  var imageBytes = memoryStream.ToArray();
+                  var classifications = yoloModel.Classify(imageBytes);
 
-                  using (var yoloModel = new YoloPredictor("yolov8s-cls.onnx"))
-                  {
-                     var classifications = yoloModel.Classify(imageBytes);
-
-                     results.Add(new { file.FileName, classifications });
-                  }
+                  return new OkObjectResult(new { file.FileName, classifications });
                }
             }
          }
 
-         return new OkObjectResult(results);
+         return new BadRequestObjectResult("Invalid image file.");
       }
    }
 }
