@@ -5,6 +5,7 @@
 // yolo.Detect can process an image file stream
 // The YoloPredictor should be released after use
 // Many image files could be uploaded in one request
+// Only one image per request
 //using System.IO;
 //using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -36,26 +37,29 @@ public class Function1
          return new BadRequestObjectResult("No image files uploaded.");
       }
 
-      var results = new List<object>();
+      if (files.Count > 1)
+      {
+         return new BadRequestObjectResult("Only one image file is allowed per request.");
+      }
+
+      var file = files[0];
+      if (file.Length == 0)
+      {
+         return new BadRequestObjectResult("The uploaded image file is empty.");
+      }
 
       // Load the YOLOv8 model
       using (var yolo = new YoloPredictor("yolov8s.onnx"))
       {
-         foreach (var file in files)
+         // Perform object detection
+         using (var stream = file.OpenReadStream())
          {
-            if (file.Length > 0)
-            {
-               // Perform object detection
-               using (var stream = file.OpenReadStream())
-               {
-                  var items = yolo.Detect(stream);
-                  results.Add(new { FileName = file.FileName, Detections = items });
-               }
-            }
+            var items = yolo.Detect(stream);
+            var result = new { FileName = file.FileName, Detections = items };
+
+            // Return the detection results
+            return new OkObjectResult(result);
          }
       }
-
-      // Return the detection results
-      return new OkObjectResult(results);
    }
 }
