@@ -45,6 +45,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraHttpClientYol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraHttpClientYoloDotNetObjectDetection", "SecurityCameraHttpClientYoloDotNetObjectDetection\SecurityCameraHttpClientYoloDotNetObjectDetection.csproj", "{CDE105C9-5AA7-4441-A712-058FA01A90F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraDiscovery", "SecurityCameraDiscovery\SecurityCameraDiscovery.csproj", "{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{371F4F87-D907-46FD-82A8-3B7296DA5F9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,8 +87,15 @@ Global
 		{CDE105C9-5AA7-4441-A712-058FA01A90F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDE105C9-5AA7-4441-A712-058FA01A90F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDE105C9-5AA7-4441-A712-058FA01A90F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF} = {371F4F87-D907-46FD-82A8-3B7296DA5F9C}
 	EndGlobalSection
 EndGlobal
