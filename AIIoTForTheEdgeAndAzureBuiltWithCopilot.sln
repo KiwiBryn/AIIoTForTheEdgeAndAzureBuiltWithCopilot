@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraDiscovery", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{371F4F87-D907-46FD-82A8-3B7296DA5F9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXResnet50v27", "ONNXResnet50v27\ONNXResnet50v27.csproj", "{3C5D06C8-34E1-426E-9EE6-2EC7E0A52177}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,11 +93,18 @@ Global
 		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5D06C8-34E1-426E-9EE6-2EC7E0A52177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5D06C8-34E1-426E-9EE6-2EC7E0A52177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5D06C8-34E1-426E-9EE6-2EC7E0A52177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5D06C8-34E1-426E-9EE6-2EC7E0A52177}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D9530C73-1F31-4AC5-B7B6-8EED7BF70DBF} = {371F4F87-D907-46FD-82A8-3B7296DA5F9C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC4951A5-2548-43B5-8C2D-93FABD5FB530}
 	EndGlobalSection
 EndGlobal
