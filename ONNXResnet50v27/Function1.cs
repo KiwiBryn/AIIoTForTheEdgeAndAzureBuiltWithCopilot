@@ -3,7 +3,7 @@
 // Modify the code to load the Resnet50v27 classification labels from a file called labels.txt
 // Modify the code so OkObjectResult returns JSON with the predicted label
 // Modify the code so only one image can be uploaded
-// 
+//
 //using System.Drawing; // Added with intelisense, then removed when NuGet removed
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,9 +38,9 @@ namespace ONNXResnet50v27
       {
          _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-         if (!req.HasFormContentType || !req.Form.Files.Any())
+         if (!req.HasFormContentType || req.Form.Files.Count != 1)
          {
-            return new BadRequestObjectResult("Please upload an image file.");
+            return new BadRequestObjectResult("Please upload exactly one image file.");
          }
 
          var file = req.Form.Files[0];
@@ -54,9 +54,9 @@ namespace ONNXResnet50v27
          var input = PreprocessImage(image);
 
          var inputs = new List<NamedOnnxValue>
-                        {
-                            NamedOnnxValue.CreateFromTensor("data", input)
-                        };
+                              {
+                                  NamedOnnxValue.CreateFromTensor("data", input)
+                              };
 
          using var results = _session.Run(inputs);
          var output = results.First().AsEnumerable<float>().ToArray();
