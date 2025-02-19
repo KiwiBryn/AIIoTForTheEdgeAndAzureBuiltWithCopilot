@@ -3,6 +3,7 @@
 // Modify the code to load the Resnet50v27 classification labels from a file called labels.txt
 // Modify the code so OkObjectResult returns JSON with the predicted label
 // Modify the code so only one image can be uploaded
+// add the confidence to the reposonse
 //
 //using System.Drawing; // Added with intelisense, then removed when NuGet removed
 using Microsoft.AspNetCore.Http;
@@ -62,8 +63,9 @@ namespace ONNXResnet50v27
          var output = results.First().AsEnumerable<float>().ToArray();
          var predictedLabelIndex = output.ToList().IndexOf(output.Max());
          var predictedLabel = _labels[predictedLabelIndex];
+         var confidence = output.Max();
 
-         return new OkObjectResult(new { PredictedLabel = predictedLabel });
+         return new OkObjectResult(new { PredictedLabel = predictedLabel, Confidence = confidence });
       }
 
       private DenseTensor<float> PreprocessImage(Image<Rgb24> image)
