@@ -1,7 +1,9 @@
 // please write an httpTrigger azure function that uses ResNet50v2  and ONNX to classify images uploaded in a form
 // modify code to use ImageSharp
 // Modify the code to load the Resnet50v27 classification labels from a file called labels.txt
-
+// Modify the code so OkObjectResult returns JSON with the predicted label
+// Modify the code so only one image can be uploaded
+// 
 //using System.Drawing; // Added with intelisense, then removed when NuGet removed
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,16 +54,16 @@ namespace ONNXResnet50v27
          var input = PreprocessImage(image);
 
          var inputs = new List<NamedOnnxValue>
-                     {
-                         NamedOnnxValue.CreateFromTensor("data", input)
-                     };
+                        {
+                            NamedOnnxValue.CreateFromTensor("data", input)
+                        };
 
          using var results = _session.Run(inputs);
          var output = results.First().AsEnumerable<float>().ToArray();
          var predictedLabelIndex = output.ToList().IndexOf(output.Max());
          var predictedLabel = _labels[predictedLabelIndex];
 
-         return new OkObjectResult($"Predicted label: {predictedLabel}");
+         return new OkObjectResult(new { PredictedLabel = predictedLabel });
       }
 
       private DenseTensor<float> PreprocessImage(Image<Rgb24> image)
