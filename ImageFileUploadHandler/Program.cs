@@ -1,4 +1,6 @@
 
+using Microsoft.Extensions.Azure;
+
 namespace ImageFileUploadHandler
 {
    public class Program
@@ -8,6 +10,11 @@ namespace ImageFileUploadHandler
          var builder = WebApplication.CreateBuilder(args);
 
          // Add services to the container.
+         builder.Services.AddAzureClients(azureClient =>
+         {
+            azureClient.AddQueueServiceClient(builder.Configuration.GetConnectionString("HandlerQueueStorage"));
+            azureClient.AddBlobServiceClient(builder.Configuration.GetConnectionString("HandlerBlobStorage"));
+         });
 
          builder.Services.AddControllers();
          // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

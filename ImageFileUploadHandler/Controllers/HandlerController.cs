@@ -12,9 +12,16 @@ namespace ImageFileUploadHandler.Controllers
    [ApiController]
    public class HandlerController : ControllerBase
    {
-      private readonly string _storageConnectionString = "YourAzureStorageConnectionString";
-      private readonly string _queueName = "your-queue-name";
-      private readonly string _blobContainerName = "your-blob-container-name";
+      private readonly string _queueName = "imagestobeprocessed";
+      //private readonly string _blobContainerName = "your-blob-container-name";
+      QueueServiceClient queueServiceClient;
+      BlobServiceClient blobServiceClient;
+
+      public HandlerController([FromServices] QueueServiceClient queueServiceClient, [FromServices] BlobServiceClient blobServiceClient)
+      {
+         this.queueServiceClient = queueServiceClient;
+         this.blobServiceClient = blobServiceClient;
+      }
 
       [HttpPost("upload/{deviceId}")]
       public async Task<IActionResult> UploadImage(string deviceId, IFormFile image)
@@ -27,10 +34,13 @@ namespace ImageFileUploadHandler.Controllers
          try
          {
             // Upload image to Azure Blob Storage
-            BlobContainerClient blobContainerClient = new BlobContainerClient(_storageConnectionString, _blobContainerName);
+            //BlobContainerClient blobContainerClient = new BlobContainerClient(_storageConnectionString, _blobContainerName);
+            BlobContainerClient blobContainerClient =  blobServiceClient.GetBlobContainerClient(deviceId.ToLower());
             await blobContainerClient.CreateIfNotExistsAsync();
-            string blobName = Guid.NewGuid().ToString();
-            BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
+            //string blobName = Guid.NewGuid().ToString();
+            //BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
+            BlobClient blobClient = blobContainerClient.GetBlobClient(image.FileName);
+
 
             var metadata = new Dictionary<string, string>
             {
@@ -46,12 +56,14 @@ namespace ImageFileUploadHandler.Controllers
             }
 
             // Insert blob URL into Azure Storage Queue
-            string blobUrl = blobClient.Uri.ToString();
-            QueueClient queueClient = new QueueClient(_storageConnectionString, _queueName);
+            //string blobUrl = blobClient.Uri.ToString();
+            //string blobUrl = blobClient.Uri.ToString();
+            //QueueClient queueClient = new QueueClient(_storageConnectionString, _queueName);
+            QueueClient queueClient = queueServiceClient.GetQueueClient(_queueName);
             await queueClient.CreateIfNotExistsAsync();
             if (queueClient.Exists())
             {
-               await queueClient.SendMessageAsync(blobUrl);
+               await queueClient.SendMessageAsync(image.FileName);
             }
 
             return Ok("Image uploaded and inserted into queue successfully.");
