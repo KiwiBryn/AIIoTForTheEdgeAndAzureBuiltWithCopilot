@@ -1,5 +1,7 @@
 ﻿// please write a controller that receives an uploaded image and inserts it into a azure storage queue
-// 
+// Modify the code to use the claim check pattern
+// DeviceID on the requesturi, add as metadata of the blob 
+
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +16,8 @@ namespace ImageFileUploadHandler.Controllers
       private readonly string _queueName = "your-queue-name";
       private readonly string _blobContainerName = "your-blob-container-name";
 
-      [HttpPost("upload")]
-      public async Task<IActionResult> UploadImage(IFormFile image)
+      [HttpPost("upload/{deviceId}")]
+      public async Task<IActionResult> UploadImage(string deviceId, IFormFile image)
       {
          if (image == null || image.Length == 0)
          {
@@ -30,11 +32,17 @@ namespace ImageFileUploadHandler.Controllers
             string blobName = Guid.NewGuid().ToString();
             BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
 
+            var metadata = new Dictionary<string, string>
+            {
+               { "DeviceID", deviceId }
+            };
+
             using (var memoryStream = new MemoryStream())
             {
                await image.CopyToAsync(memoryStream);
                memoryStream.Position = 0;
                await blobClient.UploadAsync(memoryStream, true);
+               await blobClient.SetMetadataAsync(metadata);
             }
 
             // Insert blob URL into Azure Storage Queue
