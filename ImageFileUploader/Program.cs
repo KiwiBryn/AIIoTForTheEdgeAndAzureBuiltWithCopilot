@@ -8,6 +8,7 @@
 // move LoadConfiguration into main
 // make the deletion of files configurable
 // move uploadTimer to main 
+// Add a configurable DeviceID to post requesturi
 using Microsoft.Extensions.Configuration;
 
 namespace ImageFileUploader
@@ -57,7 +58,8 @@ namespace ImageFileUploader
                      ByteArrayContent byteContent = new ByteArrayContent(fileBytes);
                      content.Add(byteContent, "file", Path.GetFileName(filePath));
 
-                     HttpResponseMessage response = await client.PostAsync(_applicationSettings.ApiUrl, content);
+                     string requestUri = $"{_applicationSettings.ApiUrl}?deviceId={_applicationSettings.DeviceID}";
+                     HttpResponseMessage response = await client.PostAsync(requestUri, content);
                      if (response.IsSuccessStatusCode)
                      {
                         Console.WriteLine($"File {Path.GetFileName(filePath)} uploaded successfully.");
@@ -93,5 +95,6 @@ namespace ImageFileUploader
       public int DueTime { get; set; }
       public int Period { get; set; }
       public bool DeleteAfterUpload { get; set; }
+      public string DeviceID { get; set; }
    }
 }
