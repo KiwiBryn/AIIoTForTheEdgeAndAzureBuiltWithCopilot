@@ -73,7 +73,8 @@ namespace ONNXResnet50v27
          image.Mutate(x => x.Resize(new ResizeOptions // Fixed with intellisense
          {
             Size = new Size(224, 224),
-            Mode = ResizeMode.Crop
+            //Mode = ResizeMode.Crop
+            Mode = ResizeMode.BoxPad
          }));
 
          var tensor = new DenseTensor<float>(new[] { 1, 3, 224, 224 });
