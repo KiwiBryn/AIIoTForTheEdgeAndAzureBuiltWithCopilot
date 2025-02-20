@@ -1,33 +1,39 @@
 ﻿// please write a console application that uses httpclient to upload a file to a webapi
 // modify to upload all the files in a directory
 // use a System.Threading.Timer to upload the files every 1000mSec
+// retrieve the directoryPath, apiUrl, duetime and period from an appsettings.json file 
+// make the settings strongly typed
+// Delete the file once it has been uploaded
+// Add code to stop UploadFiles being called when an upload is in progress
+// move LoadConfiguration into main
+// make the deletion of files configurable
+// move uploadTimer to main 
+using Microsoft.Extensions.Configuration;
 
 namespace ImageFileUploader
 {
    internal class Program
    {
-      private static Timer uploadTimer;
-      private static string directoryPath;
-      private static string apiUrl;
+      private static ApplicationSettings _applicationSettings;
+      private static bool isUploading = false;
 
       static async Task Main(string[] args)
       {
-         if (args.Length < 2)
+         var configuration = new ConfigurationBuilder()
+             .SetBasePath(Directory.GetCurrentDirectory())
+             .AddJsonFile("appsettings.json")
+             .AddUserSecrets<Program>()
+             .Build();
+
+         _applicationSettings = configuration.GetSection("ApplicationSettings").Get<ApplicationSettings>();
+
+         if (!Directory.Exists(_applicationSettings.DirectoryPath))
          {
-            Console.WriteLine("Usage: ImageFileUploader <directory_path> <api_url>");
+            Console.WriteLine("Directory not found: " + _applicationSettings.DirectoryPath);
             return;
          }
 
-         directoryPath = args[0];
-         apiUrl = args[1];
-
-         if (!Directory.Exists(directoryPath))
-         {
-            Console.WriteLine("Directory not found: " + directoryPath);
-            return;
-         }
-
-         uploadTimer = new Timer(async _ => await UploadFiles(), null, 0, 1000);
+         Timer uploadTimer = new Timer(async _ => await UploadFiles(), null, _applicationSettings.DueTime, _applicationSettings.Period);
 
          Console.WriteLine("Press [Enter] to exit the program.");
          Console.ReadLine();
@@ -35,11 +41,15 @@ namespace ImageFileUploader
 
       private static async Task UploadFiles()
       {
+         if (isUploading) return;
+
+         isUploading = true;
+
          try
          {
             using (HttpClient client = new HttpClient())
             {
-               foreach (string filePath in Directory.GetFiles(directoryPath))
+               foreach (string filePath in Directory.GetFiles(_applicationSettings.DirectoryPath))
                {
                   using (MultipartFormDataContent content = new MultipartFormDataContent())
                   {
@@ -47,10 +57,15 @@ namespace ImageFileUploader
                      ByteArrayContent byteContent = new ByteArrayContent(fileBytes);
                      content.Add(byteContent, "file", Path.GetFileName(filePath));
 
-                     HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+                     HttpResponseMessage response = await client.PostAsync(_applicationSettings.ApiUrl, content);
                      if (response.IsSuccessStatusCode)
                      {
                         Console.WriteLine($"File {Path.GetFileName(filePath)} uploaded successfully.");
+
+                        if (_applicationSettings.DeleteAfterUpload)
+                        {
+                           File.Delete(filePath);
+                        }
                      }
                      else
                      {
@@ -64,6 +79,19 @@ namespace ImageFileUploader
          {
             Console.WriteLine("An error occurred: " + ex.Message);
          }
+         finally
+         {
+            isUploading = false;
+         }
       }
+   }
+
+   public class ApplicationSettings
+   {
+      public string DirectoryPath { get; set; }
+      public string ApiUrl { get; set; }
+      public int DueTime { get; set; }
+      public int Period { get; set; }
+      public bool DeleteAfterUpload { get; set; }
    }
 }
