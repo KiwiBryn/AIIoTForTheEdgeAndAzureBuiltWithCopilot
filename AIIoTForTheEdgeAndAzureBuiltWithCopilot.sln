@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploader", "ImageF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{1482BE7D-D084-4609-9AB8-C529965AC888}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploadHandler", "ImageFileUploadHandler\ImageFileUploadHandler.csproj", "{DD843071-81EF-49F3-B293-2306078A3B71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,10 @@ Global
 		{83AC8C20-F5C9-43FB-A411-343133B01B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83AC8C20-F5C9-43FB-A411-343133B01B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83AC8C20-F5C9-43FB-A411-343133B01B77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD843071-81EF-49F3-B293-2306078A3B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD843071-81EF-49F3-B293-2306078A3B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD843071-81EF-49F3-B293-2306078A3B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD843071-81EF-49F3-B293-2306078A3B71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
