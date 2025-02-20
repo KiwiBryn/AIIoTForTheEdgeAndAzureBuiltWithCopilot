@@ -1,9 +1,14 @@
 ﻿// please write a console application that uses httpclient to upload a file to a webapi
 // modify to upload all the files in a directory
+// use a Timer to upload the files every 1000mSec
 namespace ImageFileUploader
 {
    internal class Program
    {
+      private static System.Timers.Timer uploadTimer;
+      private static string directoryPath;
+      private static string apiUrl;
+
       static async Task Main(string[] args)
       {
          if (args.Length < 2)
@@ -12,8 +17,8 @@ namespace ImageFileUploader
             return;
          }
 
-         string directoryPath = args[0];
-         string apiUrl = args[1];
+         directoryPath = args[0];
+         apiUrl = args[1];
 
          if (!Directory.Exists(directoryPath))
          {
@@ -21,6 +26,17 @@ namespace ImageFileUploader
             return;
          }
 
+         uploadTimer = new System.Timers.Timer(1000);
+         uploadTimer.Elapsed += async (sender, e) => await UploadFiles();
+         uploadTimer.AutoReset = true;
+         uploadTimer.Enabled = true;
+
+         Console.WriteLine("Press [Enter] to exit the program.");
+         Console.ReadLine();
+      }
+
+      private static async Task UploadFiles()
+      {
          try
          {
             using (HttpClient client = new HttpClient())
