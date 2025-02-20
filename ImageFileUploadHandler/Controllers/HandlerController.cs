@@ -1,4 +1,6 @@
 ﻿// please write a controller that receives an uploaded image and inserts it into a azure storage queue
+// 
+using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,7 @@ namespace ImageFileUploadHandler.Controllers
    {
       private readonly string _storageConnectionString = "YourAzureStorageConnectionString";
       private readonly string _queueName = "your-queue-name";
+      private readonly string _blobContainerName = "your-blob-container-name";
 
       [HttpPost("upload")]
       public async Task<IActionResult> UploadImage(IFormFile image)
@@ -21,20 +24,26 @@ namespace ImageFileUploadHandler.Controllers
 
          try
          {
-            // Convert image to base64 string
+            // Upload image to Azure Blob Storage
+            BlobContainerClient blobContainerClient = new BlobContainerClient(_storageConnectionString, _blobContainerName);
+            await blobContainerClient.CreateIfNotExistsAsync();
+            string blobName = Guid.NewGuid().ToString();
+            BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
+
             using (var memoryStream = new MemoryStream())
             {
                await image.CopyToAsync(memoryStream);
-               var imageBytes = memoryStream.ToArray();
-               var base64Image = Convert.ToBase64String(imageBytes);
+               memoryStream.Position = 0;
+               await blobClient.UploadAsync(memoryStream, true);
+            }
 
-               // Insert base64 string into Azure Storage Queue
-               QueueClient queueClient = new QueueClient(_storageConnectionString, _queueName);
-               await queueClient.CreateIfNotExistsAsync();
-               if (queueClient.Exists())
-               {
-                  await queueClient.SendMessageAsync(base64Image);
-               }
+            // Insert blob URL into Azure Storage Queue
+            string blobUrl = blobClient.Uri.ToString();
+            QueueClient queueClient = new QueueClient(_storageConnectionString, _queueName);
+            await queueClient.CreateIfNotExistsAsync();
+            if (queueClient.Exists())
+            {
+               await queueClient.SendMessageAsync(blobUrl);
             }
 
             return Ok("Image uploaded and inserted into queue successfully.");
