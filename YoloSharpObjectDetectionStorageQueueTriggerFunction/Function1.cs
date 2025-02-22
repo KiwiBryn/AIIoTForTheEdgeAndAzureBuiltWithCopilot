@@ -49,7 +49,7 @@ namespace YoloSharpObjectDetectionStorageQueueTriggerFunction
 
             foreach (var result in results)
             {
-               _logger.LogInformation($"Detected object: {result.Name.Name} with confidence {result.Confidence}");
+               _logger.LogInformation("Detected object: {ObjectName} with confidence {Confidence}", result.Name.Name, result.Confidence);
             }
          }
       }
