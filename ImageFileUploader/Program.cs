@@ -56,23 +56,28 @@ namespace ImageFileUploader
                   {
                      byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
                      ByteArrayContent byteContent = new ByteArrayContent(fileBytes);
-                     content.Add(byteContent, "file", Path.GetFileName(filePath));
+                     content.Add(byteContent, "image", Path.GetFileName(filePath));
 
-                     string requestUri = $"{_applicationSettings.ApiUrl}?deviceId={_applicationSettings.DeviceID}";
+                     string requestUri = $"{_applicationSettings.ApiUrl}/{_applicationSettings.DeviceID}";
                      HttpResponseMessage response = await client.PostAsync(requestUri, content);
                      if (response.IsSuccessStatusCode)
                      {
                         Console.WriteLine($"File {Path.GetFileName(filePath)} uploaded successfully.");
 
-                        if (_applicationSettings.DeleteAfterUpload)
-                        {
-                           File.Delete(filePath);
-                        }
+                        //if (_applicationSettings.DeleteAfterUpload)
+                        //{
+                        //   File.Delete(filePath);
+                        //}
                      }
                      else
                      {
                         Console.WriteLine($"File {Path.GetFileName(filePath)} upload failed. Status code: " + response.StatusCode);
                      }
+                  }
+
+                  if (_applicationSettings.DeleteAfterUpload)
+                  {
+                     File.Delete(filePath);
                   }
                }
             }
