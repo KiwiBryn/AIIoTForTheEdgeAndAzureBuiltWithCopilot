@@ -9,6 +9,7 @@
 // make the deletion of files configurable
 // move uploadTimer to main 
 // Add a configurable DeviceID to post requesturi
+// Add the creation time of the image file as a header of the request
 using Microsoft.Extensions.Configuration;
 
 namespace ImageFileUploader
@@ -58,16 +59,15 @@ namespace ImageFileUploader
                      ByteArrayContent byteContent = new ByteArrayContent(fileBytes);
                      content.Add(byteContent, "image", Path.GetFileName(filePath));
 
+                     // Add file creation time as a header
+                     DateTime creationTime = File.GetCreationTime(filePath);
+                     client.DefaultRequestHeaders.Add("File-Creation-Time", creationTime.ToString("o"));
+
                      string requestUri = $"{_applicationSettings.ApiUrl}/{_applicationSettings.DeviceID}";
                      HttpResponseMessage response = await client.PostAsync(requestUri, content);
                      if (response.IsSuccessStatusCode)
                      {
                         Console.WriteLine($"File {Path.GetFileName(filePath)} uploaded successfully.");
-
-                        //if (_applicationSettings.DeleteAfterUpload)
-                        //{
-                        //   File.Delete(filePath);
-                        //}
                      }
                      else
                      {
