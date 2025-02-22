@@ -68,6 +68,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploadHandler", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpObjectDetectionStorageQueueTriggerFunction", "YoloSharpObjectDetectionStorageQueueTriggerFunction\YoloSharpObjectDetectionStorageQueueTriggerFunction.csproj", "{4E9A782F-14A9-4C03-993F-8F6065C4CEEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRTSPClientFFMpegCore", "SecurityCameraRTSPClientFFMpegCore\SecurityCameraRTSPClientFFMpegCore.csproj", "{B920C44E-DAC8-4A3B-BD48-200902C6241A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RTSP", "RTSP", "{2CF9CB17-8C16-40CB-ABBD-25E7C445A508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +134,10 @@ Global
 		{4E9A782F-14A9-4C03-993F-8F6065C4CEEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E9A782F-14A9-4C03-993F-8F6065C4CEEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E9A782F-14A9-4C03-993F-8F6065C4CEEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B920C44E-DAC8-4A3B-BD48-200902C6241A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B920C44E-DAC8-4A3B-BD48-200902C6241A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B920C44E-DAC8-4A3B-BD48-200902C6241A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B920C44E-DAC8-4A3B-BD48-200902C6241A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +154,7 @@ Global
 		{8C49F117-216C-47DE-FE14-0CB554D334B3} = {25C8A93B-1A80-4B42-9DE3-B97B47855B8F}
 		{E1B55363-EE2A-B3BC-D939-B6ED4FE39F8E} = {25C8A93B-1A80-4B42-9DE3-B97B47855B8F}
 		{4E9A782F-14A9-4C03-993F-8F6065C4CEEC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B920C44E-DAC8-4A3B-BD48-200902C6241A} = {2CF9CB17-8C16-40CB-ABBD-25E7C445A508}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
