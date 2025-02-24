@@ -1,12 +1,9 @@
-﻿using System.IO;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 using RabbitOM.Streaming.Rtp.Framing;
 using RabbitOM.Streaming.Rtp.Framing.Jpeg;
 using RabbitOM.Streaming.Rtsp;
 using RabbitOM.Streaming.Rtsp.Clients;
-
-using Compunet.YoloSharp;
 
 
 namespace SecurityCameraRTSPClientRabbitOM
@@ -14,7 +11,6 @@ namespace SecurityCameraRTSPClientRabbitOM
    class Program
    {
       private static ApplicationSettings _applicationSettings;
-      private static YoloPredictor _yolo;
 
       private static readonly RtpFrameBuilder _frameBuilder = new JpegFrameBuilder();
 
@@ -34,15 +30,6 @@ namespace SecurityCameraRTSPClientRabbitOM
          {
             Directory.CreateDirectory(_applicationSettings.SavePath);
          }
-
-         _yolo = new YoloPredictor(_applicationSettings.ModelPath, new YoloPredictorOptions()
-         {
-            Configuration = new YoloConfiguration()
-            {
-               Confidence = 0.75f,
-               SuppressParallelInference = true,
-            }
-         });
 
          _frameBuilder.FrameReceived += OnFrameReceived;
 
@@ -109,14 +96,13 @@ namespace SecurityCameraRTSPClientRabbitOM
 
             client.StartCommunication();
 
-            string outputPath = Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow));
-
             File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} start.txt", "Starting");
 
             Console.CancelKeyPress += (sender, e) => Console.ForegroundColor = ConsoleColor.White;
 
             Console.WriteLine("Press any keys to close the application");
             Console.ReadKey();
+
             File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} stop.txt", "stopping");
 
             client.StopCommunication(TimeSpan.FromSeconds(3));
@@ -124,30 +110,11 @@ namespace SecurityCameraRTSPClientRabbitOM
          }
       }
 
-      static DateTime LastTimeUtc = DateTime.UtcNow;
-
       private static void OnFrameReceived(object sender, RtpFrameReceivedEventArgs e)
       {
          //Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} New image received, bytes:{e.Frame.Data.Length}");
 
-         var start = DateTime.UtcNow;
-
-         var results = _yolo.Detect(e.Frame.Data);
-
-         //foreach (var result in results)
-         //{
-         //   Console.WriteLine($"Name: {result.Name.Name} Confidence:{result.Confidence} Bounding Box{result.Bounds}");
-         //}
-
-         if (results.Count > 0)
-         {
-            string outputPath = Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow));
-
-            File.WriteAllBytes(outputPath, e.Frame.Data);
-         }
-
-         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} LastTime:{(DateTime.UtcNow - LastTimeUtc).TotalMilliseconds:0} mSec Duration:{(DateTime.UtcNow - start).TotalMilliseconds:0} mSec");
-         LastTimeUtc = DateTime.UtcNow;
+         File.WriteAllBytes(Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow)), e.Frame.Data);
       }
    }
 
@@ -162,7 +129,5 @@ namespace SecurityCameraRTSPClientRabbitOM
       public string SavePath { get; set; } = "";
 
       public string FrameFileNameFormat { get; set; } = "";
-
-      public string ModelPath { get; set; }
    }
 }
