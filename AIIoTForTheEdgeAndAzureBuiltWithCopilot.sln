@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRTSPClientRab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitOM.Streaming", "RabbitOM\RabbitOM.Streaming\RabbitOM.Streaming.csproj", "{09233582-17ED-40D4-BC6A-309ECFDB116B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRtspClientYoloSharpObjectDetection", "SecurityCameraRtspClientYoloSharpObjectDetection\SecurityCameraRtspClientYoloSharpObjectDetection.csproj", "{050F2468-9928-4A75-9BFE-BBB488304694}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,10 @@ Global
 		{09233582-17ED-40D4-BC6A-309ECFDB116B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09233582-17ED-40D4-BC6A-309ECFDB116B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09233582-17ED-40D4-BC6A-309ECFDB116B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{050F2468-9928-4A75-9BFE-BBB488304694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{050F2468-9928-4A75-9BFE-BBB488304694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{050F2468-9928-4A75-9BFE-BBB488304694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{050F2468-9928-4A75-9BFE-BBB488304694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +189,7 @@ Global
 		{661C92FB-E158-42EE-BB36-362DD83B4C2B} = {2CF9CB17-8C16-40CB-ABBD-25E7C445A508}
 		{A499FC94-D551-4EFA-8656-D53576B8A2D5} = {2CF9CB17-8C16-40CB-ABBD-25E7C445A508}
 		{09233582-17ED-40D4-BC6A-309ECFDB116B} = {2CF9CB17-8C16-40CB-ABBD-25E7C445A508}
+		{050F2468-9928-4A75-9BFE-BBB488304694} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
