@@ -12,6 +12,11 @@ namespace SecurityCameraRTSPClientNagerVideoStream
       static void Main(string[] args)
       {
          Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraRTSPClientNagerVideoStream");
+#if RELEASE
+         Console.WriteLine("RELEASE");
+#else
+         Console.WriteLine("DEBUG");
+#endif
 
          try
          {
@@ -32,15 +37,18 @@ namespace SecurityCameraRTSPClientNagerVideoStream
 
             var cancellationTokenSource = new CancellationTokenSource();
 
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.Now:yyMMdd-HHmmss-fff}-start.txt", "Starting");
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Starting");
 
             _ = Task.Run(async () => await StartStreamProcessingAsync(inputSource, cancellationTokenSource.Token));
 
             Console.WriteLine("Press any key to stop");
             Console.ReadKey();
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.Now:yyMMdd-HHmmss-fff}-stop.txt", "Stopping");
+
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Stopping");
 
             cancellationTokenSource.Cancel();
+
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Stopped");
 
             Console.WriteLine("Press ENTER to exit");
             Console.ReadLine();
@@ -53,7 +61,7 @@ namespace SecurityCameraRTSPClientNagerVideoStream
 
       private static async Task StartStreamProcessingAsync(InputSource inputSource, CancellationToken cancellationToken = default)
       {
-         Console.WriteLine("Start Stream Processing");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Started");
 
          try
          {
