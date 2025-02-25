@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /Frames
 /ffmpeg.exe
 /RabbitOM
+/Models/FasterRCNN-10.onnx
