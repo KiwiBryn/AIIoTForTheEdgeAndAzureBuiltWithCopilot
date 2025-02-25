@@ -84,6 +84,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpPoseEstimationHttp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HTTP", "HTTP", "{510CB697-B6E0-44C7-9FB2-394220025B5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRtspClientYoloDotNetDetection", "SecurityCameraRtspClientYoloDotNetDetection\SecurityCameraRtspClientYoloDotNetDetection.csproj", "{B5911D13-8425-4DF5-9281-E3DEE4440CF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,6 +176,10 @@ Global
 		{1D8AE30C-CF52-A1CF-F790-AAE4167CC0AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D8AE30C-CF52-A1CF-F790-AAE4167CC0AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D8AE30C-CF52-A1CF-F790-AAE4167CC0AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5911D13-8425-4DF5-9281-E3DEE4440CF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5911D13-8425-4DF5-9281-E3DEE4440CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5911D13-8425-4DF5-9281-E3DEE4440CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5911D13-8425-4DF5-9281-E3DEE4440CF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,6 +204,7 @@ Global
 		{09233582-17ED-40D4-BC6A-309ECFDB116B} = {2CF9CB17-8C16-40CB-ABBD-25E7C445A508}
 		{050F2468-9928-4A75-9BFE-BBB488304694} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{1D8AE30C-CF52-A1CF-F790-AAE4167CC0AE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B5911D13-8425-4DF5-9281-E3DEE4440CF3} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
