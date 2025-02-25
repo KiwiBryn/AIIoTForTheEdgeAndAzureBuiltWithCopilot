@@ -115,18 +115,12 @@ namespace SecurityCameraRtspClientYoloSharpObjectDetection
 
             client.StartCommunication();
 
-            string outputPath = Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow));
-
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} start.txt", "Starting");
-
             Console.CancelKeyPress += (sender, e) => Console.ForegroundColor = ConsoleColor.White;
 
             Console.WriteLine("Press any keys to close the application");
             Console.ReadKey();
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} stop.txt", "stopping");
 
             client.StopCommunication(TimeSpan.FromSeconds(3));
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} stopped.txt", "stopped");
 
             Console.WriteLine("Press Enter to exit the application");
             Console.ReadLine();
@@ -169,9 +163,9 @@ namespace SecurityCameraRtspClientYoloSharpObjectDetection
 
       public string Password { get; set; }
 
-      public string SavePath { get; set; } = "";
+      public string SavePath { get; set; }
 
-      public string FrameFileNameFormat { get; set; } = "";
+      public string FrameFileNameFormat { get; set; } 
 
       public string ModelPath { get; set; }
 
