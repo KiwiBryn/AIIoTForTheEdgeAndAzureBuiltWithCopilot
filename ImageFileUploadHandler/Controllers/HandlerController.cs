@@ -35,7 +35,7 @@ namespace ImageFileUploadHandler.Controllers
             var metadata = new Dictionary<string, string>
             {
                { "DeviceID", deviceId },
-               { "File-Creation-Time", DateTime.UtcNow.ToString("o") }
+               { "FileCreationTime", DateTime.UtcNow.ToString("o") }
             };
 
             using (var memoryStream = new MemoryStream())
