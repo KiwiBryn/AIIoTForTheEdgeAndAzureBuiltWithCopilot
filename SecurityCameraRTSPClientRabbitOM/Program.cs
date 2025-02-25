@@ -16,7 +16,12 @@ namespace SecurityCameraRTSPClientRabbitOM
 
       static void Main(string[] args)
       {
-         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraRTSPClientNagerVideoStream");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraRTSPClientRabbitOM");
+#if RELEASE
+         Console.WriteLine("RELEASE");
+#else
+         Console.WriteLine("DEBUG");
+#endif
 
          // load the app settings into configuration
          var configuration = new ConfigurationBuilder()
@@ -94,25 +99,28 @@ namespace SecurityCameraRTSPClientRabbitOM
             // client.Configuration.RtpPort = 55000;
             // client.Configuration.TimeToLive = 15;
 
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Starting");
             client.StartCommunication();
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Started");
 
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} start.txt", "Starting");
 
             Console.CancelKeyPress += (sender, e) => Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Stopping");
 
             Console.WriteLine("Press any keys to close the application");
             Console.ReadKey();
 
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} stop.txt", "stopping");
-
             client.StopCommunication(TimeSpan.FromSeconds(3));
-            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.UtcNow:yyyyMMddHHmmssFFF} stopped.txt", "stopped");
+
+            Console.WriteLine("Press ENTER to exit");
+            Console.ReadLine();
          }
       }
 
       private static void OnFrameReceived(object sender, RtpFrameReceivedEventArgs e)
       {
-         //Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} New image received, bytes:{e.Frame.Data.Length}");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} New image received, bytes:{e.Frame.Data.Length}");
 
          File.WriteAllBytes(Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow)), e.Frame.Data);
       }
