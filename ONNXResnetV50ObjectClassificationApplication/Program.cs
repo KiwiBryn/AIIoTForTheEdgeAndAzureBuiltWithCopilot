@@ -28,6 +28,10 @@ namespace ONNXResnetV5ObjectClassificationApplication
          {
             Size = new Size(224, 224),
             Mode = ResizeMode.BoxPad
+            //Mode = ResizeMode.Min
+            //Mode = ResizeMode.Max
+            //Mode = ResizeMode.Crop
+            //Mode = ResizeMode.Stretch
          }));
 
          image.Save("..\\..\\..\\pizza-resized.jpeg");
