@@ -17,7 +17,7 @@ namespace SecurityCameraRTSPClientFFMpegCore
       {
          ApplicationSettings _applicationSettings;
 
-         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraRTSPClientFFMpegCore starting");
 #if RELEASE
          Console.WriteLine("RELEASE");
 #else
