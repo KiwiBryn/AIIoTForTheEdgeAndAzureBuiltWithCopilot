@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-using Compunet.YoloSharp;
-
 using Nager.VideoStream;
 
 
@@ -10,7 +8,6 @@ namespace SecurityCameraRTSPClientNagerVideoStream
    internal class Program
    {
       private static ApplicationSettings _applicationSettings;
-      private static YoloPredictor _yolo;
 
       static void Main(string[] args)
       {
@@ -35,28 +32,18 @@ namespace SecurityCameraRTSPClientNagerVideoStream
 
             var cancellationTokenSource = new CancellationTokenSource();
 
-            using (_yolo = new YoloPredictor(_applicationSettings.ModelPath, new YoloPredictorOptions()
-            {
-               Configuration = new YoloConfiguration()
-               {
-                  Confidence = 0.75f,
-                  SuppressParallelInference = true,
-               }
-            }))
-            {
-               File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.Now:yyMMdd-HHmmss-fff}-start.txt", "Starting");
+            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.Now:yyMMdd-HHmmss-fff}-start.txt", "Starting");
 
-               _ = Task.Run(async () => await StartStreamProcessingAsync(inputSource, cancellationTokenSource.Token));
+            _ = Task.Run(async () => await StartStreamProcessingAsync(inputSource, cancellationTokenSource.Token));
 
-               Console.WriteLine("Press any key to stop");
-               Console.ReadKey();
-               File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.Now:yyMMdd-HHmmss-fff}-stop.txt", "Stopping");
+            Console.WriteLine("Press any key to stop");
+            Console.ReadKey();
+            File.WriteAllText($"{_applicationSettings.SavePath}\\{DateTime.Now:yyMMdd-HHmmss-fff}-stop.txt", "Stopping");
 
-               cancellationTokenSource.Cancel();
+            cancellationTokenSource.Cancel();
 
-               Console.WriteLine("Press ENTER to exit");
-               Console.ReadLine();
-            }
+            Console.WriteLine("Press ENTER to exit");
+            Console.ReadLine();
          }
          catch (Exception ex)
          {
@@ -90,30 +77,13 @@ namespace SecurityCameraRTSPClientNagerVideoStream
          }
       }
 
-      static DateTime LastTimeUtc = DateTime.UtcNow;
-
       private static void NewImageReceived(byte[] imageData)
       {
-         //Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} New image received, bytes:{imageData.Length}");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} New image received, bytes:{imageData.Length}");
 
-         var start = DateTime.UtcNow;
+         string outputPath = Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow));
 
-         var results = _yolo.Detect(imageData);
-
-         //foreach (var result in results)
-         //{
-         //   Console.WriteLine($"Name: {result.Name.Name} Confidence:{result.Confidence} Bounding Box{result.Bounds}");
-         //}
-
-         if (results.Count > 0)
-         {
-            string outputPath = Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow));
-
-            File.WriteAllBytes(outputPath, imageData);
-         }
-
-         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} LastTime:{(DateTime.UtcNow - LastTimeUtc).TotalMilliseconds:0} mSec Duration:{(DateTime.UtcNow - start).TotalMilliseconds:0} mSec");
-         LastTimeUtc = DateTime.UtcNow;
+         File.WriteAllBytes(outputPath, imageData);
       }
 
 #if FFMPEG_INFO_DISPLAY
@@ -132,8 +102,6 @@ namespace SecurityCameraRTSPClientNagerVideoStream
       public string SavePath { get; set; } = "";
 
       public string FrameFileNameFormat { get; set; } = "";
-
-      public string ModelPath { get; set; }
    }
 }
 
