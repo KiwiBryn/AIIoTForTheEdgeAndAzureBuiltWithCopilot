@@ -62,8 +62,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXResnet50ObjectClassific
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploader", "ImageFileUploader\ImageFileUploader.csproj", "{83AC8C20-F5C9-43FB-A411-343133B01B77}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{1482BE7D-D084-4609-9AB8-C529965AC888}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploadHandler", "ImageFileUploadHandler\ImageFileUploadHandler.csproj", "{DD843071-81EF-49F3-B293-2306078A3B71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpObjectDetectionStorageQueueTriggerFunction", "YoloSharpObjectDetectionStorageQueueTriggerFunction\YoloSharpObjectDetectionStorageQueueTriggerFunction.csproj", "{4E9A782F-14A9-4C03-993F-8F6065C4CEEC}"
@@ -83,6 +81,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRtspClientYoloSharpObjectDetection", "SecurityCameraRtspClientYoloSharpObjectDetection\SecurityCameraRtspClientYoloSharpObjectDetection.csproj", "{050F2468-9928-4A75-9BFE-BBB488304694}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpPoseEstimationHttpTriggerFunction", "YoloSharpPoseEstimationHttpTriggerFunction\YoloSharpPoseEstimationHttpTriggerFunction.csproj", "{1D8AE30C-CF52-A1CF-F790-AAE4167CC0AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HTTP", "HTTP", "{510CB697-B6E0-44C7-9FB2-394220025B5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,6 +179,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{DE0031F6-AFF0-434D-A893-E8A0D10A29DC} = {510CB697-B6E0-44C7-9FB2-394220025B5C}
 		{A3518BE6-D084-4644-9F8A-DF05C71DEF8E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{009D23A0-31D7-4DC4-A254-09D96110EB43} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{06D6BE9A-CA3C-48B5-83C6-E09730A69CD7} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
@@ -196,6 +197,7 @@ Global
 		{A499FC94-D551-4EFA-8656-D53576B8A2D5} = {2CF9CB17-8C16-40CB-ABBD-25E7C445A508}
 		{09233582-17ED-40D4-BC6A-309ECFDB116B} = {2CF9CB17-8C16-40CB-ABBD-25E7C445A508}
 		{050F2468-9928-4A75-9BFE-BBB488304694} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1D8AE30C-CF52-A1CF-F790-AAE4167CC0AE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
