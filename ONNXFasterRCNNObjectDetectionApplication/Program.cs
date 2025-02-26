@@ -3,12 +3,14 @@
 // Fixed up paths to the model and image.
 // please fix "Invalid rank for input: image Got: 4 Expected: 3 Please fix either the inputs/outputs or the model"
 // change dimensions of declaration tensor rather than reshaping it
-
-using System.Drawing;
-using System.Drawing.Imaging;
+// change from System.Drawing to ImageSharp 
+//    Added ImageSharp NuGet, removed System.Drawing.Common NuGet package
 
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 
 namespace ONNXFasterRCNNObjectDetectionApplication
@@ -21,13 +23,13 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          string imagePath = "sports.jpg";
 
          using var session = new InferenceSession(modelPath);
-         using var image = new Bitmap(imagePath);
+         using var image = Image.Load<Rgb24>(imagePath);
 
          var inputTensor = ExtractTensorFromImage(image);
          var inputs = new List<NamedOnnxValue>
-                  {
-                      NamedOnnxValue.CreateFromTensor("image", inputTensor)
-                  };
+               {
+                   NamedOnnxValue.CreateFromTensor("image", inputTensor)
+               };
 
          using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = session.Run(inputs);
          var output = results.First().AsEnumerable<float>().ToArray();
@@ -35,31 +37,34 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          // Process the output (e.g., draw bounding boxes on the image)
          ProcessOutput(output, image);
 
-         image.Save("output.jpg", ImageFormat.Jpeg);
+         image.Save("output.jpg");
          Console.WriteLine("Object detection completed. Output saved as output.jpg");
       }
 
-      private static DenseTensor<float> ExtractTensorFromImage(Bitmap image)
+      private static DenseTensor<float> ExtractTensorFromImage(Image<Rgb24> image)
       {
          int width = image.Width;
          int height = image.Height;
          var tensor = new DenseTensor<float>(new[] { 3, height, width });
 
-         for (int y = 0; y < height; y++)
+         image.ProcessPixelRows(accessor =>
          {
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
             {
-               Color pixel = image.GetPixel(x, y);
-               tensor[0, y, x] = pixel.R / 255.0f;
-               tensor[1, y, x] = pixel.G / 255.0f;
-               tensor[2, y, x] = pixel.B / 255.0f;
+               var pixelRow = accessor.GetRowSpan(y);
+               for (int x = 0; x < width; x++)
+               {
+                  tensor[0, y, x] = pixelRow[x].R / 255.0f;
+                  tensor[1, y, x] = pixelRow[x].G / 255.0f;
+                  tensor[2, y, x] = pixelRow[x].B / 255.0f;
+               }
             }
-         }
+         });
 
          return tensor;
       }
 
-      private static void ProcessOutput(float[] output, Bitmap image)
+      private static void ProcessOutput(float[] output, Image<Rgb24> image)
       {
          // Implement the logic to process the output and draw bounding boxes on the image
          // This is a placeholder for the actual implementation
