@@ -49,6 +49,9 @@ namespace ONNXFasterRCNNObjectDetectionApplication
 
          image.Save("output.jpg");
          Console.WriteLine("Object detection completed. Output saved as output.jpg");
+
+         Console.WriteLine("Press Enter to exit");
+         Console.ReadLine();
       }
 
       private static void ResizeImage(Image<Rgb24> image)
