@@ -94,8 +94,18 @@ namespace ONNXFasterRCNNObjectDetectionApplication
 
       private static void ProcessOutput(float[] output, Image<Rgb24> image)
       {
-         // Implement the logic to process the output and draw bounding boxes on the image
-         // This is a placeholder for the actual implementation
+         // Assuming the output format is [label, confidence, x1, y1, x2, y2]
+         for (int i = 0; i < output.Length; i += 6)
+         {
+            int label = (int)output[i];
+            float confidence = output[i + 1];
+            float x1 = output[i + 2];
+            float y1 = output[i + 3];
+            float x2 = output[i + 4];
+            float y2 = output[i + 5];
+
+            Console.WriteLine($"Label: {label}, Confidence: {confidence}, Bounding Box: [{x1}, {y1}, {x2}, {y2}]");
+         }
       }
    }
 }
