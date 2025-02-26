@@ -8,6 +8,10 @@
 // Use ImageSharp to resize the image such that both height and width are within the range of [800, 1333], such that both height and width are divisible by 32.
 // https://github.com/onnx/models/tree/main/validated/vision/object_detection_segmentation/faster-rcnn#preprocessing-steps
 // Apply mean to each channel
+// Use FasterRCNN means not resnet ones
+// Change to B,G,R
+// Display label, confidence and bounding box
+// Get Copilot to fix
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 
@@ -38,10 +42,9 @@ namespace ONNXFasterRCNNObjectDetectionApplication
                      };
 
          using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = session.Run(inputs);
-         var output = results.First().AsEnumerable<float>().ToArray();
 
          // Process the output (e.g., draw bounding boxes on the image)
-         ProcessOutput(output, image);
+         ProcessOutput(results, image);
 
          image.Save("output.jpg");
          Console.WriteLine("Object detection completed. Output saved as output.jpg");
@@ -72,8 +75,8 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          int height = image.Height;
          var tensor = new DenseTensor<float>(new[] { 3, height, width });
 
-         // Mean values for each channel
-         float[] mean = { 0.485f, 0.456f, 0.406f };
+         // Mean values for each channel for FasterRCNN
+         float[] mean = { 102.9801f, 115.9465f, 122.7717f };
 
          image.ProcessPixelRows(accessor =>
          {
@@ -82,9 +85,9 @@ namespace ONNXFasterRCNNObjectDetectionApplication
                var pixelRow = accessor.GetRowSpan(y);
                for (int x = 0; x < width; x++)
                {
-                  tensor[0, y, x] = (pixelRow[x].R / 255.0f) - mean[0];
-                  tensor[1, y, x] = (pixelRow[x].G / 255.0f) - mean[1];
-                  tensor[2, y, x] = (pixelRow[x].B / 255.0f) - mean[2];
+                  tensor[0, y, x] = pixelRow[x].B - mean[0];
+                  tensor[1, y, x] = pixelRow[x].G - mean[1];
+                  tensor[2, y, x] = pixelRow[x].R - mean[2];
                }
             }
          });
@@ -92,20 +95,30 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          return tensor;
       }
 
-      private static void ProcessOutput(float[] output, Image<Rgb24> image)
+      private static void ProcessOutput(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output, Image<Rgb24> image)
       {
-         // Assuming the output format is [label, confidence, x1, y1, x2, y2]
-         for (int i = 0; i < output.Length; i += 6)
-         {
-            int label = (int)output[i];
-            float confidence = output[i + 1];
-            float x1 = output[i + 2];
-            float y1 = output[i + 3];
-            float x2 = output[i + 4];
-            float y2 = output[i + 5];
+         var boxes = output.First(x => x.Name == "boxes").AsTensor<float>().ToArray();
+         var labels = output.First(x => x.Name == "lables").AsTensor<long>().ToArray();
+         var confidences = output.First(x => x.Name == "confidences").AsTensor<float>().ToArray();
 
-            Console.WriteLine($"Label: {label}, Confidence: {confidence}, Bounding Box: [{x1}, {y1}, {x2}, {y2}]");
+         const float minConfidence = 0.7f;
+
+         for (int i = 0; i < boxes.Length; i += 4)
+         {
+            var index = i / 4;
+            if (confidences[index] >= minConfidence)
+            {
+               long label = labels[index];
+               float confidence = confidences[index];
+               float x1 = boxes[i];
+               float y1 = boxes[i + 1];
+               float x2 = boxes[i + 2];
+               float y2 = boxes[i + 3];
+
+               Console.WriteLine($"Label: {label}, Confidence: {confidence}, Bounding Box: [{x1}, {y1}, {x2}, {y2}]");
+            }
          }
       }
    }
 }
+
