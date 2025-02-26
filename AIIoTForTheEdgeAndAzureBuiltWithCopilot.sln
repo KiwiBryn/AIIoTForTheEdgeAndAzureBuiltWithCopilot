@@ -92,7 +92,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ONNXFasterRCNN", "ONNXFaste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXFasterRCNNObjectDetectionApplication", "ONNXFasterRCNNObjectDetectionApplication\ONNXFasterRCNNObjectDetectionApplication.csproj", "{6B318889-53FB-4975-8FA1-BDADBB3A78AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXYoloDotNetObjectDetctionApplication", "ONNXYoloDotNetObjectDetctionApplication\ONNXYoloDotNetObjectDetctionApplication.csproj", "{9191A89C-5A5D-421B-AECE-B79111D2B393}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXYoloDotNetObjectDetectionApplication", "ONNXYoloDotNetObjectDetctionApplication\ONNXYoloDotNetObjectDetectionApplication.csproj", "{9191A89C-5A5D-421B-AECE-B79111D2B393}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
