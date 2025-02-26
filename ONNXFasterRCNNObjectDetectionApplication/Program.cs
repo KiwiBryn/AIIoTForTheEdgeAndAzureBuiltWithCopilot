@@ -5,12 +5,15 @@
 // change dimensions of declaration tensor rather than reshaping it
 // change from System.Drawing to ImageSharp 
 //    Added ImageSharp NuGet, removed System.Drawing.Common NuGet package
-
+// Use ImageSharp to resize the image such that both height and width are within the range of [800, 1333], such that both height and width are divisible by 32.
+// https://github.com/onnx/models/tree/main/validated/vision/object_detection_segmentation/faster-rcnn#preprocessing-steps
+//
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 
 namespace ONNXFasterRCNNObjectDetectionApplication
@@ -25,11 +28,14 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          using var session = new InferenceSession(modelPath);
          using var image = Image.Load<Rgb24>(imagePath);
 
+         // Resize image to fit within [800, 1333] and be divisible by 32
+         ResizeImage(image);
+
          var inputTensor = ExtractTensorFromImage(image);
          var inputs = new List<NamedOnnxValue>
-               {
-                   NamedOnnxValue.CreateFromTensor("image", inputTensor)
-               };
+                     {
+                         NamedOnnxValue.CreateFromTensor("image", inputTensor)
+                     };
 
          using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = session.Run(inputs);
          var output = results.First().AsEnumerable<float>().ToArray();
@@ -39,6 +45,25 @@ namespace ONNXFasterRCNNObjectDetectionApplication
 
          image.Save("output.jpg");
          Console.WriteLine("Object detection completed. Output saved as output.jpg");
+      }
+
+      private static void ResizeImage(Image<Rgb24> image)
+      {
+         const int minSize = 800;
+         const int maxSize = 1333;
+
+         int originalWidth = image.Width;
+         int originalHeight = image.Height;
+
+         float scale = Math.Min((float)maxSize / Math.Max(originalWidth, originalHeight), (float)minSize / Math.Min(originalWidth, originalHeight));
+         int newWidth = (int)(originalWidth * scale);
+         int newHeight = (int)(originalHeight * scale);
+
+         // Ensure dimensions are divisible by 32
+         newWidth = (newWidth / 32) * 32;
+         newHeight = (newHeight / 32) * 32;
+
+         image.Mutate(x => x.Resize(newWidth, newHeight));
       }
 
       private static DenseTensor<float> ExtractTensorFromImage(Image<Rgb24> image)
