@@ -97,9 +97,9 @@ namespace ONNXFasterRCNNObjectDetectionApplication
 
       private static void ProcessOutput(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output, Image<Rgb24> image)
       {
-         var boxes = output.First(x => x.Name == "boxes").AsTensor<float>().ToArray();
-         var labels = output.First(x => x.Name == "lables").AsTensor<long>().ToArray();
-         var confidences = output.First(x => x.Name == "confidences").AsTensor<float>().ToArray();
+         var boxes = output.First(x => x.Name == "6379").AsTensor<float>().ToArray();
+         var labels = output.First(x => x.Name == "6381").AsTensor<long>().ToArray();
+         var confidences = output.First(x => x.Name == "6383").AsTensor<float>().ToArray();
 
          const float minConfidence = 0.7f;
 
