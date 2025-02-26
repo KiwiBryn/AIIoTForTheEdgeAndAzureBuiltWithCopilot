@@ -1,6 +1,7 @@
 ﻿// Use YoloDotNet to run an onnx Object Detection model on the image loaded from disk
 // Modify code to use SkiaSharp
 // Modify code to use YoloOptions when Yolo is created
+// Cuda support off
 using SkiaSharp;
 using System;
 using System.Drawing;
@@ -14,11 +15,17 @@ class Program
    static void Main(string[] args)
    {
       // Load the ONNX model
-      var modelPath = "path/to/your/model.onnx";
+      // var modelPath = "path/to/your/model.onnx";
+      var modelPath = "..\\..\\..\\..\\Models\\yolov8s.onnx";
+      // var modelPath = "..\\..\\..\\..\\Models\\yolov10s.onnx";
+      // var modelPath = "..\\..\\..\\..\\Models\\yolov11s.onnx";
+
       var yoloOptions = new YoloOptions
       {
          OnnxModel = modelPath,
          ModelType = YoloDotNet.Enums.ModelType.ObjectDetection,
+         Cuda = false
+         //UseCuda = false // Wrong
          //ConfidenceThreshold = 0.5f,
          //IoUThreshold = 0.4f
       };
@@ -26,7 +33,8 @@ class Program
       var yoloModel = new YoloDotNet.Yolo(yoloOptions);
 
       // Load the image from disk
-      var imagePath = "path/to/your/image.jpg";
+      //var imagePath = "path/to/your/image.jpg";
+      var imagePath = "sports.jpg";
       using var inputStream = File.OpenRead(imagePath);
       using var skBitmap = SKBitmap.Decode(inputStream);
 
@@ -63,7 +71,7 @@ class Program
          canvas.DrawRect(rect, paint);
       }
 
-      using var outputStream = File.OpenWrite("output.jpg");
+      using var outputStream = File.OpenWrite("..\\..\\..\\output.jpg");
       skBitmap.Encode(outputStream, SKEncodedImageFormat.Jpeg, 100);
    }
 }
