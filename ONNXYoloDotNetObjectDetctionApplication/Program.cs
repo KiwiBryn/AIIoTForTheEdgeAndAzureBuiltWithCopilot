@@ -1,6 +1,6 @@
-﻿// please write a C# console application that uses YoloDotNet by NickSwardh to run an Ultralytics yolo object detection model on an image loaded from disk
-
+﻿
 /*
+// please write a C# console application that uses YoloDotNet by Niklas Swärd to run an Ultralytics yolo object detection model on an image loaded from disk
 namespace ONNXYoloDotNetObjectDetctionApplication
 {
    internal class Program
