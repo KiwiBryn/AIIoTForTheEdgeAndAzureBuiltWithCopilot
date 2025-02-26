@@ -1,5 +1,7 @@
 ﻿// please write a C# console application that uses Onnx to run a ONNX Faster-RCNN object detection model on an image loaded from disk
 //    Added System.Drawing.Common Microsoft.ML.OnnxRuntime NuGet package
+// Fixed up paths to the model and image.
+
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -13,8 +15,8 @@ namespace ONNXFasterRCNNObjectDetectionApplication
    {
       static void Main(string[] args)
       {
-         string modelPath = "faster_rcnn.onnx";
-         string imagePath = "input.jpg";
+         string modelPath = "..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
+         string imagePath = "sports.jpg";
 
          using var session = new InferenceSession(modelPath);
          using var image = new Bitmap(imagePath);
