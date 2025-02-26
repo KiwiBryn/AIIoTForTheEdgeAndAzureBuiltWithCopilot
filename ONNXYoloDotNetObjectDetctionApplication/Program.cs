@@ -1,6 +1,6 @@
 ﻿// Use YoloDotNet to run an onnx Object Detection model on the image loaded from disk
 // Modify code to use SkiaSharp
-// Modify code to use YoloConfiguration whne Yolo is created
+// Modify code to use YoloOptions when Yolo is created
 using SkiaSharp;
 using System;
 using System.Drawing;
@@ -15,8 +15,15 @@ class Program
    {
       // Load the ONNX model
       var modelPath = "path/to/your/model.onnx";
-      //var yoloModel = new YoloDotNet(modelPath);
-      var yoloModel = new YoloDotNet.Yolo(modelPath);
+      var yoloOptions = new YoloOptions
+      {
+         OnnxModel = modelPath,
+         ModelType = YoloDotNet.Enums.ModelType.ObjectDetection,
+         //ConfidenceThreshold = 0.5f,
+         //IoUThreshold = 0.4f
+      };
+      //var yoloModel = new YoloDotNet.Yolo(modelPath, yoloOptions);
+      var yoloModel = new YoloDotNet.Yolo(yoloOptions);
 
       // Load the image from disk
       var imagePath = "path/to/your/image.jpg";
@@ -24,12 +31,14 @@ class Program
       using var skBitmap = SKBitmap.Decode(inputStream);
 
       // Convert SKBitmap to byte array
-      using var image = new SKImage(skBitmap);
+      //using var image = new SKImage(skBitmap);
+      using var image = SKImage.FromBitmap(skBitmap);
       using var data = image.Encode(SKEncodedImageFormat.Jpeg, 100);
       var imageBytes = data.ToArray();
 
       // Run object detection
-      var results = yoloModel.Detect(imageBytes);
+      //var results = yoloModel.Detect(imageBytes);
+      var results = yoloModel.RunObjectDetection(image);
 
       // Process and display the results
       foreach (var result in results)
@@ -48,7 +57,9 @@ class Program
 
       foreach (var result in results)
       {
-         var rect = new SKRect(result.BoundingBox.X, result.BoundingBox.Y, result.BoundingBox.X + result.BoundingBox.Width, result.BoundingBox.Y + result.BoundingBox.Height);
+         //var rect = new SKRect(result.BoundingBox.X, result.BoundingBox.Y, result.BoundingBox.X + result.BoundingBox.Width, result.BoundingBox.Y + result.BoundingBox.Height);
+         var rect = new SKRect((float)result.BoundingBox.Left, (float)result.BoundingBox.Top, (float)result.BoundingBox.Right,(float)result.BoundingBox.Bottom);
+
          canvas.DrawRect(rect, paint);
       }
 
