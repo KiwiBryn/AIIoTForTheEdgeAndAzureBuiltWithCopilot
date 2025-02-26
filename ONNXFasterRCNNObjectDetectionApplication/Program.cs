@@ -12,6 +12,7 @@
 // Change to B,G,R
 // Display label, confidence and bounding box
 // Get Copilot to fix
+// Used Netron to fix up names
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 
