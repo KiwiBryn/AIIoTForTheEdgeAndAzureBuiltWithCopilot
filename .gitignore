@@ -369,3 +369,4 @@ FodyWeavers.xsd
 /RabbitOM
 /Models/FasterRCNN-10.onnx
 /Models/PPEV220250226V1.onnx
+/ONNXYoloDotNetObjectDetctionApplication/output.jpg
