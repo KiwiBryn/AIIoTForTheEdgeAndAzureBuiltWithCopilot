@@ -60,7 +60,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ONNXResnet50", "ONNXResnet5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXResnetV50ObjectClassificationApplication", "ONNXResnetV50ObjectClassificationApplication\ONNXResnetV50ObjectClassificationApplication.csproj", "{8C49F117-216C-47DE-FE14-0CB554D334B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXResnet50ObjectClassificationHttpTrigger", "ONNXResnetV50ObjectClassificationHttpTrigger\ONNXResnet50ObjectClassificationHttpTrigger.csproj", "{E1B55363-EE2A-B3BC-D939-B6ED4FE39F8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXResnetV50ObjectClassificationHttpTrigger", "ONNXResnetV50ObjectClassificationHttpTrigger\ONNXResnetV50ObjectClassificationHttpTrigger.csproj", "{E1B55363-EE2A-B3BC-D939-B6ED4FE39F8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploader", "ImageFileUploader\ImageFileUploader.csproj", "{83AC8C20-F5C9-43FB-A411-343133B01B77}"
 EndProject

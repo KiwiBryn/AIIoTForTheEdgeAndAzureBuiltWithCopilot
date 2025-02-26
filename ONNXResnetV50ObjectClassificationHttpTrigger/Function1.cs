@@ -60,12 +60,17 @@ namespace ONNXResnet50v27
                               };
 
          using var results = _session.Run(inputs);
-         var output = results.First().AsEnumerable<float>().ToArray();
-         var predictedLabelIndex = output.ToList().IndexOf(output.Max());
-         var predictedLabel = _labels[predictedLabelIndex];
-         var confidence = output.Max();
 
-         return new OkObjectResult(new { PredictedLabel = predictedLabel, Confidence = confidence });
+         var softmaxOutput = Softmax(results[0].AsEnumerable<float>().ToArray());
+
+         // Process the results
+         var top10 = softmaxOutput
+            .Select((value, index) => new { Value = value, Index = index })
+            .OrderByDescending(x => x.Value)
+            .Take(10)
+            .ToList();
+
+         return new OkObjectResult(top10);
       }
 
       private DenseTensor<float> PreprocessImage(Image<Rgb24> image)
@@ -77,6 +82,10 @@ namespace ONNXResnet50v27
             Mode = ResizeMode.BoxPad
          }));
 
+         // Mean and standard deviation values for normalization
+         float[] mean = { 0.485f, 0.456f, 0.406f };
+         float[] stddev = { 0.229f, 0.224f, 0.225f };
+
          var tensor = new DenseTensor<float>(new[] { 1, 3, 224, 224 });
 
          for (int y = 0; y < 224; y++)
@@ -84,13 +93,21 @@ namespace ONNXResnet50v27
             for (int x = 0; x < 224; x++)
             {
                var pixel = image[x, y];
-               tensor[0, 0, y, x] = pixel.R / 255.0f;
-               tensor[0, 1, y, x] = pixel.G / 255.0f;
-               tensor[0, 2, y, x] = pixel.B / 255.0f;
+               tensor[0, 0, y, x] = (pixel.R / 255.0f - mean[0]) / stddev[0]; ;
+               tensor[0, 1, y, x] = (pixel.G / 255.0f - mean[1]) / stddev[1]; ;
+               tensor[0, 2, y, x] = (pixel.B / 255.0f - mean[2]) / stddev[2]; ;
             }
          }
 
          return tensor;
+      }
+
+      private static float[] Softmax(float[] values)
+      {
+         float maxVal = values.Max();
+         float[] expValues = values.Select(v => (float)Math.Exp(v - maxVal)).ToArray();
+         float sumExpValues = expValues.Sum();
+         return expValues.Select(v => v / sumExpValues).ToArray();
       }
    }
 }
