@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{5EC34F3A-7F3C-4337-9CFB-D2EB7CDDB3F3}"
 	ProjectSection(SolutionItems) = preProject
 		Models\FasterRCNN-10.onnx = Models\FasterRCNN-10.onnx
+		Models\PPEV220250226V1.onnx = Models\PPEV220250226V1.onnx
 		Models\resnet50-v2-7.onnx = Models\resnet50-v2-7.onnx
 		Models\yolo11n-cls.onnx = Models\yolo11n-cls.onnx
 		Models\yolo11n-obb.onnx = Models\yolo11n-obb.onnx
