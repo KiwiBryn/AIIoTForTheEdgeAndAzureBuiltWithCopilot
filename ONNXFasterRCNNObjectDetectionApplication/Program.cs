@@ -7,7 +7,7 @@
 //    Added ImageSharp NuGet, removed System.Drawing.Common NuGet package
 // Use ImageSharp to resize the image such that both height and width are within the range of [800, 1333], such that both height and width are divisible by 32.
 // https://github.com/onnx/models/tree/main/validated/vision/object_detection_segmentation/faster-rcnn#preprocessing-steps
-//
+// Apply mean to each channel
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 
@@ -72,6 +72,9 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          int height = image.Height;
          var tensor = new DenseTensor<float>(new[] { 3, height, width });
 
+         // Mean values for each channel
+         float[] mean = { 0.485f, 0.456f, 0.406f };
+
          image.ProcessPixelRows(accessor =>
          {
             for (int y = 0; y < height; y++)
@@ -79,9 +82,9 @@ namespace ONNXFasterRCNNObjectDetectionApplication
                var pixelRow = accessor.GetRowSpan(y);
                for (int x = 0; x < width; x++)
                {
-                  tensor[0, y, x] = pixelRow[x].R / 255.0f;
-                  tensor[1, y, x] = pixelRow[x].G / 255.0f;
-                  tensor[2, y, x] = pixelRow[x].B / 255.0f;
+                  tensor[0, y, x] = (pixelRow[x].R / 255.0f) - mean[0];
+                  tensor[1, y, x] = (pixelRow[x].G / 255.0f) - mean[1];
+                  tensor[2, y, x] = (pixelRow[x].B / 255.0f) - mean[2];
                }
             }
          });
