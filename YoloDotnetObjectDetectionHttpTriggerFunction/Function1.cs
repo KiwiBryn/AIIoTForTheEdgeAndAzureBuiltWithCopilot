@@ -1,4 +1,5 @@
 // Modify the code so it uses YoloDotNet to detect objects an image in the POST form data
+// Modify the code to use YoloDotNet v2.2 from https://github.com/NickSwardh/YoloDotNet
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
