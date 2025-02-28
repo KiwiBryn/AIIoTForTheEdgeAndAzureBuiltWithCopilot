@@ -57,7 +57,10 @@ namespace YoloDotnetObjectDetectionHttpTriggerFunction
             {
                var items = _yolo.RunObjectDetection(image);
 
-               return new OkObjectResult(items);
+               var results = new { file.FileName, detections = items.Select(item => new { item.Confidence, item.Label, item.BoundingBox.Left, item.BoundingBox.Bottom, item.BoundingBox.Right, item.BoundingBox.Top}) };
+
+               // Return the detection results
+               return new OkObjectResult(results);
             }
          }
       }
