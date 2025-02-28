@@ -86,13 +86,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpPoseEstimationHttp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HTTP", "HTTP", "{510CB697-B6E0-44C7-9FB2-394220025B5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRtspClientYoloDotNetDetection", "SecurityCameraRtspClientYoloDotNetDetection\SecurityCameraRtspClientYoloDotNetDetection.csproj", "{B5911D13-8425-4DF5-9281-E3DEE4440CF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRtspClientYoloDotNetObjectDetection", "SecurityCameraRtspClientYoloDotNetDetection\SecurityCameraRtspClientYoloDotNetObjectDetection.csproj", "{B5911D13-8425-4DF5-9281-E3DEE4440CF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ONNXFasterRCNN", "ONNXFasterRCNN", "{47EBD413-670B-4ACC-92A2-FAD3FCB65B68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXFasterRCNNObjectDetectionApplication", "ONNXFasterRCNNObjectDetectionApplication\ONNXFasterRCNNObjectDetectionApplication.csproj", "{6B318889-53FB-4975-8FA1-BDADBB3A78AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXYoloDotNetObjectDetectionApplication", "ONNXYoloDotNetObjectDetectionApplication\ONNXYoloDotNetObjectDetectionApplication.csproj", "{9191A89C-5A5D-421B-AECE-B79111D2B393}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDotnetObjectDetectionHttpTriggerFunction", "YoloDotnetObjectDetectionHttpTriggerFunction\YoloDotnetObjectDetectionHttpTriggerFunction.csproj", "{73847C54-2BA4-4F38-91DB-E30F69E7A90A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -196,6 +198,10 @@ Global
 		{9191A89C-5A5D-421B-AECE-B79111D2B393}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9191A89C-5A5D-421B-AECE-B79111D2B393}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9191A89C-5A5D-421B-AECE-B79111D2B393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73847C54-2BA4-4F38-91DB-E30F69E7A90A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73847C54-2BA4-4F38-91DB-E30F69E7A90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73847C54-2BA4-4F38-91DB-E30F69E7A90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73847C54-2BA4-4F38-91DB-E30F69E7A90A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -223,6 +229,7 @@ Global
 		{B5911D13-8425-4DF5-9281-E3DEE4440CF3} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 		{6B318889-53FB-4975-8FA1-BDADBB3A78AC} = {47EBD413-670B-4ACC-92A2-FAD3FCB65B68}
 		{9191A89C-5A5D-421B-AECE-B79111D2B393} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
+		{73847C54-2BA4-4F38-91DB-E30F69E7A90A} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
