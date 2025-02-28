@@ -6,61 +6,47 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+
 using SkiaSharp;
+
 using YoloDotNet;
 using YoloDotNet.Enums;
 
 
 namespace YoloDotnetObjectDetectionHttpTriggerFunction
 {
-   public class Function1
+   public class Function1(ILogger<Function1> logger)
    {
-      private readonly ILogger<Function1> _logger;
-      //private readonly YoloWrapper _yolo; // This is from Alturos.Yolo
-      private readonly Yolo _yolo; // This is from YoloDotNet
-
-      public Function1(ILogger<Function1> logger)
-      {
-         _logger = logger;
-         //_yolo = new YoloWrapper("yolov3.cfg", "yolov3.weights", "coco.names"); // This is from Alturos.Yolo
-         _yolo = new Yolo(new YoloDotNet.Models.YoloOptions()
-         {
-            Cuda = false,
-            OnnxModel = "yolov8s.onnx",
-            ModelType = ModelType.ObjectDetection,
-         });
-      }
+      private readonly ILogger<Function1> _logger = logger;
 
       [Function("ObjectDetectionFunction")]
-      public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
+      public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
       {
          _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-         if (!req.HasFormContentType || !req.Form.Files.Any())
+         if (!req.HasFormContentType || req.Form.Files.Count != 1)
          {
             return new BadRequestObjectResult("Please upload an image file.");
          }
 
          var file = req.Form.Files[0];
-         using (var stream = new MemoryStream())
+         using (var stream = file.OpenReadStream())
          {
-            await file.CopyToAsync(stream);
-            //using (var image = Image.FromStream(stream)) // From System.Drawing
-            //{
-            //   var items = _yolo.Detect(image);
-            //   return new OkObjectResult(items);
-            //}
-            stream.Seek(0, SeekOrigin.Begin);
-            //using (var skiaStream = new SKManagedStream(stream))
-            //using (var image = SKBitmap.Decode(skiaStream))
-            using( SKImage image = SKImage.FromEncodedData(stream))
+            using (SKImage image = SKImage.FromEncodedData(stream))
             {
-               var items = _yolo.RunObjectDetection(image);
+               using (Yolo yolo = new Yolo(new YoloDotNet.Models.YoloOptions()
+               {
+                  Cuda = false,
+                  OnnxModel = "yolov8s.onnx",
+                  ModelType = ModelType.ObjectDetection,
+               }))
+               {
+                  var detections = yolo.RunObjectDetection(image);
 
-               var results = new { file.FileName, detections = items.Select(item => new { item.Confidence, item.Label, item.BoundingBox.Left, item.BoundingBox.Bottom, item.BoundingBox.Right, item.BoundingBox.Top}) };
+                  var results = new { file.FileName, detections = detections.Select(detection => new { detection.Confidence, detection.Label, detection.BoundingBox.Left, detection.BoundingBox.Bottom, detection.BoundingBox.Right, detection.BoundingBox.Top }) };
 
-               // Return the detection results
-               return new OkObjectResult(results);
+                  return new OkObjectResult(results);
+               }
             }
          }
       }
