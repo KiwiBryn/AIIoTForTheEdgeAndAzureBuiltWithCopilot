@@ -1,11 +1,12 @@
 // Modify the code so it uses YoloDotNet to detect objects an image in the POST form data
 // Modify the code to use YoloDotNet v2.2 from https://github.com/NickSwardh/YoloDotNet
 // Modify the code to use YoloDotNet
-// Modify the code t use SkiaSharp to load the image
+// Modify the code to use SkiaSharp to load the image
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using SkiaSharp;
 using YoloDotNet;
 using YoloDotNet.Enums;
 
@@ -44,9 +45,18 @@ namespace YoloDotnetObjectDetectionHttpTriggerFunction
          using (var stream = new MemoryStream())
          {
             await file.CopyToAsync(stream);
-            using (var image = Image.FromStream(stream)) // From System.Drawing
+            //using (var image = Image.FromStream(stream)) // From System.Drawing
+            //{
+            //   var items = _yolo.Detect(image);
+            //   return new OkObjectResult(items);
+            //}
+            stream.Seek(0, SeekOrigin.Begin);
+            //using (var skiaStream = new SKManagedStream(stream))
+            //using (var image = SKBitmap.Decode(skiaStream))
+            using( SKImage image = SKImage.FromEncodedData(stream))
             {
-               var items = _yolo.Detect(image);
+               var items = _yolo.RunObjectDetection(image);
+
                return new OkObjectResult(items);
             }
          }
