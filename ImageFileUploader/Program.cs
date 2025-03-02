@@ -73,6 +73,7 @@ namespace ImageFileUploader
                      {
                         Console.WriteLine($"File {Path.GetFileName(filePath)} upload failed. Status code: " + response.StatusCode);
                      }
+                     client.DefaultRequestHeaders.Remove("ImageCreatedAtUtc");
                   }
 
                   if (_applicationSettings.DeleteAfterUpload)
