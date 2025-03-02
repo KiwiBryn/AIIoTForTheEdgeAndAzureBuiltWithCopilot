@@ -51,12 +51,21 @@ namespace YoloSharpObjectDetectionStorageQueueTriggerFunction
             var image = Image.Load<Rgb24>(ms);
             var results = await _yolo.DetectAsync(image);
 
+            // This is where you would do something with the results
+            // This bugs out if no PPE detected
+            if ( results.Count == 0)
+            {
+               _logger.LogInformation("No objects detected");
+
+               return null;
+            }
+
             foreach (var result in results)
             {
                 _logger.LogInformation("Detected object: {ObjectName} with confidence {Confidence}", result.Name.Name, result.Confidence);
             }
 
-            return JsonSerializer.Serialize(new { messageData.DeviceID, messageData.BlobName, messageData.ImageCreatedAtUtc, Detections = results });
+            return JsonSerializer.Serialize(new { messageData.DeviceID, messageData.BlobName, messageData.ImageCreatedAtUtc, results.Count, Detections = results });
          }
       }
    }
