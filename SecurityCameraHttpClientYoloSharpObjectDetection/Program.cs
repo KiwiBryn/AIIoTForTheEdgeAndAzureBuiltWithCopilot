@@ -86,7 +86,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
                }
 
                // Check if any detection matches the specified object names
-               bool objectDetected = detections.Any(d => _applicationSettings.ObjectNames.Contains(d.Name.Name));
+               bool objectDetected = detections.Any(d => _applicationSettings.ClassNames.Contains(d.Name.Name));
 
                if (objectDetected && _applicationSettings.SaveImage)
                {
@@ -122,7 +122,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
       public TimeSpan TimerDue { get; set; } = TimeSpan.Zero;
       public TimeSpan TimerPeriod { get; set; } = TimeSpan.Zero;
       public string OnnxModelPath { get; set; } = "";
-      public required List<string> ObjectNames { get; set; }
+      public required List<string> ClassNames { get; set; }
       public bool LogDetections { get; set; } = false; // Add LogDetections property
       public bool SaveImage { get; set; } = false; // Add SaveImage property
       public bool UseCuda { get; set; } = false;

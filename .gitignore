@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /SecurityCameraHttpClientImages
+Models/FasterRCNN-10.onnx
+Models/PPEV220250226V1.onnx
+Models/resnet50-v2-7.onnx
+ffmpeg.exe
