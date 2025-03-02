@@ -26,7 +26,7 @@ namespace SecurityCameraHttpClientYoloSharpObjectDetection
 
       static void Main(string[] args)
       {
-         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraClient starting");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraHttpClientYoloSharpObjectDetection starting");
 #if RELEASE
                Console.WriteLine("RELEASE");
 #else

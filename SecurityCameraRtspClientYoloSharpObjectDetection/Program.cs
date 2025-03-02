@@ -25,7 +25,7 @@ namespace SecurityCameraRtspClientYoloSharpObjectDetection
 
       static void Main(string[] args)
       {
-         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraRTSPClientNagerVideoStream");
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} SecurityCameraRtspClientYoloSharpObjectDetection");
 
          // load the app settings into configuration
          var configuration = new ConfigurationBuilder()

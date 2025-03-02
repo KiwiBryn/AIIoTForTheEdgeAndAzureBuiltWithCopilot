@@ -21,6 +21,8 @@ namespace ImageFileUploader
 
       static async Task Main(string[] args)
       {
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} ImageFileUploader");
+
          var configuration = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
              .AddJsonFile("appsettings.json")
@@ -61,7 +63,7 @@ namespace ImageFileUploader
 
                      // Add file creation time as a header
                      DateTime creationTime = File.GetCreationTime(filePath);
-                     client.DefaultRequestHeaders.Add("File-Creation-Time", creationTime.ToString("o"));
+                     client.DefaultRequestHeaders.Add("ImageCreatedAtUtc", creationTime.ToString("o"));
 
                      string requestUri = $"{_applicationSettings.ApiUrl}/{_applicationSettings.DeviceID}";
                      HttpResponseMessage response = await client.PostAsync(requestUri, content);

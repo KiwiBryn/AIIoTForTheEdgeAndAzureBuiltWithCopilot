@@ -8,6 +8,8 @@ namespace YoloSharpObjectDetectionApplication
    {
       static void Main(string[] args)
       {
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} YoloSharpObjectDetectionApplication");
+
          // Load the YOLO model
          //var model = new YoloModel("path_to_your_model.onnx");
          var model = new YoloPredictor("..\\..\\..\\..\\Models\\yolov8s.onnx");

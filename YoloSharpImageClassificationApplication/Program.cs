@@ -11,6 +11,8 @@ namespace YoloSharpImageClassificationApplication
    {
       static void Main(string[] args)
       {
+         Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss} YoloSharpImageClassificationApplication");
+
          // Check if an image path is provided
          if (args.Length == 0)
          {
