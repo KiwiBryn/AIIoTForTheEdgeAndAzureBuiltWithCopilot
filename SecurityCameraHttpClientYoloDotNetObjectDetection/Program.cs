@@ -1,4 +1,10 @@
-﻿// Start with SecurityCameraHttpClient code
+﻿//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
+// Start with SecurityCameraHttpClient code
 // Use a stream rather than loading from a file
 // Use YoloDotNet to run an onnx Object Detection model on the image
 // Configure YOLO With YoloOptions became Configure YOLO creation with YoloOptions 

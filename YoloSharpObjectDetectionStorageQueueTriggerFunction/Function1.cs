@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
 // please modify the code to use compunet yolosharp to run an Ultralytics yolo object detection model on an image loaded Azure Storage
 // Modify the code the image name and deviceID which is the container name are JSON serialized in the message
 // Modify the code so BlobClient is a injected dependency

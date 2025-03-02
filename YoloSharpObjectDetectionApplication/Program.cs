@@ -1,4 +1,10 @@
-﻿// please write a C# console application that uses compunet yolosharp to run an Ultralytics yolo object detection model on an image loaded from disk
+﻿//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
+// please write a C# console application that uses compunet yolosharp to run an Ultralytics yolo object detection model on an image loaded from disk
 using Compunet.YoloSharp;
 using SixLabors.ImageSharp;
 

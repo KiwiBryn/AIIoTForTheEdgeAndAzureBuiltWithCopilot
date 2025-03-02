@@ -1,4 +1,10 @@
-﻿// Use YoloDotNet to run an onnx Object Detection model on the image loaded from disk
+﻿//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
+// Use YoloDotNet to run an onnx Object Detection model on the image loaded from disk
 // Modify code to use SkiaSharp
 // Modify code to use YoloOptions when Yolo is created
 // Cuda support off

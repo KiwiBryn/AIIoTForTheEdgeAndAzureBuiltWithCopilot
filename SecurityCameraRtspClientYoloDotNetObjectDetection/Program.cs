@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 
 using RabbitOM.Streaming.Rtp.Framing;
 using RabbitOM.Streaming.Rtp.Framing.Jpeg;

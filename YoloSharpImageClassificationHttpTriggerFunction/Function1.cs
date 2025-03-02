@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
 // please write an httpTrigger azure function that uses YoloSharp and a Yolo image classification onnx model
 // Image classification not object detection
 // The image is in the form data

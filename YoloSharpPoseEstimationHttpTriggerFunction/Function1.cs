@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
 // please write an azure function with an http trigger that uses yolosharp to estimate the pose of humans in an uploaded image.
 // Yolo v8 pose estimation model and yolosharp library
 // Make into azure function

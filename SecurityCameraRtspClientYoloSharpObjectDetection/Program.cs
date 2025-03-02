@@ -1,4 +1,10 @@
-﻿// Save image if object with specified name detected
+﻿//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
+// Save image if object with specified name detected
 // Modify so objectDetected supports multiple images names
 // Modify objectNames to classNames
 // Make confidence confgurable in app settings

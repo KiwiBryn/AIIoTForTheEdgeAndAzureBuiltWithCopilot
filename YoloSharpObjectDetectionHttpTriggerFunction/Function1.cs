@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
 // please write an azure function with an http trigger that uses yolosharp and an onnx file to detect objects in an image
 // The image is not in the body it is in the form
 // Image.Load is not used

@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------------
+// Copyright (c) March 2025, devMobile Software
+//
+// https://www.gnu.org/licenses/#AGPL
+//
+//---------------------------------------------------------------------------------
 // Modify the code so it uses YoloDotNet to detect objects an image in the POST form data
 // Modify the code to use YoloDotNet v2.2 from https://github.com/NickSwardh/YoloDotNet
 // Modify the code to use YoloDotNet
