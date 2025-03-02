@@ -32,10 +32,12 @@ namespace ImageFileUploadHandler.Controllers
             await blobContainerClient.CreateIfNotExistsAsync();
             BlobClient blobClient = blobContainerClient.GetBlobClient(image.FileName);
 
+            string imageCreatedAtUtc = HttpContext.Request.Headers["ImageCreatedAtUtc"];
+
             var metadata = new Dictionary<string, string>
             {
                { "DeviceID", deviceId },
-               { "FileCreationTime", DateTime.UtcNow.ToString("o") }
+               { "ImageCreatedAtUtc", imageCreatedAtUtc }
             };
 
             using (var memoryStream = new MemoryStream())
@@ -54,7 +56,8 @@ namespace ImageFileUploadHandler.Controllers
             var payload = new
             {
                DeviceID = deviceId,
-               BlobName = image.FileName
+               BlobName = image.FileName,
+               ImageCreatedAtUtc = imageCreatedAtUtc
             };
 
             // Insert payload into Azure Storage Queue
