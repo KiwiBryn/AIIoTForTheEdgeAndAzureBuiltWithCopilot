@@ -39,16 +39,12 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          var inputTensor = ExtractTensorFromImage(image);
          var inputs = new List<NamedOnnxValue>
                      {
-                         NamedOnnxValue.CreateFromTensor("image", inputTensor)
+                           NamedOnnxValue.CreateFromTensor("image", inputTensor)
                      };
 
          using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = session.Run(inputs);
 
-         // Process the output (e.g., draw bounding boxes on the image)
-         ProcessOutput(results, image);
-
-         image.Save("output.jpg");
-         Console.WriteLine("Object detection completed. Output saved as output.jpg");
+         ProcessOutput(results);
 
          Console.WriteLine("Press Enter to exit");
          Console.ReadLine();
@@ -99,7 +95,7 @@ namespace ONNXFasterRCNNObjectDetectionApplication
          return tensor;
       }
 
-      private static void ProcessOutput(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output, Image<Rgb24> image)
+      private static void ProcessOutput(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output)
       {
          var boxes = output.First(x => x.Name == "6379").AsTensor<float>().ToArray();
          var labels = output.First(x => x.Name == "6381").AsTensor<long>().ToArray();
