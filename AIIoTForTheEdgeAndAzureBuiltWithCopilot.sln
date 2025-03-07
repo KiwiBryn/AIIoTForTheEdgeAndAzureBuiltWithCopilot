@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{5EC34F3A-7F3C-4337-9CFB-D2EB7CDDB3F3}"
 	ProjectSection(SolutionItems) = preProject
 		Models\FasterRCNN-10.onnx = Models\FasterRCNN-10.onnx
+		Models\PPEComputerVisionProject20250302V1-100-640x640.onnx = Models\PPEComputerVisionProject20250302V1-100-640x640.onnx
+		Models\PPEDetectionAndCompliance20250303V1-100-640x640.onnx = Models\PPEDetectionAndCompliance20250303V1-100-640x640.onnx
+		Models\PPEDetectionAndCompliance20250304V1-100-1280x1280.onnx = Models\PPEDetectionAndCompliance20250304V1-100-1280x1280.onnx
 		Models\resnet50-v2-7.onnx = Models\resnet50-v2-7.onnx
 		Models\yolo11n-cls.onnx = Models\yolo11n-cls.onnx
 		Models\yolo11n-obb.onnx = Models\yolo11n-obb.onnx
@@ -29,6 +32,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{5EC34F
 		Models\yolov8s-seg.onnx = Models\yolov8s-seg.onnx
 		Models\yolov8s.onnx = Models\yolov8s.onnx
 		Models\yolov9s.onnx = Models\yolov9s.onnx
+		Models\YuiComputerVision20250303V1-100-640x640.onnx = Models\YuiComputerVision20250303V1-100-640x640.onnx
+		Models\YuiComputerVision20250303V1-200-640x640.onnx = Models\YuiComputerVision20250303V1-200-640x640.onnx
+		Models\YuiComputerVision20250305V1-100-1280x1280.onnx = Models\YuiComputerVision20250305V1-100-1280x1280.onnx
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraHttpClient", "SecurityCameraHttpClient\SecurityCameraHttpClient.csproj", "{DE0031F6-AFF0-434D-A893-E8A0D10A29DC}"
