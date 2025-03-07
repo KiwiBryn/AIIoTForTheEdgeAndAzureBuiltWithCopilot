@@ -9,26 +9,41 @@
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <None Include="..\Models\PPEV220250226V1.onnx" Link="PPEV220250226V1.onnx">
+    <None Include="..\Models\PPEComputerVisionProject20250302V1-100-640x640.onnx" Link="PPEComputerVisionProject20250302V1-100-640x640.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Models\PPEDetectionAndCompliance20250303V1-100-640x640.onnx" Link="PPEDetectionAndCompliance20250303V1-100-640x640.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Models\PPEDetectionAndCompliance20250304V1-100-1280x1280.onnx" Link="PPEDetectionAndCompliance20250304V1-100-1280x1280.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Models\yolov8s.onnx" Link="yolov8s.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.22.2" />
-    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.20.1" />
-    <PackageReference Include="Azure.Storage.Queues" Version="12.20.1" />
+    <None Include="..\Models\YuiComputerVision20250303V1-100-640x640.onnx" Link="YuiComputerVision20250303V1-100-640x640.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Models\YuiComputerVision20250303V1-200-640x640.onnx" Link="YuiComputerVision20250303V1-200-640x640.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Models\YuiComputerVision20250305V1-100-1280x1280.onnx" Link="YuiComputerVision20250305V1-100-1280x1280.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
+    <PackageReference Include="Azure.Storage.Queues" Version="12.21.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
     <!-- Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4. -->
     <!-- <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" /> -->
     <!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.0.0" /> -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues" Version="5.5.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.1" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues" Version="5.5.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.10.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
     <PackageReference Include="YoloSharp" Version="6.0.2" />
   </ItemGroup>
   <ItemGroup>
