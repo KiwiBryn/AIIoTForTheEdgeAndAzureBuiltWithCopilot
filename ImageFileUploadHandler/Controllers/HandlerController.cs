@@ -32,12 +32,12 @@ namespace ImageFileUploadHandler.Controllers
             await blobContainerClient.CreateIfNotExistsAsync();
             BlobClient blobClient = blobContainerClient.GetBlobClient(image.FileName);
 
-            string imageCreatedAtUtc = HttpContext.Request.Headers["ImageCreatedAtUtc"];
+            DateTime imageCreatedAtUtc = DateTime.Parse(HttpContext.Request.Headers["ImageCreatedAtUtc"]);
 
             var metadata = new Dictionary<string, string>
             {
                { "DeviceID", deviceId },
-               { "ImageCreatedAtUtc", imageCreatedAtUtc }
+               { "ImageCreatedAtUtc", imageCreatedAtUtc.ToString("o")}
             };
 
             using (var memoryStream = new MemoryStream())
