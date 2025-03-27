@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="3.116.1" />
-    <PackageReference Include="YoloDotNet" Version="2.2.0" />
+    <PackageReference Include="YoloDotNet" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
