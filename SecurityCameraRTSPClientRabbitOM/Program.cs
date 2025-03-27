@@ -106,9 +106,9 @@ namespace SecurityCameraRTSPClientRabbitOM
 
             Console.CancelKeyPress += (sender, e) => Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Stopping");
+            Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} Waiting");
 
-            Console.WriteLine("Press any keys to close the application");
+            Console.WriteLine("Press any key to close the application");
             Console.ReadKey();
 
             client.StopCommunication(TimeSpan.FromSeconds(3));
