@@ -101,6 +101,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXYoloDotNetObjectDetecti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDotnetObjectDetectionHttpTriggerFunction", "YoloDotnetObjectDetectionHttpTriggerFunction\YoloDotnetObjectDetectionHttpTriggerFunction.csproj", "{73847C54-2BA4-4F38-91DB-E30F69E7A90A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXYoloDotNetImageClassificationApplication", "ONNXYoloDotNetImageClassificationApplication\ONNXYoloDotNetImageClassificationApplication.csproj", "{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +209,10 @@ Global
 		{73847C54-2BA4-4F38-91DB-E30F69E7A90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73847C54-2BA4-4F38-91DB-E30F69E7A90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73847C54-2BA4-4F38-91DB-E30F69E7A90A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -235,6 +241,7 @@ Global
 		{6B318889-53FB-4975-8FA1-BDADBB3A78AC} = {47EBD413-670B-4ACC-92A2-FAD3FCB65B68}
 		{9191A89C-5A5D-421B-AECE-B79111D2B393} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 		{73847C54-2BA4-4F38-91DB-E30F69E7A90A} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
+		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
