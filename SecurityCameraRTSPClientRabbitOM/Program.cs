@@ -67,17 +67,24 @@ namespace SecurityCameraRTSPClientRabbitOM
 
             client.PacketReceived += (sender, e) =>
             {
-               var interleavedPacket = e.Packet as RtspInterleavedPacket;
-
-               if (interleavedPacket != null && interleavedPacket.Channel > 0)
+               try
                {
-                  // In most of case, avoid this packet
-                  Console.ForegroundColor = ConsoleColor.DarkCyan;
-                  Console.WriteLine("Skipping some data : size {0}", e.Packet.Data.Length);
-                  return;
-               }
+                  var interleavedPacket = e.Packet as RtspInterleavedPacket;
 
-               _frameBuilder.Write(interleavedPacket.Data); ;
+                  if (interleavedPacket != null && interleavedPacket.Channel > 0)
+                  {
+                     // In most of case, avoid this packet
+                     Console.ForegroundColor = ConsoleColor.DarkCyan;
+                     Console.WriteLine("Skipping some data : size {0}", e.Packet.Data.Length);
+                     return;
+                  }
+
+                  _frameBuilder.Write(interleavedPacket.Data); ;
+               }
+               catch (Exception ex)
+               {
+                  Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} {ex.Message}");
+               }
             };
 
             client.Configuration.Uri = _applicationSettings.RtspCameraUrl;
