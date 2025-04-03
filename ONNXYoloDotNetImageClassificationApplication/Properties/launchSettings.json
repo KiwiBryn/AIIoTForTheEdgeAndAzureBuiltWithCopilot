@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ONNXYoloDotNetImageClassificationApplication": {
+      "commandName": "Project",
+      "commandLineArgs": "pizza.jpg\r\n"
+    }
+  }
+}
