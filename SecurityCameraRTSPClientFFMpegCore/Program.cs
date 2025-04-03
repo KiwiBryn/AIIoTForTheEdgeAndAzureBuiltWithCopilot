@@ -6,8 +6,6 @@ using FFMpegCore.Pipes;
 using FFMpegCore;
 using FFMpegCore.Enums;
 
-using SkiaSharp;
-
 
 namespace SecurityCameraRTSPClientFFMpegCore
 {
@@ -36,73 +34,61 @@ namespace SecurityCameraRTSPClientFFMpegCore
             Directory.CreateDirectory(_applicationSettings.SavePath);
          }
 
-         GlobalFFOptions.Configure(options => options.BinaryFolder = _applicationSettings.FFMpegExeFolder);
+   GlobalFFOptions.Configure(options => options.BinaryFolder = _applicationSettings.FFMpegExeFolder);
 
-         var cts = new CancellationTokenSource();
+   using (var ms = new MemoryStream())
+   {
+      await FFMpegArguments
+            .FromUrlInput(new Uri(_applicationSettings.CameraUrl))
+            .OutputToPipe(new StreamPipeSink(ms), options => options
+            .ForceFormat("mpeg1video")
+            //.ForceFormat("rawvideo")
+            .WithCustomArgument("-rtsp_transport tcp")
+            .WithFramerate(10)
+            .WithVideoCodec(VideoCodec.Png)
+            //.Resize(1024, 1024)
+            //.ForceFormat("image2pipe")
+            //.Resize(new Size(Config.JpgWidthLarge, Config.JpgHeightLarge))
+            //.Resize(new Size(Config.JpgWidthLarge, Config.JpgHeightLarge))
+            //.WithCustomArgument("-vf fps=1 -update 1")
+            //.WithCustomArgument("-vf fps=5 -update 1")
+            //.WithSpeedPreset( Speed.)
+            //.UsingMultithreading()
+            //.UsingThreads()
+            //.WithVideoFilters(filter => filter.Scale(640, 480))
+            //.UsingShortest()
+            //.WithFastStart()
+            )
+            .NotifyOnProgress(o =>
+            {
+               try
+               {
+                  if (ms.Length > 0)
+                  {
+                     ms.Position = 0;
 
-         using (var ms = new MemoryStream())
-         {
-            await FFMpegArguments
-                .FromUrlInput(new Uri(_applicationSettings.CameraUrl))
-                .OutputToPipe(new StreamPipeSink(ms), options => options
-                   .ForceFormat("mpeg1video")
-                  //.ForceFormat("rawvideo")
-                  .WithCustomArgument("-rtsp_transport tcp")
-                    .WithFramerate(10)
-                    .WithVideoCodec(VideoCodec.Png)
-                    //.Resize(1024, 1024)
-                    //.ForceFormat("image2pipe")
-                    //.Resize(new Size(Config.JpgWidthLarge, Config.JpgHeightLarge))
-                    //.Resize(new Size(Config.JpgWidthLarge, Config.JpgHeightLarge))
-                    //.WithCustomArgument("-vf fps=1 -update 1")
-                    //.WithCustomArgument("-vf fps=5 -update 1")
-                )
-                .NotifyOnProgress(o =>
-                {
-                   try
-                   {
-                      if (ms.Length > 0)
-                      {
-                         ms.Position = 0;
+                     string outputPath = Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow ));
 
-                         string outputPath = Path.Combine(_applicationSettings.SavePath, string.Format(_applicationSettings.FrameFileNameFormat, DateTime.UtcNow ));
+                     using (var bitmap = new Bitmap(ms))
+                     {
+                        // Save the bitmap
+                        bitmap.Save(outputPath);
+                     }
 
-                         using (var bitmap = new Bitmap(ms))
-                         {
-                            // Save the bitmap
-                            bitmap.Save(outputPath);
-                         }
-                         ms.Position = 0;
-
-                         /*
-                         using (var skBitmap = SKBitmap.Decode(ms))
-                         {
-                            if (skBitmap is not null)
-                            {
-                               using (var skImage = SKImage.FromBitmap(skBitmap))
-                               using (var data = skImage.Encode(SKEncodedImageFormat.Png, 100))
-                               using (var stream = File.OpenWrite(outputPath))
-                               {
-                                  data.SaveTo(stream);
-                               }
-                            }
-                         }
-                         */
-                         ms.SetLength(0);
-                      }
-                   }
-                   catch (Exception ex)
-                   {
-                      Console.WriteLine(ex.Message);
-                   }
-                })
-                .ProcessAsynchronously();
-         }
+                     ms.SetLength(0);
+                  }
+               }
+               catch (Exception ex)
+               {
+                  Console.WriteLine($"{DateTime.UtcNow:yy-MM-dd HH:mm:ss.fff} {ex.Message}");
+               }
+            })
+            .ProcessAsynchronously();
+   }
 
 
          Console.WriteLine("Press any key to stop capturing...");
          Console.ReadKey();
-         cts.Cancel();
 
          Console.WriteLine("Capture stopped.");
       }
