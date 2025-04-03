@@ -103,6 +103,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDotnetObjectDetectionHt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXYoloDotNetImageClassificationApplication", "ONNXYoloDotNetImageClassificationApplication\ONNXYoloDotNetImageClassificationApplication.csproj", "{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXYoloDotNetPoseEstimationApplication", "ONNXYoloDotNetPoseEstimationApplication\ONNXYoloDotNetPoseEstimationApplication.csproj", "{088347F5-4B16-4B37-8481-92D430EF5327}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -213,6 +215,10 @@ Global
 		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{384DFEBD-C189-40E9-BD75-9EEBDE93F9AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{088347F5-4B16-4B37-8481-92D430EF5327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{088347F5-4B16-4B37-8481-92D430EF5327}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{088347F5-4B16-4B37-8481-92D430EF5327}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{088347F5-4B16-4B37-8481-92D430EF5327}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
