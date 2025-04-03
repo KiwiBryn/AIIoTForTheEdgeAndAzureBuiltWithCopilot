@@ -28,7 +28,6 @@ namespace YoloSharpObjectDetectionStorageQueueTriggerFunction
       {
          _logger = logger;
          _yolo = new YoloPredictor("yolov8s.onnx"); // Load your YOLO model here
-         //_yolo = new YoloPredictor("PPEV220250226V1");
          _blobServiceClient = blobServiceClient;
       }
 
