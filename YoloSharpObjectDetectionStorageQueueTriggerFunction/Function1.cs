@@ -32,27 +32,28 @@ namespace YoloSharpObjectDetectionStorageQueueTriggerFunction
          _blobServiceClient = blobServiceClient;
       }
 
-      [Function(nameof(Function1))]
+      [Function("ObjectDetectionFunction")]
       [QueueOutput("imageinferencingresults", Connection = "ImageProcessorQueueStorage")]
       public async Task<string> Run([QueueTrigger("imagestobeprocessed", Connection = "ImageProcessorQueueStorage")] QueueMessage message)
       {
          _logger.LogInformation("C# Queue trigger function processed: {MessageText}", message.MessageText);
 
          var messageData = JsonSerializer.Deserialize<MessageData>(message.MessageText);
+         if (messageData is null)
+         {
+            _logger.LogError("Failed to deserialize message data");
+
+            return null;
+         }
 
          BlobClient blobClient = _blobServiceClient.GetBlobContainerClient(messageData.DeviceID.ToLower()).GetBlobClient(messageData.BlobName);
          BlobDownloadInfo download = await blobClient.DownloadAsync();
 
-         using (MemoryStream ms = new MemoryStream())
+         using (Stream imageStream = download.Content)
          {
-            await download.Content.CopyToAsync(ms);
-            ms.Position = 0;
+            var results = await _yolo.DetectAsync(imageStream);
 
-            var image = Image.Load<Rgb24>(ms);
-            var results = await _yolo.DetectAsync(image);
-
-            // This is where you would do something with the results
-            // This bugs out if no PPE detected
+            // This bugs out if no PPE detected which ia opposite of what we want, should be list of PPE required for each region.
             if ( results.Count == 0)
             {
                _logger.LogInformation("No objects detected");
@@ -60,9 +61,18 @@ namespace YoloSharpObjectDetectionStorageQueueTriggerFunction
                return null;
             }
 
+            _logger.LogInformation("Detected {Count} objects", results.Count);
             foreach (var result in results)
             {
-                _logger.LogInformation("Detected object: {ObjectName} with confidence {Confidence}", result.Name.Name, result.Confidence);
+               _logger.LogInformation("Detected object: {ObjectName} with confidence {Confidence}", result.Name.Name, result.Confidence);
+            }
+
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+               foreach (var result in results)
+               {
+                  _logger.LogInformation("Detected object: {ObjectName} with confidence {Confidence}", result.Name.Name, result.Confidence);
+               }
             }
 
             return JsonSerializer.Serialize(new { messageData.DeviceID, messageData.BlobName, messageData.ImageCreatedAtUtc, results.Count, Detections = results });
@@ -72,9 +82,8 @@ namespace YoloSharpObjectDetectionStorageQueueTriggerFunction
 
    internal class MessageData
    {
-      public string DeviceID { get; set; }
-      public string BlobName { get; set; }
-      public string ImageCreatedAtUtc { get; set; }
-
+      public required string DeviceID { get; set; }
+      public required string BlobName { get; set; }
+      public DateTime ImageCreatedAtUtc { get; set; }
    }
 }
