@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿//using System.Drawing;
+using SkiaSharp;
+
 using YoloDotNet;
 using YoloDotNet.Models;
 
@@ -33,14 +35,19 @@ namespace YoloDotNetObjectDetectionApplicationCopilot
 
             // Load the YOLO model
             //using var yolo = new Yolo(modelPath);
+            //using var yolo = new Yolo(yoloOptions);
+            //using var yolo = new Yolo(modelPath, yoloOptions);
             using var yolo = new Yolo(yoloOptions);
 
-            // Load image from disk
-            using var image = new Bitmap(imagePath);
+            // Load image using SkiaSharp
+            using var skBitmap = SKBitmap.Decode(imagePath);
 
-            // Run object detection
-            //var results = yolo.Predict(image);
-            var results = yolo.RunObjectDetection(image);
+            // Convert SKBitmap to a format YOLO can process
+            using var skImage = SKImage.FromBitmap(skBitmap);
+            using var skData = skImage.Encode(SKEncodedImageFormat.Jpeg, 100);
+            using var memoryStream = new MemoryStream(skData.ToArray());
+            //var results = yolo.Predict(memoryStream);
+            var results = yolo.RunObbDetection(skImage);
 
             // Display detected objects
             foreach (var result in results)
