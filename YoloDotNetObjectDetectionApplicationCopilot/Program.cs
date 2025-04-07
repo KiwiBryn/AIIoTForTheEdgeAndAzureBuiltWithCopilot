@@ -1,4 +1,8 @@
-﻿namespace YoloDotNetObjectDetectionApplicationCopilot
+﻿using System.Drawing;
+using YoloDotNet;
+using YoloDotNet.Models;
+
+namespace YoloDotNetObjectDetectionApplicationCopilot
 {
    internal class Program
    {
@@ -21,14 +25,22 @@
 
          try
          {
+            var yoloOptions = new YoloOptions
+            {
+               ConfidenceThreshold = 0.5, // Confidence threshold (adjust as needed)
+               IoUThreshold = 0.4        // Intersection over Union threshold
+            };
+
             // Load the YOLO model
-            using var yolo = new Yolo(modelPath);
+            //using var yolo = new Yolo(modelPath);
+            using var yolo = new Yolo(yoloOptions);
 
             // Load image from disk
             using var image = new Bitmap(imagePath);
 
             // Run object detection
-            var results = yolo.Predict(image);
+            //var results = yolo.Predict(image);
+            var results = yolo.RunObjectDetection(image);
 
             // Display detected objects
             foreach (var result in results)
