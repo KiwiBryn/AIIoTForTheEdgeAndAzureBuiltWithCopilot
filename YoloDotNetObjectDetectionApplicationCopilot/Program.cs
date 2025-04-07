@@ -56,10 +56,11 @@ namespace YoloDotNetObjectDetectionApplicationCopilot
             //var results = yolo.Predict(memoryStream);
             var results = yolo.RunObjectDetection(skImage);
 
-            // Display detected objects
-            foreach (var result in results)
+            var filteredResults = results.Where(result => result.Confidence >= 0.5).ToList();
+
+            foreach (var result in filteredResults)
             {
-               Console.WriteLine($"Detected: {result.Label} - Confidence: {result.Confidence}");
+               Console.WriteLine($"Detected: {result.Label} - Confidence: {result.Confidence:F2}");
                Console.WriteLine($"Bounding Box: {result.BoundingBox}");
             }
          }
