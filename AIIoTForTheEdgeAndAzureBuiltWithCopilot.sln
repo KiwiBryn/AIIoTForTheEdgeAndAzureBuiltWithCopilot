@@ -109,6 +109,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDotNetObjectDetectionAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDotNetImageClassificationApplicationCopilot", "YoloDotNetImageClassificationApplicationCopilot\YoloDotNetImageClassificationApplicationCopilot.csproj", "{EAD6A44E-E2D2-488B-BB1F-AA0D8149EB51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDotNetPoseEstimationApplicationCopilot", "YoloDotNetPoseEstimationApplicationCopilot\YoloDotNetPoseEstimationApplicationCopilot.csproj", "{7C73FF8E-C970-4BBF-8A5C-BABCABCB8F14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -231,6 +233,10 @@ Global
 		{EAD6A44E-E2D2-488B-BB1F-AA0D8149EB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAD6A44E-E2D2-488B-BB1F-AA0D8149EB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAD6A44E-E2D2-488B-BB1F-AA0D8149EB51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C73FF8E-C970-4BBF-8A5C-BABCABCB8F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C73FF8E-C970-4BBF-8A5C-BABCABCB8F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C73FF8E-C970-4BBF-8A5C-BABCABCB8F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C73FF8E-C970-4BBF-8A5C-BABCABCB8F14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -263,6 +269,7 @@ Global
 		{03E16A93-40AC-9E19-8816-3596D061DF84} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 		{1B3D915C-3B3E-4C1F-B2EB-658D7EF2A85F} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 		{EAD6A44E-E2D2-488B-BB1F-AA0D8149EB51} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
+		{7C73FF8E-C970-4BBF-8A5C-BABCABCB8F14} = {04AEA2E4-F8E3-4140-9B37-D3070639185D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
