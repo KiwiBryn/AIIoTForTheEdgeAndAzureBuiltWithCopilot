@@ -3,6 +3,7 @@ using SkiaSharp;
 
 using YoloDotNet;
 using YoloDotNet.Models;
+using YoloDotNet.Enums;
 
 namespace YoloDotNetObjectDetectionApplicationCopilot
 {
@@ -10,8 +11,10 @@ namespace YoloDotNetObjectDetectionApplicationCopilot
    {
       static void Main(string[] args)
       {
-         string modelPath = "yolov8.onnx"; // Replace with your actual model path
-         string imagePath = "image.jpg"; // Replace with your actual image path
+         //string modelPath = "yolov8.onnx"; // Replace with your actual model path
+         string modelPath = "yolov8s.onnx"; // Replace with your actual model path
+         //string imagePath = "image.jpg"; // Replace with your actual image path
+         string imagePath = "sports.jpg"; // Replace with your actual image path
 
          if (!File.Exists(modelPath))
          {
@@ -29,8 +32,12 @@ namespace YoloDotNetObjectDetectionApplicationCopilot
          {
             var yoloOptions = new YoloOptions
             {
-               ConfidenceThreshold = 0.5, // Confidence threshold (adjust as needed)
-               IoUThreshold = 0.4        // Intersection over Union threshold
+               //ModelType = YoloModelType.Yolov8,
+               ModelType = ModelType.ObjectDetection,
+               OnnxModel = modelPath,
+               //ConfidenceThreshold = 0.5, // Confidence threshold (adjust as needed)
+               //IoUThreshold = 0.4        // Intersection over Union threshold
+               Cuda = false // Set to true if you have a compatible GPU and want to use CUDA
             };
 
             // Load the YOLO model
@@ -47,7 +54,7 @@ namespace YoloDotNetObjectDetectionApplicationCopilot
             using var skData = skImage.Encode(SKEncodedImageFormat.Jpeg, 100);
             using var memoryStream = new MemoryStream(skData.ToArray());
             //var results = yolo.Predict(memoryStream);
-            var results = yolo.RunObbDetection(skImage);
+            var results = yolo.RunObjectDetection(skImage);
 
             // Display detected objects
             foreach (var result in results)
@@ -60,6 +67,9 @@ namespace YoloDotNetObjectDetectionApplicationCopilot
          {
             Console.WriteLine($"Error: {ex.Message}");
          }
+
+         Console.WriteLine("Press Enter to exit the application");
+         Console.ReadLine();
       }
    }
 }
