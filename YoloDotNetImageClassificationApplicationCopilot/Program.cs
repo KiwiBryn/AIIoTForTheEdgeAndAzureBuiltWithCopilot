@@ -1,4 +1,4 @@
-﻿namespace ONNXYoloDotNetPoseEstimationApplication
+﻿namespace YoloDotNetImageClassificationApplicationCopilot
 {
    internal class Program
    {
