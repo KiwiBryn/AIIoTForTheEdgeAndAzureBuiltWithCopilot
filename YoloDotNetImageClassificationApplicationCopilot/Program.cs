@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Drawing;
 using YoloDotNet; // Placeholder (Ensure correct namespace)
 using YoloDotNet.Models;
@@ -14,10 +15,11 @@ class Program
          var yolo = new YoloModel(modelPath);
 
          // Load image
-         using Bitmap image = new Bitmap(imagePath);
+         //using Bitmap image = new Bitmap(imagePath);
+         using SKBitmap bitmap = SKBitmap.Decode(imagePath);
 
          // Run classification
-         var results = yolo.Predict(image);
+         var results = yolo.Predict(bitmap);
 
          // Display results
          foreach (var result in results)
