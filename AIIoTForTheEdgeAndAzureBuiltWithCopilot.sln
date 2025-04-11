@@ -61,11 +61,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "YoloSharp", "YoloSharp", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "YoloDotNet", "YoloDotNet", "{04AEA2E4-F8E3-4140-9B37-D3070639185D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ONNXResnet50", "ONNXResnet50", "{25C8A93B-1A80-4B42-9DE3-B97B47855B8F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resnet50", "Resnet50", "{25C8A93B-1A80-4B42-9DE3-B97B47855B8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXResnetV50ObjectClassificationApplication", "ONNXResnetV50ObjectClassificationApplication\ONNXResnetV50ObjectClassificationApplication.csproj", "{8C49F117-216C-47DE-FE14-0CB554D334B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResnetV50ObjectClassificationApplication", "ResnetV50ObjectClassificationApplication\ResnetV50ObjectClassificationApplication.csproj", "{8C49F117-216C-47DE-FE14-0CB554D334B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXResnetV50ObjectClassificationHttpTrigger", "ONNXResnetV50ObjectClassificationHttpTrigger\ONNXResnetV50ObjectClassificationHttpTrigger.csproj", "{E1B55363-EE2A-B3BC-D939-B6ED4FE39F8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResnetV50ObjectClassificationHttpTrigger", "ResnetV50ObjectClassificationHttpTrigger\ResnetV50ObjectClassificationHttpTrigger.csproj", "{E1B55363-EE2A-B3BC-D939-B6ED4FE39F8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploader", "ImageFileUploader\ImageFileUploader.csproj", "{83AC8C20-F5C9-43FB-A411-343133B01B77}"
 EndProject
@@ -93,9 +93,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HTTP", "HTTP", "{510CB697-B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityCameraRtspClientYoloDotNetObjectDetection", "SecurityCameraRtspClientYoloDotNetObjectDetection\SecurityCameraRtspClientYoloDotNetObjectDetection.csproj", "{B5911D13-8425-4DF5-9281-E3DEE4440CF3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ONNXFasterRCNN", "ONNXFasterRCNN", "{47EBD413-670B-4ACC-92A2-FAD3FCB65B68}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FasterRCNN", "FasterRCNN", "{47EBD413-670B-4ACC-92A2-FAD3FCB65B68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONNXFasterRCNNObjectDetectionApplication", "ONNXFasterRCNNObjectDetectionApplication\ONNXFasterRCNNObjectDetectionApplication.csproj", "{6B318889-53FB-4975-8FA1-BDADBB3A78AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FasterRCNNObjectDetectionApplication", "FasterRCNNObjectDetectionApplication\FasterRCNNObjectDetectionApplication.csproj", "{6B318889-53FB-4975-8FA1-BDADBB3A78AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDotnetObjectDetectionHttpTriggerFunction", "YoloDotnetObjectDetectionHttpTriggerFunction\YoloDotnetObjectDetectionHttpTriggerFunction.csproj", "{73847C54-2BA4-4F38-91DB-E30F69E7A90A}"
 EndProject
