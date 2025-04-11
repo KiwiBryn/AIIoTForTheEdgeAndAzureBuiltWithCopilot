@@ -61,7 +61,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "YoloSharp", "YoloSharp", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "YoloDotNet", "YoloDotNet", "{04AEA2E4-F8E3-4140-9B37-D3070639185D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resnet50", "Resnet50", "{25C8A93B-1A80-4B42-9DE3-B97B47855B8F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resnet50V5", "Resnet50V5", "{25C8A93B-1A80-4B42-9DE3-B97B47855B8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResnetV50ObjectClassificationApplication", "ResnetV50ObjectClassificationApplication\ResnetV50ObjectClassificationApplication.csproj", "{8C49F117-216C-47DE-FE14-0CB554D334B3}"
 EndProject
