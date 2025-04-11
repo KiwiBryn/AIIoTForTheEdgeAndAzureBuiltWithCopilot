@@ -34,7 +34,7 @@ namespace ONNXResnet50v27
          _labels = File.ReadAllLines("labels.txt").ToList();
       }
 
-      [Function("ImageClassificationFunction")]
+      [Function("ResnetV50ImageClassificationFunction")]
       public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
       {
          _logger.LogInformation("C# HTTP trigger function processed a request.");
