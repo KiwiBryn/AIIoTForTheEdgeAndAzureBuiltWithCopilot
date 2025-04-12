@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.ML.OnnxRuntime;
+﻿// Added Microsoft.ML.OnnxRuntime; & SixLabors.ImageSharp NuGet packages
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+using Microsoft.ML.OnnxRuntime; 
 using Microsoft.ML.OnnxRuntime.Tensors;
-using SixLabors.ImageSharp;
+using SixLabors.ImageSharp; 
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using static System.Net.Mime.MediaTypeNames;
 
 
 namespace FasterRCNNObjectDetectionApplicationCopilot
