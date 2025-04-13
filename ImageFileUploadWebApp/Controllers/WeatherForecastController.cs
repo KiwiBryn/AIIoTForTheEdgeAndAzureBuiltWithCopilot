@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ImageFileUploadHandler.Controllers;
+namespace ImageFileUploadWebapp.Controllers;
 
 [ApiController]
 [Route("[controller]")]
