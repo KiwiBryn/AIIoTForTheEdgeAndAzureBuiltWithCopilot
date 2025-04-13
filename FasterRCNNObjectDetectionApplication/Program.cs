@@ -21,7 +21,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 
-namespace ONNXFasterRCNNObjectDetectionApplication
+namespace FasterRCNNObjectDetectionApplication
 {
    internal class Program
    {
@@ -29,6 +29,8 @@ namespace ONNXFasterRCNNObjectDetectionApplication
       {
          string modelPath = "..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
          string imagePath = "sports.jpg";
+
+         Console.WriteLine("FasterRCNNObjectDetectionApplication");
 
          using var session = new InferenceSession(modelPath);
          using var image = Image.Load<Rgb24>(imagePath);

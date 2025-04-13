@@ -19,6 +19,8 @@ namespace FasterRCNNObjectDetectionApplicationCopilot
          string modelPath = @"..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
          string imagePath = "sports.jpg";
 
+         Console.WriteLine("FasterRCNNObjectDetectionApplicationCopilot");
+
          // Create the OnnxInference session
          using var session = new InferenceSession(modelPath);
 
