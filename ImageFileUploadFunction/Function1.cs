@@ -1,6 +1,3 @@
-// Please modify the function so it has a Storage Queue and Blob Storage output binding.
-//    Added Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs & Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues NuGets
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -17,7 +14,7 @@ namespace ImageFileUploadFunction
             _logger = logger;
         }
 
-        [Function("Function1")]
+        [Function("ImageFileUploadFunction")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
