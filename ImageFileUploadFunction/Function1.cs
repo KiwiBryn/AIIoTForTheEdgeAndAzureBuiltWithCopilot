@@ -1,3 +1,4 @@
+// Please modify the function so it has a Storage Queue and Blob Storage output binding.
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
