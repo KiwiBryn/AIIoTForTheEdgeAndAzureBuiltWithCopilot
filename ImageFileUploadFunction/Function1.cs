@@ -1,4 +1,6 @@
 // Please modify the function so it has a Storage Queue and Blob Storage output binding.
+//    Added Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs & Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues NuGets
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
