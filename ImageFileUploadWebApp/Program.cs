@@ -1,7 +1,7 @@
 
 using Microsoft.Extensions.Azure;
 
-namespace ImageFileUploadHandler
+namespace ImageFileUploadWebapp
 {
    public class Program
    {

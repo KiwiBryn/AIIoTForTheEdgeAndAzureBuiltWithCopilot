@@ -1,4 +1,4 @@
-namespace ImageFileUploadHandler
+namespace ImageFileUploadWebapp
 {
    public class WeatherForecast
    {

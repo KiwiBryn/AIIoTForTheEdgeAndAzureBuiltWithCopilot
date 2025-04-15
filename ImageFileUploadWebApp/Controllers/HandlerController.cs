@@ -9,7 +9,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ImageFileUploadHandler.Controllers
+namespace ImageFileUploadWebapp.Controllers
 {
    [Route("api/[controller]")]
    [ApiController]
