@@ -381,3 +381,4 @@ FodyWeavers.xsd
 /Models/YuiComputerVision20250303V1-100-640x640.onnx
 /Models/YuiComputerVision20250303V1-200-640x640.onnx
 /Models/YuiComputerVision20250305V1-100-1280x1280.onnx
+/YoloSharpObjectDetectionHttpTriggerFunctionCopilot/local.settings.json
