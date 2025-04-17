@@ -119,6 +119,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Uploading", "Uploading", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFileUploadFunction", "ImageFileUploadFunction\ImageFileUploadFunction.csproj", "{DFFDF98E-7C02-43BB-9088-B84B9DFFF4F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloSharpObjectDetectionHttpTriggerFunctionCopilot", "YoloSharpObjectDetectionHttpTriggerFunctionCopilot\YoloSharpObjectDetectionHttpTriggerFunctionCopilot.csproj", "{F9078A3F-A468-477B-9A58-600B335C4E78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -257,6 +259,10 @@ Global
 		{DFFDF98E-7C02-43BB-9088-B84B9DFFF4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFFDF98E-7C02-43BB-9088-B84B9DFFF4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFFDF98E-7C02-43BB-9088-B84B9DFFF4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9078A3F-A468-477B-9A58-600B335C4E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9078A3F-A468-477B-9A58-600B335C4E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9078A3F-A468-477B-9A58-600B335C4E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9078A3F-A468-477B-9A58-600B335C4E78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -295,6 +301,7 @@ Global
 		{CED997EB-8724-4229-9F0F-C9C084A70789} = {47EBD413-670B-4ACC-92A2-FAD3FCB65B68}
 		{58A8812C-388E-40A8-A803-0B21BAA75FBF} = {47EBD413-670B-4ACC-92A2-FAD3FCB65B68}
 		{DFFDF98E-7C02-43BB-9088-B84B9DFFF4F0} = {AD1F7C3A-A12C-43FC-8B63-A9E4ECE1475E}
+		{F9078A3F-A468-477B-9A58-600B335C4E78} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
