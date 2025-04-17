@@ -25,7 +25,6 @@ namespace YoloSharpPoseEstimationHttpTriggerFunction
          _log = log;
       }
 
-      //[FunctionName("PoseEstimation")]
       [Function("PoseEstimation")]
       public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
       {
@@ -58,8 +57,10 @@ namespace YoloSharpPoseEstimationHttpTriggerFunction
             var poses = result.Select(pose => new
             {
                //Keypoints = pose.Keypoints.Select(k => new { k.X, k.Y }),
-               Keypoints = pose.Select(k => new { k.Point.X, k.Point.Y }),
-               Confidence = pose.Confidence
+               Keypoints = pose.Select(k => new { k.Point.X, k.Point.Y, k.Confidence,k.Index }),
+               Confidence = pose.Confidence,
+               pose.Name,
+               pose.Bounds.X, pose.Bounds.Y,pose.Bounds.Width, pose.Bounds.Height
             });
 
             results.Add(new

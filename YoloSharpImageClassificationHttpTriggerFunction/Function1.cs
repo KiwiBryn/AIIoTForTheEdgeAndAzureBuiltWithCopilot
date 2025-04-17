@@ -24,7 +24,7 @@ namespace YoloSharpImageClassificationHttpTriggerFunction
          _logger = logger;
       }
 
-      [Function("YoloImageClassificationFunction")]
+      [Function("ImageClassification")]
       public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
       {
          _logger.LogInformation("C# HTTP trigger function processed a request.");
