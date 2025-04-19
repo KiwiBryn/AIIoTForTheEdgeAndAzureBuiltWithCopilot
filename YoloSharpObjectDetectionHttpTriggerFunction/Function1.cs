@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 using Compunet.YoloSharp;
 
 
-namespace YoloSharpObjectObjectHttpTriggerFunction
+namespace YoloSharpObjectDetectionHttpTriggerFunction
 {
    public class Function1
    {
