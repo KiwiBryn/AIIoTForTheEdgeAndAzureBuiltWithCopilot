@@ -18,62 +18,66 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Compunet.YoloSharp;
 
-public class Function1
+
+namespace YoloSharpObjectObjectHttpTriggerFunction
 {
-   private readonly ILogger<Function1> _logger;
-
-   public Function1(ILogger<Function1> logger)
+   public class Function1
    {
-      _logger = logger;
-   }
+      private readonly ILogger<Function1> _logger;
 
-   [Function("ObjectDetectionFunction")]
-   public async Task<IActionResult> Run(
-       [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
-   {
-      _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-      //  if (req.Headers == null || !req.Headers.ContainsKey("Content-Type") || !req.Headers["Content-Type"].ToString().Contains("multipart/form-data"))
-      //  {
-      //     return new BadRequestObjectResult("The request must have a Content-Type header with multipart/form-data.");
-      //  }
-
-      // Intellisense fix
-      if (req.Headers == null || !req.Headers.TryGetValue("Content-Type", out Microsoft.Extensions.Primitives.StringValues value) || !value.ToString().Contains("multipart/form-data"))
+      public Function1(ILogger<Function1> logger)
       {
-         return new BadRequestObjectResult("The request must have a Content-Type header with multipart/form-data.");
+         _logger = logger;
       }
 
-      // Read the images from the form data
-      var form = await req.ReadFormAsync();
-      var files = form.Files;
-      if (files.Count == 0)
+      [Function("ObjectDetection")]
+      public async Task<IActionResult> Run(
+          [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
       {
-         return new BadRequestObjectResult("No image files uploaded.");
-      }
+         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-      if (files.Count > 1)
-      {
-         return new BadRequestObjectResult("Only one image file is allowed per request.");
-      }
+         //  if (req.Headers == null || !req.Headers.ContainsKey("Content-Type") || !req.Headers["Content-Type"].ToString().Contains("multipart/form-data"))
+         //  {
+         //     return new BadRequestObjectResult("The request must have a Content-Type header with multipart/form-data.");
+         //  }
 
-      var file = files[0];
-      if (file.Length == 0)
-      {
-         return new BadRequestObjectResult("The uploaded image file is empty.");
-      }
-
-      // Load the YOLOv8 model
-      using (var yolo = new YoloPredictor("yolov8s.onnx"))
-      {
-         // Perform object detection
-         using (var stream = file.OpenReadStream())
+         // Intellisense fix
+         if (req.Headers == null || !req.Headers.TryGetValue("Content-Type", out Microsoft.Extensions.Primitives.StringValues value) || !value.ToString().Contains("multipart/form-data"))
          {
-            var items = yolo.Detect(stream);
-            var result = new { FileName = file.FileName, Detections = items };
+            return new BadRequestObjectResult("The request must have a Content-Type header with multipart/form-data.");
+         }
 
-            // Return the detection results
-            return new OkObjectResult(result);
+         // Read the images from the form data
+         var form = await req.ReadFormAsync();
+         var files = form.Files;
+         if (files.Count == 0)
+         {
+            return new BadRequestObjectResult("No image files uploaded.");
+         }
+
+         if (files.Count > 1)
+         {
+            return new BadRequestObjectResult("Only one image file is allowed per request.");
+         }
+
+         var file = files[0];
+         if (file.Length == 0)
+         {
+            return new BadRequestObjectResult("The uploaded image file is empty.");
+         }
+
+         // Load the YOLOv8 model
+         using (var yolo = new YoloPredictor("yolov8s.onnx"))
+         {
+            // Perform object detection
+            using (var stream = file.OpenReadStream())
+            {
+               var items = yolo.Detect(stream);
+               var result = new { FileName = file.FileName, Detections = items };
+
+               // Return the detection results
+               return new OkObjectResult(result);
+            }
          }
       }
    }
