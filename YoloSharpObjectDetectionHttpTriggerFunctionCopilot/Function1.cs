@@ -29,7 +29,7 @@ namespace ObjectDetectionFunctionApp
 
       //[FunctionName("DetectObjects")] BHL
       //public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "detect")] HttpRequest req,ILogger log) BHL
-      [Function("ObjectDetectionFunction")]
+      [Function("ObjectDetection")]
       public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
       {
          log.LogInformation("DetectObjects function received a request for object detection.");
