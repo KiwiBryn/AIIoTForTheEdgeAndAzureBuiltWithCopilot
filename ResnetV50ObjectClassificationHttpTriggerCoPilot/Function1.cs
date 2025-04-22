@@ -15,14 +15,24 @@ using Microsoft.Azure.Functions.Worker;
 
 public static class Function1
 {
-   private static readonly InferenceSession session = new InferenceSession("resnet50.onnx");
+   private static readonly ILogger logger;
+   private static readonly InferenceSession session = new InferenceSession("resnet50-v2-7.onnx");
+
+   // Static constructor to initialize logger
+   static Function1()
+   {
+      var loggerFactory = LoggerFactory.Create(builder =>
+      {
+         builder.AddConsole();
+      });
+      logger = loggerFactory.CreateLogger("Function1Logger");
+   }
 
    [Function("ImageClassification")]
    public static IActionResult Run(
-       [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
-       ILogger log)
+       [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
    {
-      log.LogInformation("Processing image classification request...");
+      logger.LogInformation("Processing image classification request...");
 
       try
       {
@@ -47,7 +57,7 @@ public static class Function1
       }
       catch (Exception ex)
       {
-         log.LogError($"Error: {ex.Message}");
+         logger.LogError($"Error: {ex.Message}");
          return new BadRequestObjectResult("Invalid image or request.");
       }
    }
