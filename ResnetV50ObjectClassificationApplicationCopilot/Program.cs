@@ -10,15 +10,15 @@ class Program
 {
    static void Main()
    {
-      string modelPath = "resnet50-v2-7.onnx"; // Path to your ONNX model
-      string imagePath = "pizza.jpg"; // Path to the input image
+      string modelPath = "resnet50-v2-7.onnx"; // Updated model path
+      string imagePath = "pizza.jpg"; // Updated image path
 
       using var session = new InferenceSession(modelPath);
       var inputTensor = LoadAndPreprocessImage(imagePath);
 
       var inputs = new List<NamedOnnxValue>
         {
-            NamedOnnxValue.CreateFromTensor("data", inputTensor) // Changed "input" to "data"
+            NamedOnnxValue.CreateFromTensor("data", inputTensor) // Using "data" as the input tensor name
         };
 
       using var results = session.Run(inputs);
