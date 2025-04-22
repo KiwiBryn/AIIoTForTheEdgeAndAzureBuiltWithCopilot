@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using System.Numerics;
 using System.IO;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
@@ -34,14 +33,21 @@ class Program
       using Bitmap resized = new Bitmap(bitmap, new Size(width, height));
 
       var tensor = new DenseTensor<float>(new[] { 1, 3, width, height });
+
+      // ImageNet mean & standard deviation values
+      float[] mean = { 0.485f, 0.456f, 0.406f };
+      float[] stdev = { 0.229f, 0.224f, 0.225f };
+
       for (int y = 0; y < height; y++)
       {
          for (int x = 0; x < width; x++)
          {
             Color pixel = resized.GetPixel(x, y);
-            tensor[0, 0, y, x] = pixel.R / 255f; // Normalize
-            tensor[0, 1, y, x] = pixel.G / 255f;
-            tensor[0, 2, y, x] = pixel.B / 255f;
+
+            // Normalize using mean and standard deviation
+            tensor[0, 0, y, x] = (pixel.R / 255f - mean[0]) / stdev[0]; // Red channel
+            tensor[0, 1, y, x] = (pixel.G / 255f - mean[1]) / stdev[1]; // Green channel
+            tensor[0, 2, y, x] = (pixel.B / 255f - mean[2]) / stdev[2]; // Blue channel
          }
       }
 
