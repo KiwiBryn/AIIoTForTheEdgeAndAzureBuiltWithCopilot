@@ -11,6 +11,7 @@ class Program
    {
       string modelPath = "resnet50-v2-7.onnx"; // Updated model path
       string imagePath = "pizza.jpg"; // Updated image path
+      string labelsPath = "labels.txt"; // Path to labels file
 
       using var session = new InferenceSession(modelPath);
       var inputTensor = LoadAndPreprocessImage(imagePath);
@@ -26,10 +27,20 @@ class Program
       // Calculate softmax
       var probabilities = Softmax(output);
 
-      // Get the class index with the highest probability
-      int predictedClass = Array.IndexOf(probabilities, probabilities.Max());
-      Console.WriteLine($"Predicted class index: {predictedClass}");
-      Console.WriteLine($"Probabilities: {string.Join(", ", probabilities.Select(p => p.ToString("F4")))}");
+      // Load labels
+      var labels = File.ReadAllLines(labelsPath);
+
+      // Find Top 10 labels and their confidence scores
+      var top10 = probabilities
+          .Select((prob, index) => new { Label = labels[index], Confidence = prob })
+          .OrderByDescending(item => item.Confidence)
+          .Take(10);
+
+      Console.WriteLine("Top 10 Predictions:");
+      foreach (var item in top10)
+      {
+         Console.WriteLine($"{item.Label}: {item.Confidence:F4}");
+      }
    }
 
    static DenseTensor<float> LoadAndPreprocessImage(string imagePath)
@@ -63,7 +74,8 @@ class Program
    static float[] Softmax(float[] logits)
    {
       // Compute softmax
-      var expScores = logits.Select(Math.Exp).ToArray();
+      float maxVal = logits.Max();
+      var expScores = logits.Select(v => (float)Math.Exp(v - maxVal)).ToArray();
       double sumExpScores = expScores.Sum();
       return expScores.Select(score => (float)(score / sumExpScores)).ToArray();
    }
