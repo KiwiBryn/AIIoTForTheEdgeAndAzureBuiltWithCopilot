@@ -11,8 +11,10 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using Newtonsoft.Json;
+using Microsoft.Azure.Functions.Worker;
+using static System.Net.Mime.MediaTypeNames;
 
-public static class ResNet50Function
+public static class Function1
 {
    private static readonly InferenceSession session = new InferenceSession("resnet50.onnx");
 
