@@ -23,8 +23,8 @@ public static class Function1
    static Function1()
    {
       var loggerFactory = LoggerFactory.Create(builder =>
-      {
-         builder.AddConsole();
+      { 
+         builder.AddConsole(); 
       });
       logger = loggerFactory.CreateLogger("Function1Logger");
    }
@@ -45,16 +45,23 @@ public static class Function1
 
          var inputName = session.InputMetadata.Keys.First();
          var outputName = session.OutputMetadata.Keys.First();
-         var inputList = new List<NamedOnnxValue>
-            {
-                NamedOnnxValue.CreateFromTensor(inputName, inputTensor)
-            };
+         var inputList = new List<NamedOnnxValue> 
+         { 
+            NamedOnnxValue.CreateFromTensor(inputName, inputTensor)
+         };
 
          var result = await Task.Run(() => session.Run(inputList));
 
          var predictions = result.First().AsTensor<float>().ToArray();
 
-         return new JsonResult(new { predictions });
+         // Get top 10 predictions (label ID and confidence)
+         var top10 = predictions
+             .Select((confidence, labelId) => new { labelId, confidence })
+             .OrderByDescending(p => p.confidence)
+             .Take(10)
+             .ToList();
+
+         return new JsonResult(new { predictions = top10 });
       }
       catch (Exception ex)
       {
