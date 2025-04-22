@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ public static class Function1
    }
 
    [Function("ImageClassification")]
-   public static IActionResult Run(
+   public static async Task<IActionResult> Run(
        [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
    {
       logger.LogInformation("Processing image classification request...");
@@ -37,7 +38,7 @@ public static class Function1
       try
       {
          using var ms = new MemoryStream();
-         req.Body.CopyTo(ms);
+         await req.Body.CopyToAsync(ms);
          using var image = Image.FromStream(ms);
 
          var inputTensor = PreprocessImage(image);
@@ -49,7 +50,7 @@ public static class Function1
                 NamedOnnxValue.CreateFromTensor(inputName, inputTensor)
             };
 
-         var result = session.Run(inputList);
+         var result = await Task.Run(() => session.Run(inputList));
 
          var predictions = result.First().AsTensor<float>().ToArray();
 
