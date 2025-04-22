@@ -18,7 +18,7 @@ class Program
 
       var inputs = new List<NamedOnnxValue>
         {
-            NamedOnnxValue.CreateFromTensor("input", inputTensor)
+            NamedOnnxValue.CreateFromTensor("data", inputTensor) // Changed "input" to "data"
         };
 
       using var results = session.Run(inputs);
