@@ -20,6 +20,7 @@ public static class Function1
 {
    private static readonly ILogger logger;
    private static readonly InferenceSession session = new InferenceSession("resnet50-v2-7.onnx");
+   private static readonly List<string> labels = LoadLabels("labels.txt");
 
    static Function1()
    {
@@ -69,7 +70,7 @@ public static class Function1
 
          // Get top 10 predictions (label ID and confidence)
          var top10 = softmaxResults
-             .Select((confidence, labelId) => new { labelId, confidence })
+             .Select((confidence, labelId) => new { labelId, confidence, label = labelId < labels.Count ? labels[labelId] : $"Unknown-{labelId}" })
              .OrderByDescending(p => p.confidence)
              .Take(10)
              .ToList();
@@ -104,5 +105,18 @@ public static class Function1
       }
 
       return new DenseTensor<float>(tensorData, new[] { 1, 3, 224, 224 });
+   }
+
+   private static List<string> LoadLabels(string filePath)
+   {
+      try
+      {
+         return File.ReadAllLines(filePath).ToList();
+      }
+      catch (Exception ex)
+      {
+         logger.LogError($"Error loading labels file: {ex.Message}");
+         return new List<string>(); // Return empty list if file fails to load
+      }
    }
 }
