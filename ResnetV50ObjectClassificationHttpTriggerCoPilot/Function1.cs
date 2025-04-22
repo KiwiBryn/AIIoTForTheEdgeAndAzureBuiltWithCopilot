@@ -54,8 +54,17 @@ public static class Function1
 
          var predictions = result.First().AsTensor<float>().ToArray();
 
+         // Compute exponentials for all scores
+         var expScores = predictions.Select(MathF.Exp).ToArray();
+
+         // Compute sum of exponentials
+         float sumExpScores = expScores.Sum();
+
+         // Normalize scores into probabilities
+         var softmaxResults = expScores.Select(score => score / sumExpScores).ToArray();
+
          // Get top 10 predictions (label ID and confidence)
-         var top10 = predictions
+         var top10 = softmaxResults
              .Select((confidence, labelId) => new { labelId, confidence })
              .OrderByDescending(p => p.confidence)
              .Take(10)
