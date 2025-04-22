@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "appInsights1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/microsoft.insights/components/AIIoTForTheEdgeAndAzureApplicationInsights",
+      "type": "appInsights.azure",
+      "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
+    },
+    "storage1": {
+      "ignored": "true",
+      "type": "storage"
+    },
+    "apis1": {
+      "ignored": "true",
+      "type": "apis.azure"
+    }
+  }
+}
