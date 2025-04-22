@@ -68,14 +68,18 @@ public static class Function1
       var resized = new Bitmap(image, new Size(224, 224));
       var tensorData = new float[1 * 3 * 224 * 224];
 
+      float[] mean = { 0.485f, 0.456f, 0.406f };
+      float[] std = { 0.229f, 0.224f, 0.225f };
+
       for (int y = 0; y < 224; y++)
       {
          for (int x = 0; x < 224; x++)
          {
             var pixel = resized.GetPixel(x, y);
-            tensorData[(0 * 3 * 224 * 224) + (0 * 224 * 224) + (y * 224) + x] = pixel.R / 255.0f;
-            tensorData[(0 * 3 * 224 * 224) + (1 * 224 * 224) + (y * 224) + x] = pixel.G / 255.0f;
-            tensorData[(0 * 3 * 224 * 224) + (2 * 224 * 224) + (y * 224) + x] = pixel.B / 255.0f;
+
+            tensorData[(0 * 3 * 224 * 224) + (0 * 224 * 224) + (y * 224) + x] = (pixel.R / 255.0f - mean[0]) / std[0];
+            tensorData[(0 * 3 * 224 * 224) + (1 * 224 * 224) + (y * 224) + x] = (pixel.G / 255.0f - mean[1]) / std[1];
+            tensorData[(0 * 3 * 224 * 224) + (2 * 224 * 224) + (y * 224) + x] = (pixel.B / 255.0f - mean[2]) / std[2];
          }
       }
 
