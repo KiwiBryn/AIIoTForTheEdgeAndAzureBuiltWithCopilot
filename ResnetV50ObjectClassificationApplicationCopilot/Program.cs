@@ -79,9 +79,9 @@ class Program
 
    static float[] Softmax(float[] logits)
    {
-      // Compute softmax
+      // Compute softmax  
       float maxVal = logits.Max();
-      var expScores = logits.Select(v => (float)Math.Exp(v - maxVal)).ToArray(); 
+      var expScores = logits.Select(logit => Math.Exp(logit - maxVal)).ToArray(); // Explicitly cast logit to double  
       double sumExpScores = expScores.Sum();
       return expScores.Select(score => (float)(score / sumExpScores)).ToArray();
    }
