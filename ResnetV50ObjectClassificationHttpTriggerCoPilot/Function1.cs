@@ -12,7 +12,7 @@ using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using Newtonsoft.Json;
 using Microsoft.Azure.Functions.Worker;
-using static System.Net.Mime.MediaTypeNames;
+
 
 public static class Function1
 {
