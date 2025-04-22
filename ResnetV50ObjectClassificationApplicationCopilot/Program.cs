@@ -43,6 +43,9 @@ class Program
       {
          Console.WriteLine($"{item.Label}: {item.Confidence:F4}");
       }
+
+      Console.WriteLine("Press ENTER to exit");
+      Console.ReadLine();
    }
 
    static DenseTensor<float> LoadAndPreprocessImage(string imagePath)
