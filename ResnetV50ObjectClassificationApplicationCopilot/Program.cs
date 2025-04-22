@@ -23,7 +23,13 @@ class Program
       using var results = session.Run(inputs);
       var output = results.First().AsTensor<float>().ToArray();
 
-      Console.WriteLine("Predicted class index: " + Array.IndexOf(output, output.Max()));
+      // Calculate softmax
+      var probabilities = Softmax(output);
+
+      // Get the class index with the highest probability
+      int predictedClass = Array.IndexOf(probabilities, probabilities.Max());
+      Console.WriteLine($"Predicted class index: {predictedClass}");
+      Console.WriteLine($"Probabilities: {string.Join(", ", probabilities.Select(p => p.ToString("F4")))}");
    }
 
    static DenseTensor<float> LoadAndPreprocessImage(string imagePath)
@@ -52,5 +58,13 @@ class Program
       }
 
       return tensor;
+   }
+
+   static float[] Softmax(float[] logits)
+   {
+      // Compute softmax
+      var expScores = logits.Select(Math.Exp).ToArray();
+      double sumExpScores = expScores.Sum();
+      return expScores.Select(score => (float)(score / sumExpScores)).ToArray();
    }
 }
