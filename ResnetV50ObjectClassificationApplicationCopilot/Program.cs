@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.IO;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 class Program
 {
@@ -45,9 +47,10 @@ class Program
 
    static DenseTensor<float> LoadAndPreprocessImage(string imagePath)
    {
-      using Bitmap bitmap = new Bitmap(imagePath);
       int width = 224, height = 224; // ResNet50 expects 224x224 input
-      using Bitmap resized = new Bitmap(bitmap, new Size(width, height));
+
+      using var image = Image.Load<Rgb24>(imagePath);
+      image.Mutate(x => x.Resize(width, height));
 
       var tensor = new DenseTensor<float>(new[] { 1, 3, width, height });
 
@@ -59,7 +62,7 @@ class Program
       {
          for (int x = 0; x < width; x++)
          {
-            Color pixel = resized.GetPixel(x, y);
+            var pixel = image[x, y];
 
             // Normalize using mean and standard deviation
             tensor[0, 0, y, x] = (pixel.R / 255f - mean[0]) / stdev[0]; // Red channel
@@ -75,7 +78,7 @@ class Program
    {
       // Compute softmax
       float maxVal = logits.Max();
-      var expScores = logits.Select(v => (float)Math.Exp(v - maxVal)).ToArray();
+      var expScores = logits.Select(v => (float)Math.Exp(v - maxVal)).ToArray(); 
       double sumExpScores = expScores.Sum();
       return expScores.Select(score => (float)(score / sumExpScores)).ToArray();
    }
