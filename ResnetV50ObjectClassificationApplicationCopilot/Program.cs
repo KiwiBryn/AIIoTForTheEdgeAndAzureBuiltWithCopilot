@@ -1,0 +1,10 @@
+﻿namespace ResnetV50ObjectClassificationApplicationCopilot
+{
+   internal class Program
+   {
+      static void Main(string[] args)
+      {
+         Console.WriteLine("Hello, World!");
+      }
+   }
+}
