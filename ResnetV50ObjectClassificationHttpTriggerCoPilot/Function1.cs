@@ -6,19 +6,18 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+//using Microsoft.Azure.WebJobs;
+//using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using Microsoft.Azure.Functions.Worker;
-
 
 public static class Function1
 {
    private static readonly InferenceSession session = new InferenceSession("resnet50.onnx");
 
-   [FunctionName("ImageClassification")]
+   [Function("ImageClassification")]
    public static IActionResult Run(
        [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
        ILogger log)
@@ -35,10 +34,12 @@ public static class Function1
 
          var inputName = session.InputMetadata.Keys.First();
          var outputName = session.OutputMetadata.Keys.First();
-         var result = session.Run(new Dictionary<string, NamedOnnxValue>
+         var inputList = new List<NamedOnnxValue>
             {
-                { inputName, NamedOnnxValue.CreateFromTensor(inputName, inputTensor) }
-            });
+                NamedOnnxValue.CreateFromTensor(inputName, inputTensor)
+            };
+
+         var result = session.Run(inputList);
 
          var predictions = result.First().AsTensor<float>().ToArray();
 
