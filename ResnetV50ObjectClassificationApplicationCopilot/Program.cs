@@ -43,7 +43,7 @@ namespace ResnetV5ObjectClassificationApplication
          Console.WriteLine("Top 10 Predictions:");
          foreach (var item in top10)
          {
-            Console.WriteLine($"{item.Label}: {item.Confidence:F4}");
+            Console.WriteLine($"{item.Label}: {item.Confidence}");
          }
 
          Console.WriteLine("Press ENTER to exit");
