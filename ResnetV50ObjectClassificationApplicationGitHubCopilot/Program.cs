@@ -18,7 +18,7 @@ namespace ResnetV5ObjectClassificationApplication
    {
       static void Main(string[] args)
       {
-         string modelPath = "..\\..\\..\\..\\Models\\resnet50-v2-7.onnx"; // Path to the ONNX model
+         string modelPath = "resnet50-v2-7.onnx"; // Path to the ONNX model
          string imagePath = "pizza.jpg"; // Path to the input image
          string labelsPath = "labels.txt"; // Path to the labels file
 
