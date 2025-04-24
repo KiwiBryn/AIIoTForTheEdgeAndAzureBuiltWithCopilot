@@ -12,7 +12,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace ONNXResnetV5ObjectClassificationApplication
+namespace ResnetV5ObjectClassificationApplication
 {
    internal class Program
    {
@@ -24,17 +24,19 @@ namespace ONNXResnetV5ObjectClassificationApplication
 
          // Load the image
          using var image = Image.Load<Rgb24>(imagePath);
+         //image.Mutate(x => x.Resize(224, 224));
+       
          image.Mutate(x => x.Resize(new ResizeOptions
          {
             Size = new Size(224, 224),
-            Mode = ResizeMode.BoxPad
+            //Mode = ResizeMode.BoxPad
             //Mode = ResizeMode.Min
             //Mode = ResizeMode.Max
             //Mode = ResizeMode.Crop
-            //Mode = ResizeMode.Stretch
+            Mode = ResizeMode.Stretch 
          }));
 
-         image.Save("..\\..\\..\\pizza-resized.jpeg");
+         //image.Save("..\\..\\..\\pizza-resized.jpeg");
 
          var inputTensor = ImageToTensor(image);
 
