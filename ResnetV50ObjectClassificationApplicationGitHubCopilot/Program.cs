@@ -12,29 +12,31 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace ONNXResnetV5ObjectClassificationApplication
+namespace ResnetV5ObjectClassificationApplication
 {
    internal class Program
    {
       static void Main(string[] args)
       {
-         string modelPath = "..\\..\\..\\..\\Models\\resnet50-v2-7.onnx"; // Path to the ONNX model
+         string modelPath = "resnet50-v2-7.onnx"; // Path to the ONNX model
          string imagePath = "pizza.jpg"; // Path to the input image
          string labelsPath = "labels.txt"; // Path to the labels file
 
          // Load the image
          using var image = Image.Load<Rgb24>(imagePath);
+         //image.Mutate(x => x.Resize(224, 224));
+       
          image.Mutate(x => x.Resize(new ResizeOptions
          {
             Size = new Size(224, 224),
-            Mode = ResizeMode.BoxPad
+            //Mode = ResizeMode.BoxPad
             //Mode = ResizeMode.Min
             //Mode = ResizeMode.Max
             //Mode = ResizeMode.Crop
-            //Mode = ResizeMode.Stretch
+            Mode = ResizeMode.Stretch 
          }));
 
-         image.Save("..\\..\\..\\pizza-resized.jpeg");
+         //image.Save("..\\..\\..\\pizza-resized.jpeg");
 
          var inputTensor = ImageToTensor(image);
 
