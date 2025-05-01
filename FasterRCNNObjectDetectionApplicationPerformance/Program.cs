@@ -7,6 +7,9 @@
          string modelPath = "..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
          string imagePath = "..\\..\\..\\..\\Images\\sports.jpg";
 
+         byte[] modelBytes = File.ReadAllBytes(modelPath);
+         byte[] imageBytes = File.ReadAllBytes(imagePath);
+
          Console.WriteLine("FasterRCNNObjectDetectionApplicationPerformance");
 #if RELEASE
          Console.WriteLine("RELEASE");
@@ -15,7 +18,9 @@
 #endif
 
          using var session = new InferenceSession(modelPath);
+         //using var session = new InferenceSession(modelBytes);
          using var image = Image.Load<Rgb24>(imagePath);
+         //using var image = Image.Load<Rgb24>(imageBytes);
 
          // Resize image to fit within [800, 1333] and be divisible by 32
          ResizeImage(image);
