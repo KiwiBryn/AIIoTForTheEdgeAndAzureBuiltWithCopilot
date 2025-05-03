@@ -5,6 +5,7 @@
       static void Main(string[] args)
       {
          string modelPath = "..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
+         //string modelPath = "FasterRCNN-10-optimised.onnx";
          string imagePath = "..\\..\\..\\..\\Images\\sports.jpg";
 
          byte[] modelBytes = File.ReadAllBytes(modelPath);
@@ -16,29 +17,49 @@
 #else
          Console.WriteLine("DEBUG");
 #endif
+         using var session = new InferenceSession(modelPath, new SessionOptions()
+         //using var session = new InferenceSession(modelBytes, new SessionOptions()
+         {
+            //GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED,
+            //GraphOptimizationLevel = GraphOptimizationLevel.ORT_DISABLE_ALL,
+            //GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_BASIC,
+            //GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL, 
+            //EnableCpuMemArena = true,
+            //EnableMemPattern = true,
+            //EnableProfiling = true,
+            //EnableSequentialExecution = true,
+            //ExecutionMode = ExecutionMode.ORT_SEQUENTIAL,
+            //ExecutionMode = ExecutionMode.ORT_PARALLEL,
+            //OptimizedModelFilePath = "FasterRCNN-10-Optimised.onnx"
+            //InterOpNumThreads = 1,
+            //ProfileOutputPathPrefix = "onnxruntime_profile",
+         });
 
-         using var session = new InferenceSession(modelPath);
-         //using var session = new InferenceSession(modelBytes);
-         using var image = Image.Load<Rgb24>(imagePath);
-         //using var image = Image.Load<Rgb24>(imageBytes);
+         do
+         {
+            //using var session = new InferenceSession(modelBytes);
+            using var image = Image.Load<Rgb24>(imagePath);
+            //using var image = Image.Load<Rgb24>(imageBytes);
 
-         // Resize image to fit within [800, 1333] and be divisible by 32
-         ResizeImage(image);
+            // Resize image to fit within [800, 1333] and be divisible by 32
+            ResizeImage(image);
 
-         var inputTensor = ExtractTensorFromImage(image);
-         var inputs = new List<NamedOnnxValue>
+            var inputTensor = ExtractTensorFromImage(image);
+            var inputs = new List<NamedOnnxValue>
          {
             NamedOnnxValue.CreateFromTensor("image", inputTensor)
          };
 
-         using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = session.Run(inputs);
+            using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = session.Run(inputs);
 
-         ProcessOutput(results);
+            ProcessOutput(results);
+         }
+         while (!Console.KeyAvailable);
 
          Console.WriteLine("Press Enter to exit");
          Console.ReadLine();
       }
-
+       
       private static void ResizeImage(Image<Rgb24> image)
       {
          const int minSize = 800;
