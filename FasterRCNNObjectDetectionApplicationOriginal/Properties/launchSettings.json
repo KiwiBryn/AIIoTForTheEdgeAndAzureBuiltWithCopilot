@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FasterRCNNObjectDetectionApplicationOriginal": {
+      "commandName": "Project",
+      "commandLineArgs": "\"..\\\\..\\\\..\\\\..\\\\Models\\\\FasterRCNN-10.onnx\" \"..\\\\..\\\\..\\\\..\\\\Images\\\\HARBOUR.jpg\" HARBOUROriginal.jpg"
+    }
+  }
+}
