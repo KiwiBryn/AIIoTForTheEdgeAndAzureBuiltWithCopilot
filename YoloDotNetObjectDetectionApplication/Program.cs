@@ -51,7 +51,7 @@ class Program
       // Process and display the results
       foreach (var result in results)
       {
-         Console.WriteLine($"Object: {result.Label}, Confidence: {result.Confidence}, BoundingBox: {result.BoundingBox}");
+         Console.WriteLine($"Object: {result.Label.Name}, Confidence: {result.Confidence}, BoundingBox: {result.BoundingBox.Left} {result.BoundingBox.Bottom} {result.BoundingBox.Right} {result.BoundingBox.Top}");
       }
 
       // Optionally, draw bounding boxes on the image and save it
