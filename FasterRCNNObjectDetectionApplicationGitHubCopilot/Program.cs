@@ -21,7 +21,7 @@ namespace FasterRCNNObjectDetectionApplicationGitHubCopilot
       {
          // Path to the ONNX model and input image
          string modelPath = @"..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
-         string imagePath = "sports.jpg";
+         string imagePath = @"..\\..\\..\\..\\Images\\sports.jpg";
 
          Console.WriteLine("FasterRCNNObjectDetectionApplicationGitHubCopilot");
 
@@ -129,12 +129,14 @@ namespace FasterRCNNObjectDetectionApplicationGitHubCopilot
             // Display label and confidence
             string label = $"Label: {labels[i]}, Confidence: {scores[i]:0.00}";
             graphics.DrawString(label, new Font("Arial", 12), Brushes.Yellow, new PointF(x1, y1 - 20));
+
+            Console.WriteLine($"Label: {labels[i]}, Confidence: {scores[i]}, Bounding Box: [{x1}, {y1}, {x2}, {y2}]");
          }
 
          // Save the image with annotations
-         image.Save("output.jpg");
+         image.Save("FasterRCNNObjectDetectionApplicationGitHubCopilotSports.jpg");
 
-         Console.WriteLine("Output image saved as 'output.jpg'.");
+         Console.WriteLine("Output image saved as 'FasterRCNNObjectDetectionApplicationGitHubCopilotSports.jpg'.");
       }
    }
 }
