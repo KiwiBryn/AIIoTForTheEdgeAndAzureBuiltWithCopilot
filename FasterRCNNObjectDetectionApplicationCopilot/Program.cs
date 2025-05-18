@@ -17,7 +17,8 @@ namespace FasterRCNNObjectDetectionApplicationCopilot
       {
          // Paths to the ONNX model and the image file (adjust these paths as needed)
          string modelPath = @"..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
-         string imagePath = "sports.jpg";
+         string imagePath = @"..\\..\\..\\..\\Images\\sports.jpg";
+
 
          Console.WriteLine("FasterRCNNObjectDetectionApplicationCopilot");
 
