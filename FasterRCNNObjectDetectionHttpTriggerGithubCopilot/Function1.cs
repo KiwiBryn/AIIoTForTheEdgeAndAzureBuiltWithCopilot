@@ -4,7 +4,8 @@
 //    Used Copilot to add Microsoft.ML.OnnxRuntime.Tensors using directive
 //    Manually added ONNX FIle + labels file sorted out paths
 //    Used Netron to fixup output tensor names
-// Change DenseTensor to BGR (based on https://onnxruntime.ai/docs/tutorials/csharp/fasterrcnn_csharp.html)   
+// Change DenseTensor to BGR (based on https://github.com/onnx/models/tree/main/validated/vision/object_detection_segmentation/faster-rcnn#preprocessing-steps)
+// Normalise colour values with mean = [102.9801, 115.9465, 122.7717]
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -86,15 +87,19 @@ namespace FasterRCNNObjectDetectionHttpTriggerGithubCopilot
          const int targetHeight = 800;
          image.Mutate(x => x.Resize(targetWidth, targetHeight));
 
+         // BGR mean values for normalization
+         float[] mean = { 102.9801f, 115.9465f, 122.7717f };
+
          var tensor = new DenseTensor<float>(new[] { 3, targetHeight, targetWidth });
          for (int y = 0; y < targetHeight; y++)
          {
             for (int x = 0; x < targetWidth; x++)
             {
                var pixel = image[x, y];
-               tensor[0, y, x] = pixel.B / 255f;
-               tensor[1, y, x] = pixel.G / 255f;
-               tensor[2, y, x] = pixel.R / 255f;
+               // Convert RGB to BGR and normalize by subtracting mean
+               tensor[0, y, x] = pixel.B - mean[0];
+               tensor[1, y, x] = pixel.G - mean[1];
+               tensor[2, y, x] = pixel.R - mean[2];
             }
          }
          return tensor;
