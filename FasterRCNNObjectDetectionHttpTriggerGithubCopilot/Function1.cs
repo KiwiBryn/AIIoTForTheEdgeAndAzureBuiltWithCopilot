@@ -2,6 +2,8 @@
 //    manually added the ML.Net ONNX NuGet + using directives
 //    manually added the ImageSharp NuGet + using directives
 //    Used Copilot to add Microsoft.ML.OnnxRuntime.Tensors using directive
+//    Manually added ONNX FIle + labels file sorted out paths
+//    Used Netron to fixup output tensor names
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -24,7 +26,6 @@ namespace FasterRCNNObjectDetectionHttpTriggerGithubCopilot
       public Function1(ILogger<Function1> logger)
       {
          _logger = logger;
-         // Load ONNX model and labels
          _session = new InferenceSession("FasterRCNN-10.onnx");
          _labels = File.ReadAllLines("labels.txt").ToList();
       }
@@ -43,16 +44,16 @@ namespace FasterRCNNObjectDetectionHttpTriggerGithubCopilot
          var inputTensor = PreprocessImage(image);
 
          var inputs = new List<NamedOnnxValue>
-               {
-                   NamedOnnxValue.CreateFromTensor("image", inputTensor)
-               };
+                  {
+                      NamedOnnxValue.CreateFromTensor("image", inputTensor)
+                  };
 
          using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = _session.Run(inputs);
          var output = results.ToDictionary(x => x.Name, x => x.Value);
 
-         var boxes = (DenseTensor<float>)output["boxes"];
-         var labels = (DenseTensor<long>)output["labels"];
-         var scores = (DenseTensor<float>)output["scores"];
+         var boxes = (DenseTensor<float>)output["6379"];
+         var labels = (DenseTensor<long>)output["6381"];
+         var scores = (DenseTensor<float>)output["6383"];
 
          var detections = new List<object>();
          for (int i = 0; i < scores.Length; i++)
@@ -79,20 +80,20 @@ namespace FasterRCNNObjectDetectionHttpTriggerGithubCopilot
 
       private static DenseTensor<float> PreprocessImage( Image<Rgb24> image)
       {
-         // Resize to 800x800 (FasterRCNN default), normalize to [0,1], and convert to CHW
+         // Remove batch dimension: shape [3, H, W]
          const int targetWidth = 800;
          const int targetHeight = 800;
          image.Mutate(x => x.Resize(targetWidth, targetHeight));
 
-         var tensor = new DenseTensor<float>(new[] { 1, 3, targetHeight, targetWidth });
+         var tensor = new DenseTensor<float>(new[] { 3, targetHeight, targetWidth });  
          for (int y = 0; y < targetHeight; y++)
          {
             for (int x = 0; x < targetWidth; x++)
             {
                var pixel = image[x, y];
-               tensor[0, 0, y, x] = pixel.R / 255f;
-               tensor[0, 1, y, x] = pixel.G / 255f;
-               tensor[0, 2, y, x] = pixel.B / 255f;
+               tensor[0, y, x] = pixel.R / 255f;
+               tensor[1, y, x] = pixel.G / 255f;
+               tensor[2, y, x] = pixel.B / 255f;
             }
          }
          return tensor;
