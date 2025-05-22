@@ -6,6 +6,7 @@
 //    Used Netron to fixup output tensor names
 // Change DenseTensor to BGR (based on https://github.com/onnx/models/tree/main/validated/vision/object_detection_segmentation/faster-rcnn#preprocessing-steps)
 // Normalise colour values with mean = [102.9801, 115.9465, 122.7717]
+// resize the image such that both height and width are within the range of [800, 1333], and then pad the image with zeros such that both height and width are divisible by 32.
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -82,26 +83,46 @@ namespace FasterRCNNObjectDetectionHttpTriggerGithubCopilot
 
       private static DenseTensor<float> PreprocessImage( Image<Rgb24> image)
       {
-         // Remove batch dimension: shape [3, H, W]
-         const int targetWidth = 800;
-         const int targetHeight = 800;
-         image.Mutate(x => x.Resize(targetWidth, targetHeight));
+         // Step 1: Resize so that min(H, W) = 800, max(H, W) <= 1333, keeping aspect ratio
+         int origWidth = image.Width;
+         int origHeight = image.Height;
+         int minSize = 800;
+         int maxSize = 1333;
 
-         // BGR mean values for normalization
+         float scale = Math.Min((float)minSize / Math.Min(origWidth, origHeight),
+                                (float)maxSize / Math.Max(origWidth, origHeight));
+
+         int resizedWidth = (int)Math.Round(origWidth * scale);
+         int resizedHeight = (int)Math.Round(origHeight * scale);
+
+         image.Mutate(x => x.Resize(resizedWidth, resizedHeight));
+
+         // Step 2: Pad so that both dimensions are divisible by 32
+         int padWidth = ((resizedWidth + 31) / 32) * 32;
+         int padHeight = ((resizedHeight + 31) / 32) * 32;
+
+         var paddedImage = new Image<Rgb24>(padWidth, padHeight);
+         paddedImage.Mutate(ctx => ctx.DrawImage(image, new Point(0, 0), 1f));
+
+         // Step 3: Convert to BGR and normalize
          float[] mean = { 102.9801f, 115.9465f, 122.7717f };
+         var tensor = new DenseTensor<float>(new[] { 3, padHeight, padWidth });
 
-         var tensor = new DenseTensor<float>(new[] { 3, targetHeight, targetWidth });
-         for (int y = 0; y < targetHeight; y++)
+         for (int y = 0; y < padHeight; y++)
          {
-            for (int x = 0; x < targetWidth; x++)
+            for (int x = 0; x < padWidth; x++)
             {
-               var pixel = image[x, y];
-               // Convert RGB to BGR and normalize by subtracting mean
+               Rgb24 pixel = default;
+               if (x < resizedWidth && y < resizedHeight)
+                  pixel = paddedImage[x, y];
+
                tensor[0, y, x] = pixel.B - mean[0];
                tensor[1, y, x] = pixel.G - mean[1];
                tensor[2, y, x] = pixel.R - mean[2];
             }
          }
+
+         paddedImage.Dispose();
          return tensor;
       }
    }
