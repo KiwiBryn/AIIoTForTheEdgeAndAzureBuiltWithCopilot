@@ -21,18 +21,21 @@ namespace FasterRCNNObjectDetectionApplicationGitHubCopilot
       {
          // Path to the ONNX model and input image
          string modelPath = @"..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
-         string imagePath = @"..\\..\\..\\..\\Images\\sports.jpg";
+         string imagePath = @"..\\..\\..\\..\\Images\\harbour.jpg";
 
          Console.WriteLine("FasterRCNNObjectDetectionApplicationGitHubCopilot");
 
          // Load the image
          Bitmap image = new Bitmap(imagePath);
 
+         Console.WriteLine($"Load x:{image.Width} y:{image.Height}");
+
          // Load the ONNX model
          using var session = new InferenceSession(modelPath);
 
          // Preprocess the image
-         var inputTensor = PreprocessImage(image);
+         //var inputTensor = PreprocessImage(image);
+         var inputTensor = PreprocessImage(ref image);
 
          // Run inference
          var inputs = new List<NamedOnnxValue>
@@ -49,28 +52,35 @@ namespace FasterRCNNObjectDetectionApplicationGitHubCopilot
          Console.ReadLine();
       }
 
-      static DenseTensor<float> PreprocessImage(Bitmap bitmap)
+      static DenseTensor<float> PreprocessImage(ref Bitmap bitmap)
       {
+         Console.WriteLine($"Before x:{bitmap.Width} y:{bitmap.Height}");
+         bitmap.Save("GitHubCopilotScaleBefore.jpg");
+
          // Resize image to model's expected input size  
          Bitmap resizedImage = ResizeImageForModel(bitmap);
 
+         Console.WriteLine($"After x:{resizedImage.Width} y:{resizedImage.Height}");
+         bitmap.Save("GitHubCopilotScaleAfter.jpg");
 
          // Convert image to float array and normalize
          var input = new DenseTensor<float>(new[] { 3, resizedImage.Height, resizedImage.Width });
 
          float[] mean = { 102.9801f, 115.9465f, 122.7717f };
 
-         for (int y = 0; y < resizedImage.Height; y++)
-         {
-            for (int x = 0; x < resizedImage.Width; x++)
+            for (int y = 0; y < resizedImage.Height; y++)
             {
-               var pixel = resizedImage.GetPixel(x, y);
+                  for (int x = 0; x < resizedImage.Width; x++)
+                  {
+                     var pixel = resizedImage.GetPixel(x, y);
 
                input[0, y, x] = pixel.B - mean[0];
                input[1, y, x] = pixel.G - mean[1];
                input[2, y, x] = pixel.R - mean[2];
             }
          }
+
+         bitmap = resizedImage; // Update the reference to the resized image
 
          return input;
       }
@@ -95,11 +105,17 @@ namespace FasterRCNNObjectDetectionApplicationGitHubCopilot
          int newHeight = (int)(originalHeight * scale);
 
          // Ensure dimensions are divisible by 32
-         newWidth = (newWidth / divisor) * divisor;
-         newHeight = (newHeight / divisor) * divisor;
+         newWidth = (int)(Math.Ceiling(newWidth / 32f) * 32f);
+         newHeight = (int)(Math.Ceiling(newHeight / 32f) * 32f);
+         //newWidth = (newWidth / divisor) * divisor;
+         //newHeight = (newHeight / divisor) * divisor;
 
          // Resize the image
-         return new Bitmap(image, new Size(newWidth, newHeight));
+         var rezired = new Bitmap(image, new Size(newWidth, newHeight));
+
+         rezired.Save("GitHubCopilotHarbourResized.jpg");
+
+         return rezired;
       }
 
       static void PostprocessResults(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output, Bitmap image)
@@ -114,7 +130,7 @@ namespace FasterRCNNObjectDetectionApplicationGitHubCopilot
 
          for (int i = 0; i < labels.Length; i++)
          {
-            if (scores[i] < 0.5) continue; // Filter low-confidence detections
+            if (scores[i] < 0.7) continue; // Filter low-confidence detections
 
             // Extract bounding box coordinates
             float x1 = boxes[i * 4];
@@ -133,10 +149,12 @@ namespace FasterRCNNObjectDetectionApplicationGitHubCopilot
             Console.WriteLine($"Label: {labels[i]}, Confidence: {scores[i]}, Bounding Box: [{x1}, {y1}, {x2}, {y2}]");
          }
 
-         // Save the image with annotations
-         image.Save("FasterRCNNObjectDetectionApplicationGitHubCopilotSports.jpg");
+         Console.WriteLine($"Marked up x:{image.Width} y:{image.Height}");
 
-         Console.WriteLine("Output image saved as 'FasterRCNNObjectDetectionApplicationGitHubCopilotSports.jpg'.");
+         // Save the image with annotations
+         image.Save("GitHubCopilotMarkedUp.jpg");
+
+         Console.WriteLine("Output image saved GitHubCopilotMarkedUp.jpg");
       }
    }
 }

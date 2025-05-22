@@ -28,7 +28,7 @@ namespace FasterRCNNObjectDetectionApplication
       static void Main(string[] args)
       {
          string modelPath = @"..\\..\\..\\..\\Models\\FasterRCNN-10.onnx";
-         string imagePath = @"..\\..\\..\\..\\Images\\sports.jpg";
+         string imagePath = @"..\\..\\..\\..\\Images\\harbour.jpg";
 
          Console.WriteLine("FasterRCNNObjectDetectionApplication");
 

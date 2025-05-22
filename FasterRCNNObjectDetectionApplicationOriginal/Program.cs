@@ -28,13 +28,20 @@ namespace Microsoft.ML.OnnxRuntime.FasterRcnnSample
          // Read image
          using Image<Rgb24> image = Image.Load<Rgb24>(imageFilePath);
 
+         image.SaveAsJpeg("OriginalHarbourScaleBefore.jpg");
+         Console.WriteLine($"Before x:{image.Width} y:{image.Height}");
+
          // Resize image
          float ratio = 800f / Math.Min(image.Width, image.Height);
          image.Mutate(x => x.Resize((int)(ratio * image.Width), (int)(ratio * image.Height)));
 
+         Console.WriteLine($"After x:{image.Width} y:{image.Height}");
+         image.SaveAsJpeg("OriginalHarbourScaleAfter.jpg");
+
          // Preprocess image
          var paddedHeight = (int)(Math.Ceiling(image.Height / 32f) * 32f);
          var paddedWidth = (int)(Math.Ceiling(image.Width / 32f) * 32f);
+         Console.WriteLine($"Padded x:{paddedWidth} y:{paddedHeight}");
          Tensor<float> input = new DenseTensor<float>(new[] { 3, paddedHeight, paddedWidth });
          var mean = new[] { 102.9801f, 115.9465f, 122.7717f };
          image.ProcessPixelRows(accessor =>
@@ -87,6 +94,10 @@ namespace Microsoft.ML.OnnxRuntime.FasterRcnnSample
          Font font = SystemFonts.CreateFont("Arial", 16);
          foreach (var p in predictions)
          {
+            if (p.Confidence < 0.7f)
+            {
+               continue;
+            }
             Console.WriteLine($"Label: {p.Label}, Confidence: {p.Confidence}, Bounding Box:[{p.Box.Xmin}, {p.Box.Ymin}, {p.Box.Xmax}, {p.Box.Ymax}]");
             image.Mutate(x =>
             {
@@ -107,6 +118,7 @@ namespace Microsoft.ML.OnnxRuntime.FasterRcnnSample
                x.DrawText($"{p.Label}, {p.Confidence:0.00}", font, Color.White, new PointF(p.Box.Xmin, p.Box.Ymin));
             });
          }
+         Console.WriteLine($"Marked up x:{image.Width} y:{image.Height}");
          image.SaveAsJpeg(outputImage);
 
          Console.WriteLine("Press Enter to exit");
