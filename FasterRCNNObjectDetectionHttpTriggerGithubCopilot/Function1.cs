@@ -4,6 +4,7 @@
 //    Used Copilot to add Microsoft.ML.OnnxRuntime.Tensors using directive
 //    Manually added ONNX FIle + labels file sorted out paths
 //    Used Netron to fixup output tensor names
+// Change DenseTensor to BGR (based on https://onnxruntime.ai/docs/tutorials/csharp/fasterrcnn_csharp.html)   
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -85,15 +86,15 @@ namespace FasterRCNNObjectDetectionHttpTriggerGithubCopilot
          const int targetHeight = 800;
          image.Mutate(x => x.Resize(targetWidth, targetHeight));
 
-         var tensor = new DenseTensor<float>(new[] { 3, targetHeight, targetWidth });  
+         var tensor = new DenseTensor<float>(new[] { 3, targetHeight, targetWidth });
          for (int y = 0; y < targetHeight; y++)
          {
             for (int x = 0; x < targetWidth; x++)
             {
                var pixel = image[x, y];
-               tensor[0, y, x] = pixel.R / 255f;
+               tensor[0, y, x] = pixel.B / 255f;
                tensor[1, y, x] = pixel.G / 255f;
-               tensor[2, y, x] = pixel.B / 255f;
+               tensor[2, y, x] = pixel.R / 255f;
             }
          }
          return tensor;
