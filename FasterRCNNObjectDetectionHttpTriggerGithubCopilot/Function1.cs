@@ -7,6 +7,7 @@
 // Change DenseTensor to BGR (based on https://github.com/onnx/models/tree/main/validated/vision/object_detection_segmentation/faster-rcnn#preprocessing-steps)
 // Normalise colour values with mean = [102.9801, 115.9465, 122.7717]
 // resize the image such that both height and width are within the range of [800, 1333], and then pad the image with zeros such that both height and width are divisible by 32.
+// modify the code to resize the image such that both height and width are within the range of [800, 1333], and then pad the image with zeros such that both height and width are divisible by 32 and the aspect ratio is not changed.
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -91,6 +92,20 @@ namespace FasterRCNNObjectDetectionHttpTriggerGithubCopilot
 
          float scale = Math.Min((float)minSize / Math.Min(origWidth, origHeight),
                                 (float)maxSize / Math.Max(origWidth, origHeight));
+         /*
+         float scale = 1.0f;
+
+         // If either dimension is less than 800, scale up so the smaller is 800
+         if (origWidth < minSize || origHeight < minSize)
+         {
+            scale = Math.Max((float)minSize / origWidth, (float)minSize / origHeight);
+         }
+         // If either dimension is greater than 1333, scale down so the larger is 1333
+         if (origWidth * scale > maxSize || origHeight * scale > maxSize)
+         {
+            scale = Math.Min((float)maxSize / origWidth, (float)maxSize / origHeight);
+         }
+         */
 
          int resizedWidth = (int)Math.Round(origWidth * scale);
          int resizedHeight = (int)Math.Round(origHeight * scale);
