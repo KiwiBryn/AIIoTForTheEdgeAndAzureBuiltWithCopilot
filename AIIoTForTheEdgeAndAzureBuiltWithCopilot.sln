@@ -135,6 +135,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BenchMarking", "BenchMarkin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FasterRCNNObjectDetectionHttpTriggerGithubCopilot", "FasterRCNNObjectDetectionHttpTriggerGithubCopilot\FasterRCNNObjectDetectionHttpTriggerGithubCopilot.csproj", "{8A8CE08B-9858-4330-A383-95F259D8260E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FasterRCNNObjectDetection", "FasterRCNNObjectDetection\FasterRCNNObjectDetection.csproj", "{55A8219F-3BC0-4BA7-ADF9-6603499A11C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -301,6 +303,10 @@ Global
 		{8A8CE08B-9858-4330-A383-95F259D8260E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A8CE08B-9858-4330-A383-95F259D8260E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A8CE08B-9858-4330-A383-95F259D8260E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55A8219F-3BC0-4BA7-ADF9-6603499A11C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55A8219F-3BC0-4BA7-ADF9-6603499A11C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55A8219F-3BC0-4BA7-ADF9-6603499A11C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55A8219F-3BC0-4BA7-ADF9-6603499A11C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -346,6 +352,7 @@ Global
 		{4FF7FD20-BDBA-479D-82F0-C19DD02CBA7E} = {3D7B6DAA-6678-4B1D-BB4D-6F69DD7B013D}
 		{E95ED70B-5B66-4A9E-0C56-37A0B2D78552} = {47EBD413-670B-4ACC-92A2-FAD3FCB65B68}
 		{8A8CE08B-9858-4330-A383-95F259D8260E} = {47EBD413-670B-4ACC-92A2-FAD3FCB65B68}
+		{55A8219F-3BC0-4BA7-ADF9-6603499A11C3} = {47EBD413-670B-4ACC-92A2-FAD3FCB65B68}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {357C3355-2A0B-4770-BCE2-A303A650669B}
