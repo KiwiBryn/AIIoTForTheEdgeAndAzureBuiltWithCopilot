@@ -5,7 +5,6 @@
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationInsightsResourceId>/subscriptions/3435ed8e-5ac4-4dca-90b6-276fa66a6114/resourceGroups/AIIoTForTheEdgeAndAzure/providers/microsoft.insights/components/AIIoTForTheEdgeAndAzureApplicationInsights</ApplicationInsightsResourceId>
     <UserSecretsId>477c0acd-267b-4928-8e3c-93615bd0bbb7</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
