@@ -1,0 +1,5 @@
+{
+  "OnnxInferenceSessionPoolSize": 10,
+  "OnnxModelPath": "FasterRCNN-10.onnx",
+  "OnnxModelPath-1": "optimized.onnx"
+}

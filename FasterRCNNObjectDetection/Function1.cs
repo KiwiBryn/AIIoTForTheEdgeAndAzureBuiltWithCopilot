@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -14,35 +15,88 @@ namespace FasterRCNNObjectDetection;
 public class Function1
 {
    private readonly ILogger<Function1> _logger;
+   //private static readonly ILogger<Function1> _logger;
    private readonly List<string> _labels;
    private readonly InferenceSession _session;
+   //private static readonly InferenceSession _session = new InferenceSession(Path.Combine(AppContext.BaseDirectory, "FasterRCNN-10.onnx"));
+   //private volatile InferenceSession _session;
+   //private static readonly InferenceSession _session;
+   //private readonly IOnnxPredictionPool _onnxPredictionPool;
+   //private static bool _Loaded = false;
+   //private readonly Mutex _CriticalSection = new Mutex();
+   //private static readonly Lazy<InferenceSession> inferenceSession = new Lazy<InferenceSession>(() => new InferenceSession(Path.Combine(AppContext.BaseDirectory, "FasterRCNN-10.onnx")));
 
+   //public Function1(ILogger<Function1> logger, IOnnxPredictionPool onnxPredictionPool)
    public Function1(ILogger<Function1> logger)
+   //static Function1()
+   //public Function1()
    {
       _logger = logger;
-      _labels = File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "labels.txt")).ToList();
-      _session = new InferenceSession(Path.Combine(AppContext.BaseDirectory, "FasterRCNN-10.onnx"));
+
+      _logger.LogTrace("Initializing Faster R-CNN Object Detection Function start");
+
+      _session = new InferenceSession("FasterRCNN-10.onnx");
+      _labels = File.ReadAllLines("labels.txt").ToList();
+
+      //_labels = File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "labels.txt")).ToList();
+      //_onnxPredictionPool = onnxPredictionPool;
+      //if (_session is not null)
+      //{ 
+      //   _session = new InferenceSession(Path.Combine(AppContext.BaseDirectory, "FasterRCNN-10.onnx"));
+      //}
+      //if (_session is null)
+      //{
+      //if (_CriticalSection.WaitOne())
+      //{
+      //   if (_session is null)
+      //   {
+      //      _session = new InferenceSession(Path.Combine(AppContext.BaseDirectory, "FasterRCNN-10.onnx"));
+      //   }
+      //   _CriticalSection.ReleaseMutex();
+      //   }
+      //}
+
+      //_session = inferenceSession.Value;
+
+      _logger.LogTrace("Initializing Faster R-CNN Object Detection Function finish");
    }
 
    [Function("ObjectDetectionFunction")]
    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, ExecutionContext context)
    {
+      _logger.LogTrace("Faster R-CNN Object Detection Function start");
+      
       if (!req.ContentType.StartsWith("image/"))
          return new BadRequestObjectResult("Content-Type must be an image.");
 
+      /*
+      if (_session is null)
+      {
+         _session = new InferenceSession(Path.Combine(AppContext.BaseDirectory, "FasterRCNN-10.onnx"));
+      }
+      */
+
+      _logger.LogTrace("Faster R-CNN Object Detection Function ImageLoad start");
       using var ms = new MemoryStream();
       await req.Body.CopyToAsync(ms);
       ms.Position = 0;
 
       using var image = Image.Load<Rgb24>(ms);
-      var inputTensor = PreprocessImage(image);
+      _logger.LogTrace("Faster R-CNN Object Detection Function ImageLoad finish");
 
+      _logger.LogTrace("Faster R-CNN Object Detection Function PreprocessImage start");
+      var inputTensor = PreprocessImage(image);
+      _logger.LogTrace("Faster R-CNN Object Detection Function PreprocessImage finish");
+      
       var inputs = new List<NamedOnnxValue>
                   {
                       NamedOnnxValue.CreateFromTensor("image", inputTensor)
                   };
 
+      _logger.LogTrace("Faster R-CNN Object Detection Function Inferencing start");
+      //using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = _onnxPredictionPool.Run(inputs);
       using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = _session.Run(inputs);
+      _logger.LogTrace("Faster R-CNN Object Detection Function Inferencing finish");
       var output = results.ToDictionary(x => x.Name, x => x.Value);
 
       var boxes = (DenseTensor<float>)output["6379"];
@@ -56,7 +110,8 @@ public class Function1
          {
             detections.Add(new
             {
-               label = _labels[(int)labels[i]],
+               //label = _labels[(int)labels[i]],
+               label = labels[i] < 0 ? "Unknown" : labels[i].ToString(), // Assuming labels are integers, adjust as needed
                score = scores[i],
                box = new
                {
@@ -68,6 +123,8 @@ public class Function1
             });
          }
       }
+      _logger.LogTrace("Faster R-CNN Object Detection Function finish");
+
       return new OkObjectResult(detections);
    }
 
