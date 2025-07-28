@@ -35,10 +35,8 @@ public class Function1
 
       _logger.LogTrace("Initializing Faster R-CNN Object Detection Function start");
 
-      _session = new InferenceSession("FasterRCNN-10.onnx");
-      _labels = File.ReadAllLines("labels.txt").ToList();
-
-      //_labels = File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "labels.txt")).ToList();
+      _session = new InferenceSession(Path.Combine(AppContext.BaseDirectory, "FasterRCNN-10.onnx"));
+      _labels = File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "labels.txt")).ToList();
       //_onnxPredictionPool = onnxPredictionPool;
       //if (_session is not null)
       //{ 
